@@ -57,6 +57,9 @@ catalogs:
     typescript:
       specifier: ^6.0.0
       version: 6.0.2
+    zod:
+      specifier: ^4.3.3
+      version: 4.3.6
 
 importers:
 
@@ -128,7 +131,21 @@ importers:
         specifier: 'catalog:'
         version: 6.0.2
 
+  modules/anki:
+    dependencies:
+      '@lingua-hub/capacitor-ankidroid':
+        specifier: workspace:*
+        version: link:../capacitor-ankidroid
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+
   modules/capacitor-ankidroid:
+    dependencies:
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
     devDependencies:
       '@capacitor/core':
         specifier: 'catalog:'

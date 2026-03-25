@@ -1,7 +1,8 @@
 {
-  "name": "@lingua-hub/capacitor-ankidroid",
+  "name": "@lingua-hub/anki",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -10,13 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "catalog:"
-  },
-  "peerDependencies": {
-    "@capacitor/core": "catalog:"
+    "@lingua-hub/capacitor-ankidroid": "workspace:*"
   },
   "devDependencies": {
-    "@capacitor/core": "catalog:",
     "typescript": "catalog:"
   }
 }

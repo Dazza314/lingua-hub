@@ -6,5 +6,5 @@
     "declarationDir": "dist/esm"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "android"]
+  "exclude": ["node_modules", "dist"]
 }

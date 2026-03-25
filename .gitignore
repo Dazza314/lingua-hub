@@ -25,6 +25,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # Capacitor / Android
 apps/android/android/
 apps/android/.gradle/

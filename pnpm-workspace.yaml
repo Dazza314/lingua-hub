@@ -22,6 +22,8 @@ catalog:
   "@types/node": "^24.0.0"
   "@types/react": "^19.0.0"
   "@types/react-dom": "^19.0.0"
+  # Validation
+  zod: "^4.3.3"
   # Tooling
   typescript: "^6.0.0"
   turbo: "^2.0.0"
