@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(pnpm --version)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm --filter @lingua-hub/web build)",
+      "Bash(pnpm --filter @lingua-hub/web add -D @eslint/eslintrc)",
+      "Bash(pnpm outdated:*)",
+      "Bash(pnpm info:*)",
+      "Bash(curl -s https://nodejs.org/dist/index.json)",
+      "Bash(command -v nvm)",
+      "Read(//home/dario/.nvm/**)",
+      "Bash(pnpm --filter @lingua-hub/web lint)",
+      "Bash(pnpm eslint:*)",
+      "Bash(find /home/dario/code/lingua-hub/node_modules -name *.js)",
+      "Bash(ls:*)"
+    ]
+  }
+}

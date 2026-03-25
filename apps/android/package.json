@@ -1,0 +1,18 @@
+{
+  "name": "@lingua-hub/android",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cap sync android",
+    "open": "cap open android",
+    "sync": "cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "catalog:",
+    "@capacitor/core": "catalog:",
+    "@lingua-hub/capacitor-ankidroid": "workspace:*"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "catalog:"
+  }
+}

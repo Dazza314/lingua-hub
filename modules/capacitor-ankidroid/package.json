@@ -1,0 +1,19 @@
+{
+  "name": "@lingua-hub/capacitor-ankidroid",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@capacitor/core": "catalog:"
+  },
+  "devDependencies": {
+    "@capacitor/core": "catalog:",
+    "typescript": "catalog:"
+  }
+}
