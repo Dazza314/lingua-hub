@@ -1,2 +1,2 @@
-export { AnkiDroidClient } from "./AnkiDroidClient.js";
-export * from "./rawModels/index.js";
+export { AnkiDroidClient } from './AnkiDroidClient.js'
+export * from './rawModels/index.js'

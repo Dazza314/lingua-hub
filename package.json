@@ -7,12 +7,15 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "knip": "knip"
+    "knip": "knip",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "knip": "catalog:",
+    "prettier": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:"
   },

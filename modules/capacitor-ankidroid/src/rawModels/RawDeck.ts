@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 /**
  * Raw deck as returned by the AnkiDroid ContentProvider bridge.
@@ -6,7 +6,7 @@ import { z } from "zod";
  */
 export const RawDeckSchema = z
   .object({
-    id: z.string().describe("Anki database ID for this deck"),
+    id: z.string().describe('Anki database ID for this deck'),
     name: z
       .string()
       .describe(
@@ -14,27 +14,27 @@ export const RawDeckSchema = z
       ),
     description: z
       .string()
-      .describe("User-written deck description shown on the overview screen"),
+      .describe('User-written deck description shown on the overview screen'),
     counts: z
       .object({
         learn: z
           .number()
           .int()
           .describe(
-            "Cards currently in the learning phase (new cards being drilled)",
+            'Cards currently in the learning phase (new cards being drilled)',
           ),
         review: z
           .number()
           .int()
-          .describe("Cards due for spaced-repetition review today"),
-        new: z.number().int().describe("Cards not yet seen for the first time"),
+          .describe('Cards due for spaced-repetition review today'),
+        new: z.number().int().describe('Cards not yet seen for the first time'),
       })
       .describe("Today's due counts"),
     isDynamic: z
       .boolean()
       .describe(
-        "True if this is a filtered/dynamic deck (auto-generated from a search query)",
+        'True if this is a filtered/dynamic deck (auto-generated from a search query)',
       ),
   })
-  .describe("Raw deck from AnkiDroid ContentProvider");
-export type RawDeck = z.infer<typeof RawDeckSchema>;
+  .describe('Raw deck from AnkiDroid ContentProvider')
+export type RawDeck = z.infer<typeof RawDeckSchema>

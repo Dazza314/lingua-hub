@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 /**
  * Raw note type (model) as returned by the AnkiDroid ContentProvider bridge.
@@ -6,7 +6,7 @@ import { z } from "zod";
  */
 export const RawModelSchema = z
   .object({
-    id: z.string().describe("Anki database ID for this note type"),
+    id: z.string().describe('Anki database ID for this note type'),
     name: z
       .string()
       .describe(
@@ -20,18 +20,18 @@ export const RawModelSchema = z
     numCards: z
       .number()
       .int()
-      .describe("Number of card templates this note type generates per note"),
+      .describe('Number of card templates this note type generates per note'),
     sortFieldIndex: z
       .number()
       .int()
       .describe(
-        "Index into fieldNames of the field used for sorting in the browser",
+        'Index into fieldNames of the field used for sorting in the browser',
       ),
     type: z
       .number()
       .int()
-      .describe("0 = normal note type, 1 = cloze deletion note type"),
+      .describe('0 = normal note type, 1 = cloze deletion note type'),
   })
-  .describe("Raw note type (model) from AnkiDroid ContentProvider");
+  .describe('Raw note type (model) from AnkiDroid ContentProvider')
 
-export type RawModel = z.infer<typeof RawModelSchema>;
+export type RawModel = z.infer<typeof RawModelSchema>

@@ -1,1 +1,1 @@
-export { AnkiDroidAdapter } from "./AnkiDroidAdapter.js";
+export { AnkiDroidAdapter } from './AnkiDroidAdapter.js'
