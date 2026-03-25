@@ -15,7 +15,12 @@
       "Bash(pnpm eslint:*)",
       "Bash(find /home/dario/code/lingua-hub/node_modules -name *.js)",
       "Bash(ls:*)",
-      "Bash(pnpm --filter @lingua-hub/android dev)"
+      "Bash(pnpm --filter @lingua-hub/android dev)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm knip:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(nvm use:*)",
+      "Bash(source ~/.nvm/nvm.sh)"
     ]
   }
 }

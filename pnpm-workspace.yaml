@@ -25,3 +25,4 @@ catalog:
   # Tooling
   typescript: "^6.0.0"
   turbo: "^2.0.0"
+  knip: "^5.88.1"
