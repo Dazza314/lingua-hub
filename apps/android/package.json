@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "cap sync android",
+    "build": "cd android && ANDROID_HOME=/mnt/c/Android ./gradlew assembleDebug",
+    "install:device": "/mnt/c/Android/platform-tools/adb.exe install android/app/build/outputs/apk/debug/app-debug.apk",
+    "forward": "/mnt/c/Android/platform-tools/adb.exe reverse tcp:3000 tcp:3000",
+    "dev": "pnpm build && pnpm install:device && pnpm forward",
     "open": "cap open android",
     "sync": "cap sync android"
   },
