@@ -8,6 +8,7 @@ import type { AnkiPort } from '../../AnkiPort'
  *
  * Transforms will be added when domain models are designed.
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AnkiDroidAdapter implements AnkiPort {
   // TODO: implement port methods once domain models are defined
 }

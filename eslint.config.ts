@@ -1,20 +1,21 @@
 import { includeIgnoreFile } from '@eslint/compat'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-import tsParser from '@typescript-eslint/parser'
 import nextConfig from 'eslint-config-next/core-web-vitals'
 import nextTypescript from 'eslint-config-next/typescript'
 import { resolve } from 'node:path'
+import tseslint from 'typescript-eslint'
 
 const gitignorePath = resolve(import.meta.dirname, '.gitignore')
 
-const config = [
+export default tseslint.config(
   includeIgnoreFile(gitignorePath),
   { ignores: ['**/*.d.ts'] },
-  // TypeScript parser + plugin registry for all TS files
+  // Strict TypeScript rules for all TS files
   {
     files: ['**/*.{ts,tsx}'],
-    plugins: { '@typescript-eslint': tsPlugin },
-    languageOptions: { parser: tsParser },
+    extends: [...tseslint.configs.strict, ...tseslint.configs.stylistic],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    },
   },
   // Next.js rules — only for the web app
   ...[...nextConfig, ...nextTypescript].map((config) => ({
@@ -31,6 +32,4 @@ const config = [
       ],
     },
   },
-]
-
-export default config
+)

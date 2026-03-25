@@ -22,7 +22,7 @@ import {
  * Only declares method names — all return Promise<unknown>.
  * Real type safety comes from Zod parsing in the client below.
  */
-interface AnkiDroidBridge {
+type AnkiDroidBridge = {
   checkPermission(): Promise<unknown>
   requestPermission(): Promise<unknown>
   getDecks(): Promise<unknown>
