@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { RawCardSchema } from './RawCard.js'
-import { RawNoteSchema } from './RawNote.js'
+import { RawCardSchema } from './RawCard'
+import { RawNoteSchema } from './RawNote'
 
 /**
  * A note bundled with all its generated cards, as returned by the bridge.

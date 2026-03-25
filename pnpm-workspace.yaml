@@ -16,6 +16,9 @@ catalog:
   tailwindcss: '^4.0.0'
   postcss: '^8.4.0'
   # Linting
+  '@eslint/compat': '^2.0.3'
+  '@typescript-eslint/eslint-plugin': '^8.57.2'
+  '@typescript-eslint/parser': '^8.57.2'
   eslint: '^9.0.0'
   eslint-config-next: '^16.2.1'
   prettier: '^3.8.1'

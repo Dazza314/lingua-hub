@@ -1,21 +1,21 @@
 import { registerPlugin } from '@capacitor/core'
 import { z } from 'zod'
-import type { RawAddNoteOptions } from './rawModels/RawAddNoteOptions.js'
-import { RawDeckSchema } from './rawModels/RawDeck.js'
-import type { RawDeck } from './rawModels/RawDeck.js'
-import { RawModelSchema } from './rawModels/RawModel.js'
-import type { RawModel } from './rawModels/RawModel.js'
-import type { RawNoteQuery } from './rawModels/RawNoteQuery.js'
-import { RawNoteWithCardsSchema } from './rawModels/RawNoteWithCards.js'
-import type { RawNoteWithCards } from './rawModels/RawNoteWithCards.js'
+import type { RawAddNoteOptions } from './rawModels/RawAddNoteOptions'
+import { RawDeckSchema } from './rawModels/RawDeck'
+import type { RawDeck } from './rawModels/RawDeck'
+import { RawModelSchema } from './rawModels/RawModel'
+import type { RawModel } from './rawModels/RawModel'
+import type { RawNoteQuery } from './rawModels/RawNoteQuery'
+import { RawNoteWithCardsSchema } from './rawModels/RawNoteWithCards'
+import type { RawNoteWithCards } from './rawModels/RawNoteWithCards'
 import {
   RawNotesPageSchema,
   type RawNotesPage,
-} from './rawModels/RawPaginatedResult.js'
+} from './rawModels/RawPaginatedResult'
 import {
   RawPermissionStatusSchema,
   type RawPermissionStatus,
-} from './rawModels/RawPermissionStatus.js'
+} from './rawModels/RawPermissionStatus'
 
 /**
  * Minimal type for the untyped Capacitor bridge proxy.

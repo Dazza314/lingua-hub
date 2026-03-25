@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { RawNoteWithCardsSchema } from './RawNoteWithCards.js'
+import { RawNoteWithCardsSchema } from './RawNoteWithCards'
 
 /** Generic paginated result wrapper for bridge responses. */
 export const RawPaginatedResultSchema = <T extends z.ZodTypeAny>(

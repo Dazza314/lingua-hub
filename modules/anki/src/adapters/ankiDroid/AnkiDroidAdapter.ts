@@ -1,4 +1,4 @@
-import type { AnkiPort } from '../../AnkiPort.js'
+import type { AnkiPort } from '../../AnkiPort'
 
 /**
  * AnkiDroid adapter — implements AnkiPort using the AnkiDroid Capacitor plugin.

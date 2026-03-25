@@ -4,6 +4,7 @@
     "lib": ["ESNext", "dom", "dom.iterable"],
     "jsx": "preserve",
     "incremental": true,
+    "tsBuildInfoFile": ".next/tsconfig.tsbuildinfo",
     "allowJs": true,
     "noEmit": true,
     "resolveJsonModule": true,
