@@ -1,7 +1,8 @@
 import { includeIgnoreFile } from '@eslint/compat'
-import checkFile from 'eslint-plugin-check-file'
 import nextConfig from 'eslint-config-next/core-web-vitals'
 import nextTypescript from 'eslint-config-next/typescript'
+import checkFile from 'eslint-plugin-check-file'
+import noBarrelFiles from 'eslint-plugin-no-barrel-files'
 import { resolve } from 'node:path'
 import tseslint from 'typescript-eslint'
 
@@ -36,14 +37,34 @@ export default tseslint.config(
     rules: {
       'no-restricted-imports': [
         'error',
-        { patterns: [{ group: ['**/*.js', '**/*.jsx'], message: 'Use extensionless imports' }] },
+        {
+          patterns: [
+            {
+              group: ['**/*.js', '**/*.jsx'],
+              message: 'Use extensionless imports',
+            },
+          ],
+        },
       ],
+    },
+  },
+  // No barrel files (package entry points are exempt)
+  {
+    files: ['**/*.{ts,tsx}'],
+    ignores: [
+      'modules/*/src/index.ts',
+      'apps/*/src/index.ts',
+      'modules/*/src/{models,schemas}/index.ts',
+    ],
+    plugins: { 'no-barrel-files': noBarrelFiles },
+    rules: {
+      'no-barrel-files/no-barrel-files': 'error',
     },
   },
   // File and directory naming conventions
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['**/index.{ts,tsx}'],
+    ignores: ['**/index.{ts,tsx}', '**/*.config.ts'],
     plugins: { 'check-file': checkFile },
     rules: {
       'check-file/filename-naming-convention': [

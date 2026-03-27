@@ -19,6 +19,7 @@
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "eslint-plugin-check-file": "catalog:",
+    "eslint-plugin-no-barrel-files": "catalog:",
     "knip": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",

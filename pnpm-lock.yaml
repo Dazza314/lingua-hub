@@ -48,6 +48,9 @@ catalogs:
     eslint-plugin-check-file:
       specifier: ^3.3.1
       version: 3.3.1
+    eslint-plugin-no-barrel-files:
+      specifier: ^1.2.2
+      version: 1.2.2
     knip:
       specifier: ^5.88.1
       version: 5.88.1
@@ -104,6 +107,9 @@ importers:
       eslint-plugin-check-file:
         specifier: 'catalog:'
         version: 3.3.1(eslint@9.39.4(jiti@2.6.1))
+      eslint-plugin-no-barrel-files:
+        specifier: 'catalog:'
+        version: 1.2.2(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2)
       knip:
         specifier: 'catalog:'
         version: 5.88.1(@types/node@24.12.0)(typescript@6.0.2)
@@ -1481,6 +1487,9 @@ packages:
     engines: {node: '>=4.0'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
+
+  eslint-plugin-no-barrel-files@1.2.2:
+    resolution: {integrity: sha512-DF2bnHuEHClmL1+maBO5TD2HnnRsLj8J69FFtVkjObkELyjCXaWBsk+URJkqBpdOWURlL+raGX9AEpWCAiOV0g==}
 
   eslint-plugin-react-hooks@7.0.1:
     resolution: {integrity: sha512-O0d0m04evaNzEPoSW+59Mezf8Qt0InfgGIBJnpC0h3NH/WjUAR7BIKUfysC6todmtiZ/A0oUVS8Gce0WhBrHsA==}
@@ -3972,6 +3981,14 @@ snapshots:
       object.fromentries: 2.0.8
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
+
+  eslint-plugin-no-barrel-files@1.2.2(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2):
+    dependencies:
+      '@typescript-eslint/utils': 8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2)
+    transitivePeerDependencies:
+      - eslint
+      - supports-color
+      - typescript
 
   eslint-plugin-react-hooks@7.0.1(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
