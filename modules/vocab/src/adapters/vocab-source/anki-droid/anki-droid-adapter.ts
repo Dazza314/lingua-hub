@@ -1,14 +1,29 @@
+import { Result } from '@praha/byethrow'
+import {
+  UnexpectedVocabSourceError,
+} from '../../../errors'
+import type {
+  InvalidLayoutError,
+  VocabSourceUnavailableError,
+} from '../../../errors'
+import type { AvailableLayout } from '../../../models/available-layout'
+import type { VocabItem } from '../../../models/vocab-item'
+import type { VocabSourceLayout } from '../../../models/vocab-source-layout'
 import type { VocabSource } from '../../../ports/vocab-source'
 
-/**
- * AnkiDroid adapter — implements VocabSource using the AnkiDroid Capacitor plugin.
- *
- * Imports the validated AnkiDroidClient from @lingua-hub/capacitor-ankidroid
- * and transforms raw models into domain types.
- *
- * Transforms will be added when domain models are designed.
- */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AnkiDroidAdapter implements VocabSource {
-  // TODO: implement port methods once domain models are defined
+  getAvailableLayouts(): Result.ResultAsync<
+    AvailableLayout[],
+    VocabSourceUnavailableError | UnexpectedVocabSourceError
+  > {
+    return Promise.resolve(Result.fail(new UnexpectedVocabSourceError('Not implemented')))
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getVocabItems(_layout: VocabSourceLayout): Result.ResultAsync<
+    VocabItem[],
+    VocabSourceUnavailableError | InvalidLayoutError | UnexpectedVocabSourceError
+  > {
+    return Promise.resolve(Result.fail(new UnexpectedVocabSourceError('Not implemented')))
+  }
 }
