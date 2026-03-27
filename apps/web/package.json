@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@supabase/ssr": "catalog:",
+    "zod": "catalog:",
     "@supabase/supabase-js": "catalog:",
     "next": "catalog:",
     "react": "catalog:",

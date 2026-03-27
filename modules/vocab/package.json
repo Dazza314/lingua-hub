@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@lingua-hub/capacitor-ankidroid": "workspace:*",
-    "@lingua-hub/user": "workspace:*",
+    "@lingua-hub/core": "workspace:*",
     "@praha/byethrow": "catalog:",
     "zod": "catalog:"
   },
