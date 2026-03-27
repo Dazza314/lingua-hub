@@ -1,4 +1,5 @@
 import { includeIgnoreFile } from '@eslint/compat'
+import checkFile from 'eslint-plugin-check-file'
 import nextConfig from 'eslint-config-next/core-web-vitals'
 import nextTypescript from 'eslint-config-next/typescript'
 import { resolve } from 'node:path'
@@ -15,6 +16,13 @@ export default tseslint.config(
     extends: [...tseslint.configs.strict, ...tseslint.configs.stylistic],
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
+        { selector: 'function', format: ['camelCase', 'PascalCase'] },
+        { selector: 'typeLike', format: ['PascalCase'] },
+        { selector: 'enumMember', format: ['UPPER_CASE'] },
+      ],
     },
   },
   // Next.js rules — only for the web app
@@ -29,6 +37,22 @@ export default tseslint.config(
       'no-restricted-imports': [
         'error',
         { patterns: [{ group: ['**/*.js', '**/*.jsx'], message: 'Use extensionless imports' }] },
+      ],
+    },
+  },
+  // File and directory naming conventions
+  {
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['**/index.{ts,tsx}'],
+    plugins: { 'check-file': checkFile },
+    rules: {
+      'check-file/filename-naming-convention': [
+        'error',
+        { '**/*.{ts,tsx}': 'KEBAB_CASE' },
+      ],
+      'check-file/folder-naming-convention': [
+        'error',
+        { '**/**/': 'KEBAB_CASE' },
       ],
     },
   },

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/makeParse'
+import { makeParse } from '../../utils/make-parse'
 
 export const CountNotesResponseSchema = z.object({
   count: z.number().int(),

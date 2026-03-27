@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/makeParse'
-import { NoteWithCardsSchema } from '../shared/NoteWithCards'
+import { makeParse } from '../../utils/make-parse'
+import { NoteWithCardsSchema } from '../shared/note-with-cards'
 
 export const NoteWithCardsResponseSchema = z.object({
   note: NoteWithCardsSchema,

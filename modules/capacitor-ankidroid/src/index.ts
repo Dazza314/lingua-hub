@@ -1,1 +1,1 @@
-export { AnkiDroidClient } from './AnkiDroidClient'
+export { AnkiDroidClient } from './anki-droid-client'

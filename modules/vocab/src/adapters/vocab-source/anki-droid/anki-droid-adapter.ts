@@ -1,4 +1,4 @@
-import type { VocabSource } from '../../../ports/VocabSource'
+import type { VocabSource } from '../../../ports/vocab-source'
 
 /**
  * AnkiDroid adapter — implements VocabSource using the AnkiDroid Capacitor plugin.
