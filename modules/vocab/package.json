@@ -12,7 +12,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@lingua-hub/capacitor-ankidroid": "workspace:*"
+    "@lingua-hub/capacitor-ankidroid": "workspace:*",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:"
