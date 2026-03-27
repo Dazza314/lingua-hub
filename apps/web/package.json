@@ -10,6 +10,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@supabase/ssr": "catalog:",
+    "@supabase/supabase-js": "catalog:",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

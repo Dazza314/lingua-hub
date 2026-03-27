@@ -24,6 +24,9 @@ catalog:
   knip: '^5.88.1'
   # Next.js
   next: '^16.0.0'
+  # Supabase
+  '@supabase/ssr': '^0.6.0'
+  '@supabase/supabase-js': '^2.49.0'
   postcss: '^8.4.0'
   prettier: '^3.8.1'
   react: '^19.0.0'
