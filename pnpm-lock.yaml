@@ -192,11 +192,24 @@ importers:
         specifier: 'catalog:'
         version: 6.0.2
 
+  modules/user:
+    dependencies:
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+
   modules/vocab:
     dependencies:
       '@lingua-hub/capacitor-ankidroid':
         specifier: workspace:*
         version: link:../capacitor-ankidroid
+      '@lingua-hub/user':
+        specifier: workspace:*
+        version: link:../user
       '@praha/byethrow':
         specifier: 'catalog:'
         version: 0.10.1(typescript@6.0.2)

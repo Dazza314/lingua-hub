@@ -1,5 +1,5 @@
 {
-  "name": "@lingua-hub/vocab",
+  "name": "@lingua-hub/user",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,9 +12,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@lingua-hub/capacitor-ankidroid": "workspace:*",
-    "@lingua-hub/user": "workspace:*",
-    "@praha/byethrow": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
