@@ -1,7 +1,7 @@
-import type { AnkiPort } from '../../AnkiPort'
+import type { VocabSource } from '../../../ports/VocabSource'
 
 /**
- * AnkiDroid adapter — implements AnkiPort using the AnkiDroid Capacitor plugin.
+ * AnkiDroid adapter — implements VocabSource using the AnkiDroid Capacitor plugin.
  *
  * Imports the validated AnkiDroidClient from @lingua-hub/capacitor-ankidroid
  * and transforms raw models into domain types.
@@ -9,6 +9,6 @@ import type { AnkiPort } from '../../AnkiPort'
  * Transforms will be added when domain models are designed.
  */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-export class AnkiDroidAdapter implements AnkiPort {
+export class AnkiDroidAdapter implements VocabSource {
   // TODO: implement port methods once domain models are defined
 }
