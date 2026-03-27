@@ -18,6 +18,9 @@ catalogs:
     '@eslint/compat':
       specifier: ^2.0.3
       version: 2.0.3
+    '@praha/byethrow':
+      specifier: ^0.10.1
+      version: 0.10.1
     '@tailwindcss/postcss':
       specifier: ^4.0.0
       version: 4.2.2
@@ -173,6 +176,9 @@ importers:
 
   modules/capacitor-ankidroid:
     dependencies:
+      '@praha/byethrow':
+        specifier: 'catalog:'
+        version: 0.10.1(typescript@6.0.2)
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -742,8 +748,16 @@ packages:
   '@package-json/types@0.0.12':
     resolution: {integrity: sha512-uu43FGU34B5VM9mCNjXCwLaGHYjXdNincqKLaraaCW+7S2+SmiBg1Nv8bPnmschrIfZmfKNY9f3fC376MRrObw==}
 
+  '@praha/byethrow@0.10.1':
+    resolution: {integrity: sha512-2pM0a6OQn6eMhTOMzQyo/3sWHpcvLlRUh4d0YkCqg9qnQMmRH8mJt+SI3PEbcp86dpR90Q08byrtGO6tjS3njw==}
+    peerDependencies:
+      typescript: '>=5.0.0'
+
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
@@ -3154,7 +3168,14 @@ snapshots:
   '@package-json/types@0.0.12':
     optional: true
 
+  '@praha/byethrow@0.10.1(typescript@6.0.2)':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      typescript: 6.0.2
+
   '@rtsao/scc@1.1.0': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:

@@ -1,10 +1,7 @@
 import { z } from 'zod'
+import { makeParse } from '../../utils/makeParse'
 
-/**
- * Raw deck as returned by the AnkiDroid ContentProvider bridge.
- * Decks can be nested using '::' as a separator (e.g., "Japanese::Core 2000").
- */
-export const RawDeckSchema = z
+const DeckSchema = z
   .object({
     id: z.string().describe('Anki database ID for this deck'),
     name: z
@@ -36,5 +33,10 @@ export const RawDeckSchema = z
         'True if this is a filtered/dynamic deck (auto-generated from a search query)',
       ),
   })
-  .describe('Raw deck from AnkiDroid ContentProvider')
-export type RawDeck = z.infer<typeof RawDeckSchema>
+  .describe('Deck from AnkiDroid ContentProvider')
+
+export const DecksResponseSchema = z.object({
+  decks: z.array(DeckSchema),
+})
+export type DecksResponse = z.infer<typeof DecksResponseSchema>
+export const parse = makeParse(DecksResponseSchema)

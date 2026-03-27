@@ -1,21 +1,17 @@
 import { registerPlugin } from '@capacitor/core'
-import { z } from 'zod'
-import type { RawAddNoteOptions } from './rawModels/RawAddNoteOptions'
-import { RawDeckSchema } from './rawModels/RawDeck'
-import type { RawDeck } from './rawModels/RawDeck'
-import { RawModelSchema } from './rawModels/RawModel'
-import type { RawModel } from './rawModels/RawModel'
-import type { RawNoteQuery } from './rawModels/RawNoteQuery'
-import { RawNoteWithCardsSchema } from './rawModels/RawNoteWithCards'
-import type { RawNoteWithCards } from './rawModels/RawNoteWithCards'
+import { Result } from '@praha/byethrow'
+import { AnkiDroidBridgeError, ValidationError } from './errors'
 import {
-  RawNotesPageSchema,
-  type RawNotesPage,
-} from './rawModels/RawPaginatedResult'
-import {
-  RawPermissionStatusSchema,
-  type RawPermissionStatus,
-} from './rawModels/RawPermissionStatus'
+  AddNoteOptions,
+  AddNoteResponse,
+  CountNotesResponse,
+  DecksResponse,
+  ModelsResponse,
+  NoteQuery,
+  NoteWithCardsResponse,
+  NotesPageResponse,
+  PermissionStatusResponse,
+} from './schemas'
 
 /**
  * Minimal type for the untyped Capacitor bridge proxy.
@@ -35,6 +31,24 @@ type AnkiDroidBridge = {
 
 const bridge = registerPlugin<AnkiDroidBridge>('AnkiDroid')
 
+type AnkiDroidResult<T> = Result.ResultAsync<
+  T,
+  AnkiDroidBridgeError | ValidationError
+>
+
+function call<T>(
+  bridgeCall: () => Promise<unknown>,
+  parse: (raw: unknown) => Result.Result<T, ValidationError>,
+): AnkiDroidResult<T> {
+  return Result.pipe(
+    Result.fn({
+      try: bridgeCall,
+      catch: (err) => new AnkiDroidBridgeError(String(err), { cause: err }),
+    })(),
+    Result.andThen(parse),
+  )
+}
+
 /**
  * Typed client for the AnkiDroid Capacitor plugin.
  *
@@ -43,49 +57,54 @@ const bridge = registerPlugin<AnkiDroidBridge>('AnkiDroid')
  * place where bridge data crosses into typed TypeScript.
  */
 export const AnkiDroidClient = {
-  async checkPermission(): Promise<RawPermissionStatus> {
-    const raw = await bridge.checkPermission()
-    return RawPermissionStatusSchema.parse(raw)
+  checkPermission(): AnkiDroidResult<PermissionStatusResponse.PermissionStatusResponse> {
+    return call(() => bridge.checkPermission(), PermissionStatusResponse.parse)
   },
 
-  async requestPermission(): Promise<RawPermissionStatus> {
-    const raw = await bridge.requestPermission()
-    return RawPermissionStatusSchema.parse(raw)
+  requestPermission(): AnkiDroidResult<PermissionStatusResponse.PermissionStatusResponse> {
+    return call(
+      () => bridge.requestPermission(),
+      PermissionStatusResponse.parse,
+    )
   },
 
-  async getDecks(): Promise<{ decks: RawDeck[] }> {
-    const raw = await bridge.getDecks()
-    return z.object({ decks: z.array(RawDeckSchema) }).parse(raw)
+  getDecks(): AnkiDroidResult<DecksResponse.DecksResponse> {
+    return call(() => bridge.getDecks(), DecksResponse.parse)
   },
 
-  async getModels(): Promise<{ models: RawModel[] }> {
-    const raw = await bridge.getModels()
-    return z.object({ models: z.array(RawModelSchema) }).parse(raw)
+  getModels(): AnkiDroidResult<ModelsResponse.ModelsResponse> {
+    return call(() => bridge.getModels(), ModelsResponse.parse)
   },
 
-  async getNotesWithCards(options?: RawNoteQuery): Promise<RawNotesPage> {
-    const raw = await bridge.getNotesWithCards(options)
-    return RawNotesPageSchema.parse(raw)
+  getNotesWithCards(
+    options?: NoteQuery.NoteQuery,
+  ): AnkiDroidResult<NotesPageResponse.NotesPageResponse> {
+    return call(
+      () => bridge.getNotesWithCards(options),
+      NotesPageResponse.parse,
+    )
   },
 
-  async getNoteWithCards(options: {
+  getNoteWithCards(options: {
     noteId: string
-  }): Promise<{ note: RawNoteWithCards }> {
-    const raw = await bridge.getNoteWithCards(options)
-    return z.object({ note: RawNoteWithCardsSchema }).parse(raw)
+  }): AnkiDroidResult<NoteWithCardsResponse.NoteWithCardsResponse> {
+    return call(
+      () => bridge.getNoteWithCards(options),
+      NoteWithCardsResponse.parse,
+    )
   },
 
-  async countNotes(options?: {
+  countNotes(options?: {
     deckId?: string
     modelId?: string
     modifiedSince?: number
-  }): Promise<{ count: number }> {
-    const raw = await bridge.countNotes(options)
-    return z.object({ count: z.number().int() }).parse(raw)
+  }): AnkiDroidResult<CountNotesResponse.CountNotesResponse> {
+    return call(() => bridge.countNotes(options), CountNotesResponse.parse)
   },
 
-  async addNote(options: RawAddNoteOptions): Promise<{ noteId: string }> {
-    const raw = await bridge.addNote(options)
-    return z.object({ noteId: z.string() }).parse(raw)
+  addNote(
+    options: AddNoteOptions.AddNoteOptions,
+  ): AnkiDroidResult<AddNoteResponse.AddNoteResponse> {
+    return call(() => bridge.addNote(options), AddNoteResponse.parse)
   },
 }

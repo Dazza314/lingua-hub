@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
-/** Query options passed to getNotesWithCards on the bridge. */
-export const RawNoteQuerySchema = z
+export const NoteQuerySchema = z
   .object({
     deckId: z
       .string()
@@ -35,4 +34,4 @@ export const RawNoteQuerySchema = z
   })
   .describe('Query options for getNotesWithCards')
 
-export type RawNoteQuery = z.infer<typeof RawNoteQuerySchema>
+export type NoteQuery = z.infer<typeof NoteQuerySchema>

@@ -31,5 +31,7 @@ catalog:
   # Tooling
   typescript: '^6.0.0'
   typescript-eslint: ^8.57.2
+  # Result type
+  '@praha/byethrow': '^0.10.1'
   # Validation
   zod: '^4.3.3'

@@ -1,6 +1,7 @@
 import { z } from 'zod'
+import { makeParse } from '../../utils/makeParse'
 
-export const RawPermissionStatusSchema = z
+const PermissionStatusSchema = z
   .object({
     granted: z
       .boolean()
@@ -12,4 +13,9 @@ export const RawPermissionStatusSchema = z
       .describe('True if AnkiDroid is installed on the device'),
   })
   .describe('Permission check/request result from AnkiDroid bridge')
-export type RawPermissionStatus = z.infer<typeof RawPermissionStatusSchema>
+
+export const PermissionStatusResponseSchema = PermissionStatusSchema
+export type PermissionStatusResponse = z.infer<
+  typeof PermissionStatusResponseSchema
+>
+export const parse = makeParse(PermissionStatusResponseSchema)

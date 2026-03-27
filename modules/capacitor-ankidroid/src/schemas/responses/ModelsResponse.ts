@@ -1,10 +1,7 @@
 import { z } from 'zod'
+import { makeParse } from '../../utils/makeParse'
 
-/**
- * Raw note type (model) as returned by the AnkiDroid ContentProvider bridge.
- * Defines the field structure and card templates for a group of notes.
- */
-export const RawModelSchema = z
+const ModelSchema = z
   .object({
     id: z.string().describe('Anki database ID for this note type'),
     name: z
@@ -32,6 +29,10 @@ export const RawModelSchema = z
       .int()
       .describe('0 = normal note type, 1 = cloze deletion note type'),
   })
-  .describe('Raw note type (model) from AnkiDroid ContentProvider')
+  .describe('Note type (model) from AnkiDroid ContentProvider')
 
-export type RawModel = z.infer<typeof RawModelSchema>
+export const ModelsResponseSchema = z.object({
+  models: z.array(ModelSchema),
+})
+export type ModelsResponse = z.infer<typeof ModelsResponseSchema>
+export const parse = makeParse(ModelsResponseSchema)
