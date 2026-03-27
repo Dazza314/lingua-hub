@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
 
-const PermissionStatusSchema = z
+const permissionStatusSchema = z
   .object({
     granted: z
       .boolean()
@@ -14,8 +14,8 @@ const PermissionStatusSchema = z
   })
   .describe('Permission check/request result from AnkiDroid bridge')
 
-export const PermissionStatusResponseSchema = PermissionStatusSchema
+export const permissionStatusResponseSchema = permissionStatusSchema
 export type PermissionStatusResponse = z.infer<
-  typeof PermissionStatusResponseSchema
+  typeof permissionStatusResponseSchema
 >
-export const parse = makeParse(PermissionStatusResponseSchema)
+export const parse = makeParse(permissionStatusResponseSchema)

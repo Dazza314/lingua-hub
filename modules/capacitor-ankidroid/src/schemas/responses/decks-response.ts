@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
 
-const DeckSchema = z
+const deckSchema = z
   .object({
     id: z.string().describe('Anki database ID for this deck'),
     name: z
@@ -35,8 +35,8 @@ const DeckSchema = z
   })
   .describe('Deck from AnkiDroid ContentProvider')
 
-export const DecksResponseSchema = z.object({
-  decks: z.array(DeckSchema),
+export const decksResponseSchema = z.object({
+  decks: z.array(deckSchema),
 })
-export type DecksResponse = z.infer<typeof DecksResponseSchema>
-export const parse = makeParse(DecksResponseSchema)
+export type DecksResponse = z.infer<typeof decksResponseSchema>
+export const parse = makeParse(decksResponseSchema)

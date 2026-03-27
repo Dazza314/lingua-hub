@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const AddNoteOptionsSchema = z
+export const addNoteOptionsSchema = z
   .object({
     modelId: z.string().describe('ID of the note type to use'),
     deckId: z
@@ -16,4 +16,4 @@ export const AddNoteOptionsSchema = z
   })
   .describe('Options for creating a new note via AnkiDroid bridge')
 
-export type AddNoteOptions = z.infer<typeof AddNoteOptionsSchema>
+export type AddNoteOptions = z.infer<typeof addNoteOptionsSchema>

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
-import { NoteWithCardsSchema } from '../shared/note-with-cards'
+import { noteWithCardsSchema } from '../shared/note-with-cards'
 
 const makePaginatedResultSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
   z
@@ -16,8 +16,8 @@ const makePaginatedResultSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
     })
     .describe('Paginated result from AnkiDroid bridge')
 
-export const NotesPageResponseSchema =
-  makePaginatedResultSchema(NoteWithCardsSchema)
+export const notesPageResponseSchema =
+  makePaginatedResultSchema(noteWithCardsSchema)
 
-export type NotesPageResponse = z.infer<typeof NotesPageResponseSchema>
-export const parse = makeParse(NotesPageResponseSchema)
+export type NotesPageResponse = z.infer<typeof notesPageResponseSchema>
+export const parse = makeParse(notesPageResponseSchema)

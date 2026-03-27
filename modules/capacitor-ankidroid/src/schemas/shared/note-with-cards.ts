@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
 
-const CardSchema = z
+const cardSchema = z
   .object({
     id: z.string().describe('Anki database ID for this card'),
     noteId: z
@@ -26,7 +26,7 @@ const CardSchema = z
   })
   .describe('Card from AnkiDroid ContentProvider')
 
-const NoteSchema = z
+const noteSchema = z
   .object({
     id: z.string().describe('Anki database ID for this note'),
     guid: z
@@ -56,14 +56,14 @@ const NoteSchema = z
   })
   .describe('Note from AnkiDroid ContentProvider')
 
-export const NoteWithCardsSchema = z
+export const noteWithCardsSchema = z
   .object({
-    note: NoteSchema,
+    note: noteSchema,
     cards: z
-      .array(CardSchema)
+      .array(cardSchema)
       .describe('All cards generated from this note, ordered by ordinal'),
   })
   .describe('Note with cards from AnkiDroid ContentProvider')
 
-export type NoteWithCards = z.infer<typeof NoteWithCardsSchema>
-export const parse = makeParse(NoteWithCardsSchema)
+export type NoteWithCards = z.infer<typeof noteWithCardsSchema>
+export const parse = makeParse(noteWithCardsSchema)

@@ -56,7 +56,7 @@ function call<T>(
  * is parsed against its raw schema before being returned. This is the only
  * place where bridge data crosses into typed TypeScript.
  */
-export const AnkiDroidClient = {
+export const ankiDroidClient = {
   checkPermission(): AnkiDroidResult<PermissionStatusResponse.PermissionStatusResponse> {
     return call(() => bridge.checkPermission(), PermissionStatusResponse.parse)
   },

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
 
-const ModelSchema = z
+const modelSchema = z
   .object({
     id: z.string().describe('Anki database ID for this note type'),
     name: z
@@ -31,8 +31,8 @@ const ModelSchema = z
   })
   .describe('Note type (model) from AnkiDroid ContentProvider')
 
-export const ModelsResponseSchema = z.object({
-  models: z.array(ModelSchema),
+export const modelsResponseSchema = z.object({
+  models: z.array(modelSchema),
 })
-export type ModelsResponse = z.infer<typeof ModelsResponseSchema>
-export const parse = makeParse(ModelsResponseSchema)
+export type ModelsResponse = z.infer<typeof modelsResponseSchema>
+export const parse = makeParse(modelsResponseSchema)

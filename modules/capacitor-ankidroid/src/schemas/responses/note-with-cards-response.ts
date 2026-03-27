@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { makeParse } from '../../utils/make-parse'
-import { NoteWithCardsSchema } from '../shared/note-with-cards'
+import { noteWithCardsSchema } from '../shared/note-with-cards'
 
-export const NoteWithCardsResponseSchema = z.object({
-  note: NoteWithCardsSchema,
+export const noteWithCardsResponseSchema = z.object({
+  note: noteWithCardsSchema,
 })
-export type NoteWithCardsResponse = z.infer<typeof NoteWithCardsResponseSchema>
-export const parse = makeParse(NoteWithCardsResponseSchema)
+export type NoteWithCardsResponse = z.infer<typeof noteWithCardsResponseSchema>
+export const parse = makeParse(noteWithCardsResponseSchema)

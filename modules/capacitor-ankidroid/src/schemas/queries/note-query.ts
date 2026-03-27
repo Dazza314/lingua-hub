@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const NoteQuerySchema = z
+export const noteQuerySchema = z
   .object({
     deckId: z
       .string()
@@ -34,4 +34,4 @@ export const NoteQuerySchema = z
   })
   .describe('Query options for getNotesWithCards')
 
-export type NoteQuery = z.infer<typeof NoteQuerySchema>
+export type NoteQuery = z.infer<typeof noteQuerySchema>
