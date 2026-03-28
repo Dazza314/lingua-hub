@@ -3,17 +3,14 @@ packages:
   - 'modules/*'
 
 catalog:
-  # Capacitor
   '@capacitor/android': '^8.0.0'
   '@capacitor/cli': '^8.0.0'
   '@capacitor/core': '^8.0.0'
-  # Linting
   '@eslint/compat': '^2.0.3'
-  eslint-plugin-check-file: '^3.3.1'
-  eslint-plugin-no-barrel-files: '^1.2.2'
-  # Styling
+  '@praha/byethrow': '^0.10.1'
+  '@supabase/ssr': '^0.6.0'
+  '@supabase/supabase-js': '^2.49.0'
   '@tailwindcss/postcss': '^4.0.0'
-  # Types
   '@types/node': '^24.0.0'
   '@types/react': '^19.0.0'
   '@types/react-dom': '^19.0.0'
@@ -21,22 +18,16 @@ catalog:
   '@typescript-eslint/parser': '^8.57.2'
   eslint: '^9.0.0'
   eslint-config-next: '^16.2.1'
+  eslint-plugin-check-file: '^3.3.1'
+  eslint-plugin-no-barrel-files: '^1.2.2'
   knip: '^5.88.1'
-  # Next.js
   next: '^16.0.0'
-  # Supabase
-  '@supabase/ssr': '^0.6.0'
-  '@supabase/supabase-js': '^2.49.0'
   postcss: '^8.4.0'
   prettier: '^3.8.1'
   react: '^19.0.0'
   react-dom: '^19.0.0'
   tailwindcss: '^4.0.0'
   turbo: '^2.0.0'
-  # Tooling
   typescript: '^6.0.0'
   typescript-eslint: ^8.57.2
-  # Result type
-  '@praha/byethrow': '^0.10.1'
-  # Validation
   zod: '^4.3.3'
