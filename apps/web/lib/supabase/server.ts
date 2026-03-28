@@ -21,7 +21,7 @@ export async function createClient() {
           } catch {
             // The `setAll` method may be called from a Server Component
             // where cookies cannot be set. This is safe to ignore if
-            // middleware is refreshing sessions.
+            // proxy is refreshing sessions.
           }
         },
       },
