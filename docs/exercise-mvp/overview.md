@@ -20,12 +20,12 @@ Core learning loop: generate a Japanese sentence from the user's synced Anki voc
 
 ## Implementation steps
 
-| Step | Description | Depends on |
-|------|-------------|------------|
-| [`llm-module`](./llm-module.md) | `modules/llm` — LlmClient port + Claude adapter | — |
-| [`exercise-module`](./exercise-module.md) | `modules/exercise` — domain models, ports, errors, adapters | `llm-module` |
-| [`vocab-supabase`](./vocab-supabase.md) | Supabase adapter for `VocabRepository` port | — |
-| [`api-routes`](./api-routes.md) | Web API routes — wire exercise + vocab + llm, auth helper, env | `exercise-module`, `vocab-supabase` |
-| [`ui`](./ui.md) | Exercise page + components | `api-routes` |
+| Step | Description | Depends on | Status |
+|------|-------------|------------|--------|
+| [`llm-module`](./llm-module.md) | `modules/llm` — LlmClient port + Claude adapter | — | |
+| [`exercise-module`](./exercise-module.md) | `modules/exercise` — domain models, ports, errors, adapters | `llm-module` | |
+| [`vocab-supabase`](./vocab-supabase.md) | Supabase adapter for `VocabRepository` port | — | done |
+| [`api-routes`](./api-routes.md) | Web API routes — wire exercise + vocab + llm, auth helper, env | `exercise-module`, `vocab-supabase` | |
+| [`ui`](./ui.md) | Exercise page + components | `api-routes` | |
 
 `llm-module` and `vocab-supabase` have no dependencies and can be built in parallel. Everything else follows the dependency chain above.
