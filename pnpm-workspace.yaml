@@ -1,6 +1,11 @@
 packages:
   - 'apps/*'
   - 'modules/*'
+  - 'supabase'
+allowBuilds:
+  sharp: false
+  supabase: true
+  unrs-resolver: false
 
 catalog:
   '@capacitor/android': '^8.0.0'
@@ -26,6 +31,7 @@ catalog:
   prettier: '^3.8.1'
   react: '^19.0.0'
   react-dom: '^19.0.0'
+  supabase: '^2.84.5'
   tailwindcss: '^4.0.0'
   turbo: '^2.0.0'
   typescript: '^6.0.0'

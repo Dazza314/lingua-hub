@@ -14,7 +14,9 @@
   "dependencies": {
     "@lingua-hub/capacitor-ankidroid": "workspace:*",
     "@lingua-hub/core": "workspace:*",
+    "@lingua-hub/supabase": "workspace:*",
     "@praha/byethrow": "catalog:",
+    "@supabase/supabase-js": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

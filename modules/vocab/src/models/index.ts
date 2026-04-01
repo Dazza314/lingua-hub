@@ -1,7 +1,5 @@
 export * as AvailableLayout from './available-layout'
 export * as AvailableLayoutId from './available-layout-id'
-export * as Tag from './tag'
-export * as TagId from './tag-id'
 export * as VocabFieldMapping from './vocab-field-mapping'
 export * as VocabFieldTarget from './vocab-field-target'
 export * as VocabId from './vocab-id'

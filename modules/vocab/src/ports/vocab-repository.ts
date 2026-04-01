@@ -8,14 +8,14 @@ import type { VocabId } from '../models/vocab-id'
 import type { VocabItem } from '../models/vocab-item'
 
 export type VocabRepository = {
-  saveItems(
+  upsertVocabItems(
     userId: UserId.UserId,
     items: VocabItem[],
   ): Result.ResultAsync<void, UnexpectedVocabRepositoryError>
-  getItems(
+  getVocabItems(
     userId: UserId.UserId,
   ): Result.ResultAsync<VocabItem[], UnexpectedVocabRepositoryError>
-  deleteItems(
+  deleteVocabItems(
     userId: UserId.UserId,
     ids: VocabId[],
   ): Result.ResultAsync<
