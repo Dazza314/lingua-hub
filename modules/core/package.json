@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@praha/byethrow": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

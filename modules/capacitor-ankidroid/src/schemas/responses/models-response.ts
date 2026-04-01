@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/make-parse'
+import { makeParseUnknown } from '@lingua-hub/core'
 
 const modelSchema = z
   .object({
@@ -35,4 +35,4 @@ export const modelsResponseSchema = z.object({
   models: z.array(modelSchema),
 })
 export type ModelsResponse = z.infer<typeof modelsResponseSchema>
-export const parse = makeParse(modelsResponseSchema)
+export const parse = makeParseUnknown(modelsResponseSchema)

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/make-parse'
+import { makeParseUnknown } from '@lingua-hub/core'
 import { noteWithCardsSchema } from '../shared/note-with-cards'
 
 const makePaginatedResultSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
@@ -20,4 +20,4 @@ export const notesPageResponseSchema =
   makePaginatedResultSchema(noteWithCardsSchema)
 
 export type NotesPageResponse = z.infer<typeof notesPageResponseSchema>
-export const parse = makeParse(notesPageResponseSchema)
+export const parse = makeParseUnknown(notesPageResponseSchema)

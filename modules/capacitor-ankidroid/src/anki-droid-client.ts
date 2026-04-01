@@ -1,6 +1,7 @@
 import { registerPlugin } from '@capacitor/core'
 import { Result } from '@praha/byethrow'
-import { AnkiDroidBridgeError, ValidationError } from './errors'
+import { ValidationError } from '@lingua-hub/core'
+import { AnkiDroidBridgeError } from './errors'
 import {
   AddNoteOptions,
   AddNoteResponse,

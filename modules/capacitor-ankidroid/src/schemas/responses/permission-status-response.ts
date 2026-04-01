@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/make-parse'
+import { makeParseUnknown } from '@lingua-hub/core'
 
 const permissionStatusSchema = z
   .object({
@@ -18,4 +18,4 @@ export const permissionStatusResponseSchema = permissionStatusSchema
 export type PermissionStatusResponse = z.infer<
   typeof permissionStatusResponseSchema
 >
-export const parse = makeParse(permissionStatusResponseSchema)
+export const parse = makeParseUnknown(permissionStatusResponseSchema)

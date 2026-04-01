@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { makeParse } from '../../utils/make-parse'
+import { makeParseUnknown } from '@lingua-hub/core'
 
 const deckSchema = z
   .object({
@@ -39,4 +39,4 @@ export const decksResponseSchema = z.object({
   decks: z.array(deckSchema),
 })
 export type DecksResponse = z.infer<typeof decksResponseSchema>
-export const parse = makeParse(decksResponseSchema)
+export const parse = makeParseUnknown(decksResponseSchema)
