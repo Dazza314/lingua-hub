@@ -165,6 +165,18 @@ importers:
 
   apps/web:
     dependencies:
+      '@lingua-hub/core':
+        specifier: workspace:*
+        version: link:../../modules/core
+      '@lingua-hub/exercise':
+        specifier: workspace:*
+        version: link:../../modules/exercise
+      '@lingua-hub/vocab':
+        specifier: workspace:*
+        version: link:../../modules/vocab
+      '@praha/byethrow':
+        specifier: 'catalog:'
+        version: 0.10.1(typescript@6.0.2)
       '@supabase/ssr':
         specifier: 'catalog:'
         version: 0.6.1(@supabase/supabase-js@2.100.1)

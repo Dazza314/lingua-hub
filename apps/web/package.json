@@ -10,6 +10,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@lingua-hub/core": "workspace:*",
+    "@lingua-hub/exercise": "workspace:*",
+    "@lingua-hub/vocab": "workspace:*",
+    "@praha/byethrow": "catalog:",
     "@supabase/ssr": "catalog:",
     "zod": "catalog:",
     "@supabase/supabase-js": "catalog:",
