@@ -15,8 +15,8 @@ const DEFAULT_VOCAB_COUNT = 5
 const MAX_OUTPUT_TOKENS = 1024
 
 export type GenerateExerciseDeps = {
-  llmClient: LlmClient
-  vocabRepository: VocabRepository
+  generateObject: LlmClient['generateObject']
+  getVocabItems: VocabRepository['getVocabItems']
 }
 
 export type GenerateExerciseInput = {
@@ -24,7 +24,10 @@ export type GenerateExerciseInput = {
   count?: number
 }
 
-export function generateExercise(deps: GenerateExerciseDeps) {
+export function generateExercise({
+  getVocabItems,
+  generateObject,
+}: GenerateExerciseDeps) {
   return ({
     userId,
     count = DEFAULT_VOCAB_COUNT,
@@ -33,10 +36,10 @@ export function generateExercise(deps: GenerateExerciseDeps) {
     UnexpectedExerciseError
   > =>
     Result.pipe(
-      deps.vocabRepository.getVocabItems(userId),
+      getVocabItems(userId),
       Result.andThen((allItems) => {
         const sampled = sampleRandom(allItems, count)
-        return deps.llmClient.generateObject({
+        return generateObject({
           schema: exerciseSchema,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: buildUserPrompt(sampled) }],
