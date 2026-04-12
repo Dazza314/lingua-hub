@@ -8,6 +8,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "knip": "knip",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

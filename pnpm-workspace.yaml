@@ -38,4 +38,5 @@ catalog:
   turbo: '^2.0.0'
   typescript: '^6.0.0'
   typescript-eslint: ^8.57.2
+  vitest: '^4.1.4'
   zod: '^4.3.3'

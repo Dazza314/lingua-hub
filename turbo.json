@@ -11,6 +11,7 @@
     },
     "lint": {},
     "lint:fix": { "cache": false },
-    "typecheck": {}
+    "typecheck": {},
+    "test": {}
   }
 }

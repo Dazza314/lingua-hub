@@ -9,5 +9,6 @@ export {
   VocabItemNotFoundError,
   VocabSourceUnavailableError,
 } from './errors'
+export type { VocabItem } from './models/vocab-item'
 export type { VocabRepository } from './ports/vocab-repository'
 export type { VocabSource } from './ports/vocab-source'

@@ -23,7 +23,7 @@ Core learning loop: generate a Japanese sentence from the user's synced Anki voc
 | Step                                      | Description                                                    | Depends on                          | Status |
 | ----------------------------------------- | -------------------------------------------------------------- | ----------------------------------- | ------ |
 | [`llm-module`](./llm-module.md)           | `modules/llm` — LlmClient port + Claude adapter                | —                                   | done   |
-| [`exercise-module`](./exercise-module.md) | `modules/exercise` — domain models, ports, errors, adapters    | `llm-module`                        |        |
+| [`exercise-module`](./exercise-module.md) | `modules/exercise` — models + `generateExercise` use case      | `llm-module`, `vocab-supabase`      | done (generation slice; evaluation deferred) |
 | [`vocab-supabase`](./vocab-supabase.md)   | Supabase adapter for `VocabRepository` port                    | —                                   | done   |
 | [`api-routes`](./api-routes.md)           | Web API routes — wire exercise + vocab + llm, auth helper, env | `exercise-module`, `vocab-supabase` |        |
 | [`ui`](./ui.md)                           | Exercise page + components                                     | `api-routes`                        |        |

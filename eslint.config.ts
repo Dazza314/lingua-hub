@@ -64,7 +64,11 @@ export default tseslint.config(
   // File and directory naming conventions
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['**/index.{ts,tsx}', '**/*.config.ts'],
+    ignores: [
+      '**/index.{ts,tsx}',
+      '**/*.config.ts',
+      '**/*.test.{ts,tsx}',
+    ],
     plugins: { 'check-file': checkFile },
     rules: {
       'check-file/filename-naming-convention': [

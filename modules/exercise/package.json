@@ -1,0 +1,26 @@
+{
+  "name": "@lingua-hub/exercise",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lingua-hub/core": "workspace:*",
+    "@lingua-hub/llm": "workspace:*",
+    "@lingua-hub/vocab": "workspace:*",
+    "@praha/byethrow": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
