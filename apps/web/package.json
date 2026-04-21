@@ -12,6 +12,7 @@
   "dependencies": {
     "@lingua-hub/core": "workspace:*",
     "@lingua-hub/exercise": "workspace:*",
+    "@lingua-hub/llm": "workspace:*",
     "@lingua-hub/vocab": "workspace:*",
     "@praha/byethrow": "catalog:",
     "@supabase/ssr": "catalog:",
