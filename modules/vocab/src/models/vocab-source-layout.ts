@@ -1,9 +1,11 @@
+import { Language } from '@lingua-hub/core'
 import { z } from 'zod'
 import { availableLayoutIdSchema } from './available-layout-id'
 import { vocabFieldMappingSchema } from './vocab-field-mapping'
 
 export const vocabSourceLayoutSchema = z.object({
   id: availableLayoutIdSchema,
+  language: Language.languageSchema,
   name: z.string(),
   fields: z.array(z.string()),
   mappings: z.array(vocabFieldMappingSchema),

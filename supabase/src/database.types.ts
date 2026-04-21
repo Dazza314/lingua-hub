@@ -44,6 +44,7 @@ export type Database = {
           created_at: string
           definition: string
           id: string
+          language: string
           reading: string | null
           term: string
           user_id: string
@@ -52,6 +53,7 @@ export type Database = {
           created_at?: string
           definition: string
           id: string
+          language: string
           reading?: string | null
           term: string
           user_id: string
@@ -60,6 +62,7 @@ export type Database = {
           created_at?: string
           definition?: string
           id?: string
+          language?: string
           reading?: string | null
           term?: string
           user_id?: string

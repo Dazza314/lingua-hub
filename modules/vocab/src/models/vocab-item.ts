@@ -1,9 +1,10 @@
-import { makeParse } from '@lingua-hub/core'
+import { Language, makeParse } from '@lingua-hub/core'
 import { z } from 'zod'
 import { vocabIdSchema } from './vocab-id'
 
 export const vocabItemSchema = z.object({
   id: vocabIdSchema,
+  language: Language.languageSchema,
   term: z.string(),
   definition: z.string(),
   reading: z.string().optional(),

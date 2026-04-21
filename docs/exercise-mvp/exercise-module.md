@@ -20,7 +20,7 @@
 | Model | Fields | Status |
 |-------|--------|--------|
 | `ScenarioFrame` | `setting: string`, `situation: string` | Shipped |
-| `Exercise` | `sentence`, `scenarioFrame` | Shipped |
+| `Exercise` | `language`, `sentence`, `scenarioFrame` | Shipped |
 | `Evaluation` | `exerciseId`, `isAcceptable`, `feedback`, `suggestedTranslation` | Deferred |
 
 Notes:
@@ -29,12 +29,12 @@ Notes:
 
 ## Use case
 
-**`generateExercise(deps)`** — `deps: { llmClient, vocabRepository }`. Returns a function `({ userId, count = 5 }) => ResultAsync<Exercise, UnexpectedExerciseError>`.
+**`generateExercise(deps)`** — `deps: { generateObject, getVocabItems }`. Returns a function `({ userId, targetLanguage, count = 5 }) => ResultAsync<Exercise, UnexpectedExerciseError>`.
 
 Orchestration:
-1. Fetch all vocab via `vocabRepository.getVocabItems(userId)`.
+1. Fetch vocab for the user filtered by `targetLanguage` via `getVocabItems({ userId, language: targetLanguage })`.
 2. Random-sample `count` items.
-3. Call `llmClient.generateObject` passing `exerciseSchema` directly, plus a system prompt and a user prompt built from the sampled vocab. The returned object *is* the `Exercise`.
+3. Call `generateObject` with a system prompt that names `targetLanguage` explicitly and a user prompt built from the sampled vocab. Merge `language: targetLanguage` onto the LLM response to produce a self-describing `Exercise`.
 
 ## Why no ports/adapters (yet)
 
@@ -78,17 +78,5 @@ Future (not yet):
 
 - `@lingua-hub/llm` — `LlmClient` type + `claudeLlmClientFactories` (used at the composition root, not here)
 - `@lingua-hub/vocab` — `VocabItem` type and `VocabRepository` port
-- `@lingua-hub/core` — `UserId`, `makeParse`, `ValidationError`
+- `@lingua-hub/core` — `Language`, `UserId`, `makeParse`, `ValidationError`
 
-## Deferred: language generalization
-
-The generation slice is only implicitly language-agnostic. The system prompt is written generically and the LLM is expected to infer the target language from the `term` fields of the vocab items it receives. Nothing in the domain or the call signature names a language.
-
-Problems this leaves on the table:
-
-- **No explicit target language on the `Exercise`.** Downstream consumers (evaluator, UI font/direction, TTS, analytics) have no way to know what language the `sentence` is in without looking elsewhere. The exercise is not self-describing.
-- **Prompt cannot be tuned per language.** With no language parameter, there's no way to specialise the system prompt for a specific language (register, script, politeness, writing direction, etc.) even when we know doing so would produce better output.
-- **Generation is coupled to LLM inference.** If the vocab items happen to be ambiguous across languages, or the learner's vocab is sparse, the LLM may guess the wrong target language with no way for us to correct it.
-- **`GenerateExerciseInput` has no target-language input.** Callers can't request an exercise in a specific language — they get whatever the LLM infers from vocab. This doesn't match a real product where the learner picks what they're studying.
-- **Vocab is not scoped by language.** `VocabItem` has no language field, so a learner with vocab across multiple languages will see them mixed into a single exercise prompt. This is a `@lingua-hub/vocab` gap but it surfaces here first.
-- **Scenario frame has no language marking.** `setting`/`situation` are implicitly assumed to be in English (the display language). If the product ever needs to render scenarios in a non-English native language, that assumption becomes a bug.

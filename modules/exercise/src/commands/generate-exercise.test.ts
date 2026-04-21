@@ -1,4 +1,4 @@
-import { UserId } from '@lingua-hub/core'
+import { Language, UserId } from '@lingua-hub/core'
 import {
   UnexpectedLlmError,
   type GenerateObjectParams,
@@ -19,10 +19,12 @@ import { generateExercise } from './generate-exercise'
 const USER_ID = UserId.userIdSchema.parse(
   '00000000-0000-4000-8000-000000000000',
 )
+const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 let vocabCounter = 0
 
 const EXERCISE: Exercise = {
+  language: Language.languageSchema.parse('ja'),
   sentence: 'I would like a coffee, please.',
   scenarioFrame: {
     setting: 'a coffee shop',
@@ -35,6 +37,7 @@ function makeVocabItem(n: number): VocabItem {
   const suffix = vocabCounter.toString(16).padStart(12, '0')
   return VocabModels.VocabItem.vocabItemSchema.parse({
     id: `00000000-0000-4000-8000-${suffix}`,
+    language: 'ja',
     term: `term-${n}`,
     definition: `definition-${n}`,
   })
@@ -43,7 +46,7 @@ function makeVocabItem(n: number): VocabItem {
 function makeGetVocabItems(
   result: Result.Result<VocabItem[], UnexpectedVocabRepositoryError>,
 ): VocabRepository['getVocabItems'] {
-  return () => Promise.resolve(result)
+  return (_params) => Promise.resolve(result)
 }
 
 type FakeGenerateObject = {
@@ -80,7 +83,7 @@ describe('generateExercise', () => {
     const result = await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.succeed(items)),
-    })({ userId: USER_ID, count: 3 })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(result.type).toBe('Success')
     if (result.type === 'Success') {
@@ -96,7 +99,7 @@ describe('generateExercise', () => {
     await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.succeed(items)),
-    })({ userId: USER_ID, count: 3 })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(3)
   })
@@ -108,7 +111,7 @@ describe('generateExercise', () => {
     await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.succeed(items)),
-    })({ userId: USER_ID, count: 5 })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 5 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(2)
   })
@@ -119,7 +122,7 @@ describe('generateExercise', () => {
     const result = await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.succeed([])),
-    })({ userId: USER_ID })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Success')
     expect(getUserPrompt(calls)).toContain('no vocabulary yet')
@@ -132,7 +135,7 @@ describe('generateExercise', () => {
     const result = await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.fail(vocabError)),
-    })({ userId: USER_ID })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Failure')
     if (result.type === 'Failure') {
@@ -150,7 +153,7 @@ describe('generateExercise', () => {
     const result = await generateExercise({
       generateObject,
       getVocabItems: makeGetVocabItems(Result.succeed(items)),
-    })({ userId: USER_ID })
+    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Failure')
     if (result.type === 'Failure') {

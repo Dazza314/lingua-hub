@@ -1,4 +1,4 @@
-import type { UserId } from '@lingua-hub/core'
+import type { Language, UserId } from '@lingua-hub/core'
 import type { Result } from '@praha/byethrow'
 import type {
   UnexpectedVocabRepositoryError,
@@ -12,9 +12,10 @@ export type VocabRepository = {
     userId: UserId.UserId,
     items: VocabItem[],
   ): Result.ResultAsync<void, UnexpectedVocabRepositoryError>
-  getVocabItems(
-    userId: UserId.UserId,
-  ): Result.ResultAsync<VocabItem[], UnexpectedVocabRepositoryError>
+  getVocabItems(params: {
+    userId: UserId.UserId
+    language: Language.Language
+  }): Result.ResultAsync<VocabItem[], UnexpectedVocabRepositoryError>
   deleteVocabItems(
     userId: UserId.UserId,
     ids: VocabId[],

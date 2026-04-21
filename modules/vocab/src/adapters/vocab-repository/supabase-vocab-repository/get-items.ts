@@ -8,11 +8,12 @@ import type { VocabRepository } from '../../../ports/vocab-repository'
 export function createGetVocabItems(
   client: SupabaseClient<Database>,
 ): VocabRepository['getVocabItems'] {
-  return async (userId) => {
+  return async ({ userId, language }) => {
     const { data, error } = await client
       .from('vocab_items')
-      .select('id, term, definition, reading')
+      .select('id, language, term, definition, reading')
       .eq('user_id', userId)
+      .eq('language', language)
 
     if (error) {
       return Result.fail(
@@ -24,6 +25,7 @@ export function createGetVocabItems(
       Result.sequence(data ?? [], (row) =>
         VocabItem.parse({
           id: row.id,
+          language: row.language,
           term: row.term,
           definition: row.definition,
           reading: row.reading ?? undefined,

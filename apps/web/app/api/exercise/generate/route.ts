@@ -1,9 +1,13 @@
 import { getAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { Language } from '@lingua-hub/core'
 import { generateExercise } from '@lingua-hub/exercise'
 import { supabaseVocabRepositoryFactories } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { NextResponse } from 'next/server'
+
+// TODO: derive targetLanguage from the authenticated user's study profile
+const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 export async function POST() {
   const authResult = await getAuthenticatedUserId()
@@ -28,6 +32,7 @@ export async function POST() {
       supabaseVocabRepositoryFactories.createGetVocabItems(supabase),
   })({
     userId,
+    targetLanguage: TARGET_LANGUAGE,
   })
 
   if (Result.isFailure(result)) {

@@ -1,18 +1,19 @@
-import type { UserId } from '@lingua-hub/core'
+import type { Language, UserId } from '@lingua-hub/core'
 import type { LlmClient } from '@lingua-hub/llm'
 import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { UnexpectedExerciseError } from '../errors'
 import { type Exercise, exerciseSchema } from '../models/exercise'
 
-// Language-agnostic: the LLM infers the target language from the vocab items
-// (their terms are in the target language). A future change will introduce a
-// Language model and parameterize this prompt explicitly — see
-// docs/exercise-mvp/exercise-module.md "Deferred: language generalization".
-const SYSTEM_PROMPT = `You are a language exercise generator. Given a list of vocabulary in the learner's target language, produce a short, natural sentence in their target language, situated in a specific scenario (setting + situation). The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items and that a learner at this vocabulary level can plausibly decode.`
-
 const DEFAULT_VOCAB_COUNT = 5
 const MAX_OUTPUT_TOKENS = 1024
+
+// Schema for what the LLM generates — excludes `language`, which is known from input
+const exerciseLlmSchema = exerciseSchema.omit({ language: true })
+
+function buildSystemPrompt(targetLanguage: Language.Language): string {
+  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a short, natural sentence in ${targetLanguage}, situated in a specific scenario (setting + situation). The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items and that a learner at this vocabulary level can plausibly decode.`
+}
 
 export type GenerateExerciseDeps = {
   generateObject: LlmClient['generateObject']
@@ -21,6 +22,7 @@ export type GenerateExerciseDeps = {
 
 export type GenerateExerciseInput = {
   userId: UserId.UserId
+  targetLanguage: Language.Language
   count?: number
 }
 
@@ -30,22 +32,24 @@ export function generateExercise({
 }: GenerateExerciseDeps) {
   return ({
     userId,
+    targetLanguage,
     count = DEFAULT_VOCAB_COUNT,
   }: GenerateExerciseInput): Result.ResultAsync<
     Exercise,
     UnexpectedExerciseError
   > =>
     Result.pipe(
-      getVocabItems(userId),
+      getVocabItems({ userId, language: targetLanguage }),
       Result.andThen((allItems) => {
         const sampled = sampleRandom(allItems, count)
         return generateObject({
-          schema: exerciseSchema,
-          system: SYSTEM_PROMPT,
+          schema: exerciseLlmSchema,
+          system: buildSystemPrompt(targetLanguage),
           messages: [{ role: 'user', content: buildUserPrompt(sampled) }],
           maxTokens: MAX_OUTPUT_TOKENS,
         })
       }),
+      Result.andThen((draft) => Result.succeed({ ...draft, language: targetLanguage })),
       Result.mapError(
         (err) =>
           new UnexpectedExerciseError('Failed to generate exercise', {

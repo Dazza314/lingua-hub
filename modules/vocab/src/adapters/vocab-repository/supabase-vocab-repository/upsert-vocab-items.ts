@@ -11,6 +11,7 @@ export function createUpsertVocabItems(
     const rows = items.map((item) => ({
       id: item.id,
       user_id: userId,
+      language: item.language,
       term: item.term,
       definition: item.definition,
       reading: item.reading ?? null,
