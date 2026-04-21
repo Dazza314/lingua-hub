@@ -10,17 +10,25 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@base-ui/react": "catalog:",
+    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons/react": "catalog:",
     "@lingua-hub/core": "workspace:*",
     "@lingua-hub/exercise": "workspace:*",
     "@lingua-hub/llm": "workspace:*",
     "@lingua-hub/vocab": "workspace:*",
     "@praha/byethrow": "catalog:",
     "@supabase/ssr": "catalog:",
-    "zod": "catalog:",
     "@supabase/supabase-js": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
     "next": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "shadcn": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tw-animate-css": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:",
