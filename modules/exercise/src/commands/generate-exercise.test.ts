@@ -12,7 +12,7 @@ import {
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
-import { UnexpectedExerciseError } from '../errors'
+import { EmptyVocabError, UnexpectedExerciseError } from '../errors'
 import type { Exercise } from '../models/exercise'
 import { generateExercise } from './generate-exercise'
 
@@ -46,7 +46,7 @@ function makeVocabItem(n: number): VocabItem {
 function makeGetVocabItems(
   result: Result.Result<VocabItem[], UnexpectedVocabRepositoryError>,
 ): VocabRepository['getVocabItems'] {
-  return (_params) => Promise.resolve(result)
+  return () => Promise.resolve(result)
 }
 
 type FakeGenerateObject = {
@@ -116,7 +116,7 @@ describe('generateExercise', () => {
     expect(countBulletLines(getUserPrompt(calls))).toBe(2)
   })
 
-  it('falls back to a beginner prompt when the learner has no vocab', async () => {
+  it('returns EmptyVocabError when the learner has no vocab', async () => {
     const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
 
     const result = await generateExercise({
@@ -124,8 +124,11 @@ describe('generateExercise', () => {
       getVocabItems: makeGetVocabItems(Result.succeed([])),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
-    expect(result.type).toBe('Success')
-    expect(getUserPrompt(calls)).toContain('no vocabulary yet')
+    expect(result.type).toBe('Failure')
+    if (result.type === 'Failure') {
+      expect(result.error).toBeInstanceOf(EmptyVocabError)
+    }
+    expect(calls).toHaveLength(0)
   })
 
   it('wraps a vocab repository failure in UnexpectedExerciseError', async () => {

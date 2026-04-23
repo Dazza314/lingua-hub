@@ -1,41 +1,42 @@
 import { env } from '@/lib/env'
-import { getAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
-import { generateExercise } from '@lingua-hub/exercise'
+import {
+  EmptyVocabError,
+  Exercise,
+  generateExercise as generateExerciseCommand,
+  UnexpectedExerciseError,
+} from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
 import { supabaseVocabRepositoryFactories } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
-import { NextResponse } from 'next/server'
+import { getAuthenticatedUserId } from './auth'
 
 // TODO: derive targetLanguage from the authenticated user's study profile
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
-const { generateObject } = createGoogleLlmClient(env.GOOGLE_GENERATIVE_AI_API_KEY, GoogleModel.Gemini20Flash)
+const { generateObject } = createGoogleLlmClient(
+  env.GOOGLE_GENERATIVE_AI_API_KEY,
+  GoogleModel.Gemini20Flash,
+)
 
-export async function POST() {
+export async function generateExercise(): Result.ResultAsync<
+  Exercise.Exercise,
+  EmptyVocabError | UnexpectedExerciseError
+> {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
-    return NextResponse.json(
-      { error: authResult.error.message },
-      { status: 401 },
-    )
+    throw authResult.error
   }
-  const userId = authResult.value
 
   const supabase = await createClient()
 
-  const result = await generateExercise({
+  return generateExerciseCommand({
     generateObject,
     getVocabItems:
       supabaseVocabRepositoryFactories.createGetVocabItems(supabase),
   })({
-    userId,
+    userId: authResult.value,
     targetLanguage: TARGET_LANGUAGE,
   })
-
-  if (Result.isFailure(result)) {
-    return NextResponse.json({ error: result.error.message }, { status: 500 })
-  }
-  return NextResponse.json(result.value)
 }

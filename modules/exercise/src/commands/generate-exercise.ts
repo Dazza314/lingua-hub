@@ -2,7 +2,7 @@ import type { Language, UserId } from '@lingua-hub/core'
 import type { LlmClient } from '@lingua-hub/llm'
 import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
-import { UnexpectedExerciseError } from '../errors'
+import { EmptyVocabError, UnexpectedExerciseError } from '../errors'
 import { type Exercise, exerciseSchema } from '../models/exercise'
 
 const DEFAULT_VOCAB_COUNT = 5
@@ -36,11 +36,14 @@ export function generateExercise({
     count = DEFAULT_VOCAB_COUNT,
   }: GenerateExerciseInput): Result.ResultAsync<
     Exercise,
-    UnexpectedExerciseError
+    UnexpectedExerciseError | EmptyVocabError
   > =>
     Result.pipe(
       getVocabItems({ userId, language: targetLanguage }),
       Result.andThen((allItems) => {
+        if (allItems.length === 0) {
+          return Result.fail(new EmptyVocabError('No vocabulary items found'))
+        }
         const sampled = sampleRandom(allItems, count)
         return generateObject({
           schema: exerciseLlmSchema,
@@ -50,19 +53,15 @@ export function generateExercise({
         })
       }),
       Result.andThen((draft) => Result.succeed({ ...draft, language: targetLanguage })),
-      Result.mapError(
-        (err) =>
-          new UnexpectedExerciseError('Failed to generate exercise', {
-            cause: err,
-          }),
+      Result.mapError((err) =>
+        err instanceof EmptyVocabError
+          ? err
+          : new UnexpectedExerciseError('Failed to generate exercise', { cause: err }),
       ),
     )
 }
 
 function buildUserPrompt(vocabItems: VocabItem[]): string {
-  if (vocabItems.length === 0) {
-    return 'The learner has no vocabulary yet. Produce a very simple beginner-level sentence.'
-  }
   const list = vocabItems
     .map(
       (v) =>
