@@ -15,7 +15,7 @@ Sync the user's AnkiDroid vocab into Supabase so the exercise generator has item
 | Step                                        | Description                                                                         | Depends on            |
 | ------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------- | ---- |
 | [`ankidroid-adapter`](#ankidroid-adapter)   | Implement `AnkiDroidAdapter` — `getAvailableLayouts` + `getVocabItems`              | `capacitor-ankidroid` | done |
-| [`sync-vocab-command`](#sync-vocab-command) | `syncVocab` command in `modules/vocab` — fetch from source, upsert to repo          | `ankidroid-adapter`   |
+| [`sync-vocab-command`](#sync-vocab-command) | `importVocab` command in `modules/vocab` — fetch from source, upsert to repo        | `ankidroid-adapter`   | done |
 | [`sync-ui`](#sync-ui)                       | `/sync` page in `apps/web` — permission, layout picker, field mapping, sync trigger | `sync-vocab-command`  |
 
 ---
@@ -45,11 +45,11 @@ The adapter takes `ankiDroidClient` as a constructor argument.
 
 ## sync-vocab-command
 
-Add `syncVocab` to `modules/vocab/src/commands/sync-vocab.ts`.
+Add `importVocab` to `modules/vocab/src/commands/import-vocab.ts`.
 
 ```ts
-syncVocab(deps: {
-  vocabSource: VocabSource
+importVocab(deps: {
+  getVocabItems: VocabSource['getVocabItems']
   upsertVocabItems: VocabRepository['upsertVocabItems']
 }): (params: {
   userId: UserId
@@ -57,10 +57,10 @@ syncVocab(deps: {
 }) => ResultAsync<void, VocabSourceUnavailableError | InvalidLayoutError>
 ```
 
-- Calls `vocabSource.getVocabItems(layout)`
+- Calls `getVocabItems(layout)`
 - On success, calls `upsertVocabItems(userId, items)`
 
-No deletion for MVP — sync is append/update only.
+No deletion for MVP — import is append/update only.
 
 ---
 
