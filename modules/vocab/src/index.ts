@@ -1,7 +1,7 @@
 export * as Models from './models/index'
 
 export { supabaseVocabRepositoryFactories } from './adapters/vocab-repository/supabase-vocab-repository/supabase-vocab-repository'
-export { AnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
+export { createAnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
 export {
   InvalidLayoutError,
   VocabItemNotFoundError,

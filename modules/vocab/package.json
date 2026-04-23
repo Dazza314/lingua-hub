@@ -17,6 +17,7 @@
     "@lingua-hub/supabase": "workspace:*",
     "@praha/byethrow": "catalog:",
     "@supabase/supabase-js": "catalog:",
+    "uuid": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
