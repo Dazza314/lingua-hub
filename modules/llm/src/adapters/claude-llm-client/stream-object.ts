@@ -2,7 +2,11 @@ import type { AnthropicProvider } from '@ai-sdk/anthropic'
 import { Result } from '@praha/byethrow'
 import { Output, streamText } from 'ai'
 import { LlmStreamError } from '../../errors'
-import type { DeepPartial, GenerateObjectParams, LlmClient } from '../../ports/llm-client'
+import type {
+  DeepPartial,
+  GenerateObjectParams,
+  LlmClient,
+} from '../../ports/llm-client'
 
 export function createStreamObject(
   provider: AnthropicProvider,
@@ -13,7 +17,10 @@ export function createStreamObject(
       model: provider(model),
       output: Output.object({ schema: params.schema }),
       system: params.system,
-      messages: params.messages.map((m) => ({ role: m.role, content: m.content })),
+      messages: params.messages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      })),
       maxOutputTokens: params.maxTokens,
     })
 
@@ -24,7 +31,10 @@ export function createStreamObject(
         }
       } catch (err) {
         yield Result.fail(
-          new LlmStreamError(err instanceof Error ? err.message : 'Stream error', { cause: err }),
+          new LlmStreamError(
+            err instanceof Error ? err.message : 'Stream error',
+            { cause: err },
+          ),
         )
       }
     })()

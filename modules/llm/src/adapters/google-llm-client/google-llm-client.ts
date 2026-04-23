@@ -12,7 +12,10 @@ export const GoogleModel = {
 
 export type GoogleModel = (typeof GoogleModel)[keyof typeof GoogleModel]
 
-export function createGoogleLlmClient(apiKey: string, model: GoogleModel): LlmClient {
+export function createGoogleLlmClient(
+  apiKey: string,
+  model: GoogleModel,
+): LlmClient {
   const provider = createGoogleGenerativeAI({ apiKey })
   return {
     generateObject: createGenerateObject(provider, model),

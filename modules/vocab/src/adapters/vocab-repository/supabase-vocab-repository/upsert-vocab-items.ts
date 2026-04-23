@@ -19,6 +19,8 @@ export function createUpsertVocabItems(
       .from('vocab_items')
       .upsert(rows, { onConflict: 'id' })
 
-    if (error) throw new Error('Failed to upsert vocab items', { cause: error })
+    if (error) {
+      throw new Error('Failed to upsert vocab items', { cause: error })
+    }
   }
 }

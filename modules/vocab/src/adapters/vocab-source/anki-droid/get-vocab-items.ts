@@ -21,7 +21,9 @@ export function createGetVocabItems(
     const result = await client.getNotesWithCards({ modelId: layout.id })
 
     if (Result.isFailure(result)) {
-      if (result.error instanceof ValidationError) throw result.error
+      if (result.error instanceof ValidationError) {
+        throw result.error
+      }
       return Result.fail(
         new VocabSourceUnavailableError(result.error.message, {
           cause: result.error,
@@ -38,7 +40,9 @@ export function createGetVocabItems(
     return result.value.data.reduce<
       Result.Result<VocabItem.VocabItem[], InvalidLayoutError>
     >((acc, { note }) => {
-      if (Result.isFailure(acc)) return acc
+      if (Result.isFailure(acc)) {
+        return acc
+      }
 
       const term = termMapping
         ? note.fields[termMapping.sourceField]

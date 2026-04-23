@@ -11,7 +11,10 @@ export function createGenerateObject(
       model: provider(model),
       output: Output.object({ schema: params.schema }),
       system: params.system,
-      messages: params.messages.map((m) => ({ role: m.role, content: m.content })),
+      messages: params.messages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      })),
       maxOutputTokens: params.maxTokens,
     })
     return result.output

@@ -4,9 +4,13 @@ import { LoginButton } from './_components/LoginButton'
 
 export default async function LoginPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  if (user) redirect('/')
+  if (user) {
+    redirect('/')
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">

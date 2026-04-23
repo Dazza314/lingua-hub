@@ -5,8 +5,14 @@ import type { VocabItem } from '../models/vocab-item'
 import type { VocabSourceLayout } from '../models/vocab-source-layout'
 
 export type VocabSource = {
-  getAvailableLayouts(): Result.ResultAsync<AvailableLayout[], VocabSourceUnavailableError>
+  getAvailableLayouts(): Result.ResultAsync<
+    AvailableLayout[],
+    VocabSourceUnavailableError
+  >
   getVocabItems(
     layout: VocabSourceLayout,
-  ): Result.ResultAsync<VocabItem[], VocabSourceUnavailableError | InvalidLayoutError>
+  ): Result.ResultAsync<
+    VocabItem[],
+    VocabSourceUnavailableError | InvalidLayoutError
+  >
 }

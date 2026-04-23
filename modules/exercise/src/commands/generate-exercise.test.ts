@@ -1,14 +1,10 @@
 import { Language, UserId } from '@lingua-hub/core'
-import {
-  type GenerateObjectParams,
-  type LlmClient,
-} from '@lingua-hub/llm'
+import { type GenerateObjectParams, type LlmClient } from '@lingua-hub/llm'
 import {
   Models as VocabModels,
   type VocabItem,
   type VocabRepository,
 } from '@lingua-hub/vocab'
-import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
 import { EmptyVocabError } from '../errors'
 import type { Exercise } from '../models/exercise'
@@ -41,11 +37,15 @@ function makeVocabItem(n: number): VocabItem {
   })
 }
 
-function makeGetVocabItems(items: VocabItem[]): VocabRepository['getVocabItems'] {
+function makeGetVocabItems(
+  items: VocabItem[],
+): VocabRepository['getVocabItems'] {
   return () => Promise.resolve(items)
 }
 
-function makeGetVocabItemsThrowing(error: Error): VocabRepository['getVocabItems'] {
+function makeGetVocabItemsThrowing(
+  error: Error,
+): VocabRepository['getVocabItems'] {
   return () => Promise.reject(error)
 }
 

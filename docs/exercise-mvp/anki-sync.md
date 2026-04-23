@@ -12,11 +12,11 @@ Sync the user's AnkiDroid vocab into Supabase so the exercise generator has item
 
 ## Implementation steps
 
-| Step | Description | Depends on |
-| ---- | ----------- | ---------- |
-| [`ankidroid-adapter`](#ankidroid-adapter) | Implement `AnkiDroidAdapter` — `getAvailableLayouts` + `getVocabItems` | `capacitor-ankidroid` | done |
-| [`sync-vocab-command`](#sync-vocab-command) | `syncVocab` command in `modules/vocab` — fetch from source, upsert to repo | `ankidroid-adapter` |
-| [`sync-ui`](#sync-ui) | `/sync` page in `apps/web` — permission, layout picker, field mapping, sync trigger | `sync-vocab-command` |
+| Step                                        | Description                                                                         | Depends on            |
+| ------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------- | ---- |
+| [`ankidroid-adapter`](#ankidroid-adapter)   | Implement `AnkiDroidAdapter` — `getAvailableLayouts` + `getVocabItems`              | `capacitor-ankidroid` | done |
+| [`sync-vocab-command`](#sync-vocab-command) | `syncVocab` command in `modules/vocab` — fetch from source, upsert to repo          | `ankidroid-adapter`   |
+| [`sync-ui`](#sync-ui)                       | `/sync` page in `apps/web` — permission, layout picker, field mapping, sync trigger | `sync-vocab-command`  |
 
 ---
 
@@ -85,7 +85,7 @@ This is Capacitor-only. On web (non-Android), the page should show a "only avail
 For the selected layout, render a mapping UI:
 
 - **Term** (required) — select field
-- **Definition** (required) — select field  
+- **Definition** (required) — select field
 - **Reading** (optional) — select field or "none"
 - **Language** — select from supported languages (Japanese only for MVP)
 

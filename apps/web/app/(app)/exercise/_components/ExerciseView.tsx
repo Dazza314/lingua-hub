@@ -63,7 +63,7 @@ export function ExerciseView({ initialExercise }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
       <ExerciseCard exercise={result.value} />
-      <TranslationForm onNextAction={(_answer) => fetchNext()} />
+      <TranslationForm onNextAction={() => fetchNext()} />
     </div>
   )
 }

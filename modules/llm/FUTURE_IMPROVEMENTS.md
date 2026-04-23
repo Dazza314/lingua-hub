@@ -15,7 +15,7 @@ streamObject<T>(
 
 Each yielded chunk is a `DeepPartial<T>` — semantically accurate for intermediate
 chunks, and matches what the AI SDK's `partialOutputStream` produces upstream. The
-limitation: the *final* chunk is (in practice) a fully-populated `T`, but the type
+limitation: the _final_ chunk is (in practice) a fully-populated `T`, but the type
 system can't distinguish it from intermediate partials. A caller who wants a
 validated final object has to keep the last yielded partial and re-parse it against
 the schema themselves.

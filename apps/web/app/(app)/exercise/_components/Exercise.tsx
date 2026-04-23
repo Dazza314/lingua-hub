@@ -17,7 +17,9 @@ export async function Exercise() {
     }
     return (
       <div className="flex flex-1 items-center justify-center px-6">
-        <p className="text-muted-foreground text-center text-sm">{result.error.message}</p>
+        <p className="text-muted-foreground text-center text-sm">
+          {result.error.message}
+        </p>
       </div>
     )
   }

@@ -15,13 +15,21 @@ export function createDeleteVocabItems(
       .in('id', ids)
       .select('id')
 
-    if (error) throw new Error('Failed to delete vocab items', { cause: error })
+    if (error) {
+      throw new Error('Failed to delete vocab items', { cause: error })
+    }
 
-    const deletedIds = new Set((data ?? []).map((row: { id: string }) => row.id))
+    const deletedIds = new Set(
+      (data ?? []).map((row: { id: string }) => row.id),
+    )
     const missing = ids.filter((id) => !deletedIds.has(id))
 
     if (missing.length > 0) {
-      return Result.fail(new VocabItemNotFoundError(`Vocab items not found: ${missing.join(', ')}`))
+      return Result.fail(
+        new VocabItemNotFoundError(
+          `Vocab items not found: ${missing.join(', ')}`,
+        ),
+      )
     }
 
     return Result.succeed()

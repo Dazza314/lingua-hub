@@ -34,8 +34,7 @@ export function getAuthenticatedUserId(): Result.ResultAsync<
       Result.pipe(
         parseUserId(id),
         Result.mapError(
-          (cause) =>
-            new UnauthenticatedError('Invalid user id', { cause }),
+          (cause) => new UnauthenticatedError('Invalid user id', { cause }),
         ),
       ),
     ),

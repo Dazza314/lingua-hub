@@ -5,8 +5,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
     "typecheck": "tsc"
   },
   "dependencies": {

@@ -18,6 +18,7 @@ Add **shadcn/ui** (Tailwind-native, accessible, no runtime dependency). Install 
 ### 2. Auth middleware
 
 Next.js middleware (`middleware.ts` at root of `apps/web`) redirects:
+
 - Unauthenticated requests to protected routes → `/login`
 - Authenticated requests to `/login` → `/exercise`
 

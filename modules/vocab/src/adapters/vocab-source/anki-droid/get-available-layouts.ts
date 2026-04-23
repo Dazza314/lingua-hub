@@ -13,7 +13,9 @@ export function createGetAvailableLayouts(
     const result = await client.getModels()
 
     if (Result.isFailure(result)) {
-      if (result.error instanceof ValidationError) throw result.error
+      if (result.error instanceof ValidationError) {
+        throw result.error
+      }
       return Result.fail(
         new VocabSourceUnavailableError(result.error.message, {
           cause: result.error,
@@ -21,12 +23,14 @@ export function createGetAvailableLayouts(
       )
     }
 
-    const layouts = result.value.models.map<AvailableLayout.AvailableLayout>((model) => ({
-      id: AvailableLayoutId.availableLayoutIdSchema.parse(model.id),
-      name: model.name,
-      fields: model.fieldNames,
-      sampleValues: {},
-    }))
+    const layouts = result.value.models.map<AvailableLayout.AvailableLayout>(
+      (model) => ({
+        id: AvailableLayoutId.availableLayoutIdSchema.parse(model.id),
+        name: model.name,
+        fields: model.fieldNames,
+        sampleValues: {},
+      }),
+    )
 
     return Result.succeed(layouts)
   }

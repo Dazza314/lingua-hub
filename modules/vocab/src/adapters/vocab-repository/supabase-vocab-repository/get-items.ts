@@ -13,7 +13,9 @@ export function createGetVocabItems(
       .eq('user_id', userId)
       .eq('language', language)
 
-    if (error) throw new Error('Failed to fetch vocab items', { cause: error })
+    if (error) {
+      throw new Error('Failed to fetch vocab items', { cause: error })
+    }
 
     return (data ?? []).map((row) =>
       VocabItem.dangerouslyCast({

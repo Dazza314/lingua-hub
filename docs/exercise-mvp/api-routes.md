@@ -5,6 +5,7 @@ Next.js API route handlers in `apps/web` that wire everything together.
 ## Routes
 
 **POST `/api/exercise/generate`** (non-streaming) — route skeleton shipped; LLM wiring deferred
+
 1. Authenticate user → extract `UserId` from Supabase session
 2. Wire deps: `VocabRepository` via `supabaseVocabRepositoryFactories`; `LlmClient` is a `{} as any` placeholder until the LLM-wiring follow-up.
 3. Call `generateExercise(deps)({ userId })`
