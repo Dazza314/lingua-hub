@@ -1,3 +1,5 @@
-export class AnkiDroidBridgeError extends Error {
-  override readonly name = 'AnkiDroidBridgeError' as const
+import { TypedError } from '@lingua-hub/core'
+
+export class AnkiDroidBridgeError extends TypedError {
+  override readonly type = 'AnkiDroidBridgeError' as const
 }

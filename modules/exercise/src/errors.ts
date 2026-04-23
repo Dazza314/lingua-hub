@@ -1,3 +1,9 @@
-export class UnexpectedExerciseError extends Error {
-  override readonly name = 'UnexpectedExerciseError' as const
+import { TypedError } from '@lingua-hub/core'
+
+export class UnexpectedExerciseError extends TypedError {
+  override readonly type = 'UnexpectedExerciseError' as const
+}
+
+export class EmptyVocabError extends TypedError {
+  override readonly type = 'EmptyVocabError' as const
 }
