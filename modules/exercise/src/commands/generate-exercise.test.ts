@@ -1,18 +1,16 @@
 import { Language, UserId } from '@lingua-hub/core'
 import {
-  UnexpectedLlmError,
   type GenerateObjectParams,
   type LlmClient,
 } from '@lingua-hub/llm'
 import {
   Models as VocabModels,
-  UnexpectedVocabRepositoryError,
   type VocabItem,
   type VocabRepository,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
-import { EmptyVocabError, UnexpectedExerciseError } from '../errors'
+import { EmptyVocabError } from '../errors'
 import type { Exercise } from '../models/exercise'
 import { generateExercise } from './generate-exercise'
 
@@ -43,10 +41,12 @@ function makeVocabItem(n: number): VocabItem {
   })
 }
 
-function makeGetVocabItems(
-  result: Result.Result<VocabItem[], UnexpectedVocabRepositoryError>,
-): VocabRepository['getVocabItems'] {
-  return () => Promise.resolve(result)
+function makeGetVocabItems(items: VocabItem[]): VocabRepository['getVocabItems'] {
+  return () => Promise.resolve(items)
+}
+
+function makeGetVocabItemsThrowing(error: Error): VocabRepository['getVocabItems'] {
+  return () => Promise.reject(error)
 }
 
 type FakeGenerateObject = {
@@ -54,17 +54,19 @@ type FakeGenerateObject = {
   calls: GenerateObjectParams<unknown>[]
 }
 
-function makeGenerateObject(
-  result: Result.Result<Exercise, UnexpectedLlmError>,
-): FakeGenerateObject {
+function makeGenerateObject(result: Exercise): FakeGenerateObject {
   const calls: GenerateObjectParams<unknown>[] = []
   const generateObject: LlmClient['generateObject'] = <T>(
     params: GenerateObjectParams<T>,
   ) => {
     calls.push(params as GenerateObjectParams<unknown>)
-    return Promise.resolve(result) as Result.ResultAsync<T, UnexpectedLlmError>
+    return Promise.resolve(result) as Promise<T>
   }
   return { generateObject, calls }
+}
+
+function makeGenerateObjectThrowing(error: Error): LlmClient['generateObject'] {
+  return () => Promise.reject(error)
 }
 
 function getUserPrompt(calls: GenerateObjectParams<unknown>[]): string {
@@ -78,11 +80,11 @@ function countBulletLines(content: string): number {
 describe('generateExercise', () => {
   it('returns the exercise produced by the LLM on the happy path', async () => {
     const items = Array.from({ length: 10 }, (_, i) => makeVocabItem(i))
-    const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
+    const { generateObject, calls } = makeGenerateObject(EXERCISE)
 
     const result = await generateExercise({
       generateObject,
-      getVocabItems: makeGetVocabItems(Result.succeed(items)),
+      getVocabItems: makeGetVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(result.type).toBe('Success')
@@ -94,11 +96,11 @@ describe('generateExercise', () => {
 
   it('passes exactly `count` vocab items to the LLM when vocab is larger than count', async () => {
     const items = Array.from({ length: 10 }, (_, i) => makeVocabItem(i))
-    const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
+    const { generateObject, calls } = makeGenerateObject(EXERCISE)
 
     await generateExercise({
       generateObject,
-      getVocabItems: makeGetVocabItems(Result.succeed(items)),
+      getVocabItems: makeGetVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(3)
@@ -106,22 +108,22 @@ describe('generateExercise', () => {
 
   it('passes all vocab items when `count` exceeds the vocab size', async () => {
     const items = Array.from({ length: 2 }, (_, i) => makeVocabItem(i))
-    const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
+    const { generateObject, calls } = makeGenerateObject(EXERCISE)
 
     await generateExercise({
       generateObject,
-      getVocabItems: makeGetVocabItems(Result.succeed(items)),
+      getVocabItems: makeGetVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 5 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(2)
   })
 
   it('returns EmptyVocabError when the learner has no vocab', async () => {
-    const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
+    const { generateObject, calls } = makeGenerateObject(EXERCISE)
 
     const result = await generateExercise({
       generateObject,
-      getVocabItems: makeGetVocabItems(Result.succeed([])),
+      getVocabItems: makeGetVocabItems([]),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Failure')
@@ -131,37 +133,27 @@ describe('generateExercise', () => {
     expect(calls).toHaveLength(0)
   })
 
-  it('wraps a vocab repository failure in UnexpectedExerciseError', async () => {
-    const vocabError = new UnexpectedVocabRepositoryError('db is down')
-    const { generateObject, calls } = makeGenerateObject(Result.succeed(EXERCISE))
+  it('throws when the vocab repository fails', async () => {
+    const repoError = new Error('db is down')
+    const { generateObject } = makeGenerateObject(EXERCISE)
 
-    const result = await generateExercise({
-      generateObject,
-      getVocabItems: makeGetVocabItems(Result.fail(vocabError)),
-    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
-
-    expect(result.type).toBe('Failure')
-    if (result.type === 'Failure') {
-      expect(result.error).toBeInstanceOf(UnexpectedExerciseError)
-      expect(result.error.cause).toBe(vocabError)
-    }
-    expect(calls).toHaveLength(0)
+    await expect(
+      generateExercise({
+        generateObject,
+        getVocabItems: makeGetVocabItemsThrowing(repoError),
+      })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE }),
+    ).rejects.toThrow(repoError)
   })
 
-  it('wraps an LLM failure in UnexpectedExerciseError', async () => {
-    const llmError = new UnexpectedLlmError('model timed out')
+  it('throws when the LLM fails', async () => {
+    const llmError = new Error('model timed out')
     const items = [makeVocabItem(0)]
-    const { generateObject } = makeGenerateObject(Result.fail(llmError))
 
-    const result = await generateExercise({
-      generateObject,
-      getVocabItems: makeGetVocabItems(Result.succeed(items)),
-    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
-
-    expect(result.type).toBe('Failure')
-    if (result.type === 'Failure') {
-      expect(result.error).toBeInstanceOf(UnexpectedExerciseError)
-      expect(result.error.cause).toBe(llmError)
-    }
+    await expect(
+      generateExercise({
+        generateObject: makeGenerateObjectThrowing(llmError),
+        getVocabItems: makeGetVocabItems(items),
+      })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE }),
+    ).rejects.toThrow(llmError)
   })
 })

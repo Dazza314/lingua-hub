@@ -1,26 +1,17 @@
 import type { Language, UserId } from '@lingua-hub/core'
 import type { Result } from '@praha/byethrow'
-import type {
-  UnexpectedVocabRepositoryError,
-  VocabItemNotFoundError,
-} from '../errors'
+import type { VocabItemNotFoundError } from '../errors'
 import type { VocabId } from '../models/vocab-id'
 import type { VocabItem } from '../models/vocab-item'
 
 export type VocabRepository = {
-  upsertVocabItems(
-    userId: UserId.UserId,
-    items: VocabItem[],
-  ): Result.ResultAsync<void, UnexpectedVocabRepositoryError>
+  upsertVocabItems(userId: UserId.UserId, items: VocabItem[]): Promise<void>
   getVocabItems(params: {
     userId: UserId.UserId
     language: Language.Language
-  }): Result.ResultAsync<VocabItem[], UnexpectedVocabRepositoryError>
+  }): Promise<VocabItem[]>
   deleteVocabItems(
     userId: UserId.UserId,
     ids: VocabId[],
-  ): Result.ResultAsync<
-    void,
-    VocabItemNotFoundError | UnexpectedVocabRepositoryError
-  >
+  ): Result.ResultAsync<void, VocabItemNotFoundError>
 }

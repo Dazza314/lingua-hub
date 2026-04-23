@@ -4,8 +4,6 @@ export { supabaseVocabRepositoryFactories } from './adapters/vocab-repository/su
 export { AnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
 export {
   InvalidLayoutError,
-  UnexpectedVocabRepositoryError,
-  UnexpectedVocabSourceError,
   VocabItemNotFoundError,
   VocabSourceUnavailableError,
 } from './errors'

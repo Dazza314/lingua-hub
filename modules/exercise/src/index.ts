@@ -3,5 +3,5 @@ export type {
   GenerateExerciseDeps,
   GenerateExerciseInput,
 } from './commands/generate-exercise'
-export { EmptyVocabError, UnexpectedExerciseError } from './errors'
+export { EmptyVocabError } from './errors'
 export * from './models/index'

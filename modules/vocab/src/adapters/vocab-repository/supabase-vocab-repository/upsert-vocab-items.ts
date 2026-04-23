@@ -1,7 +1,5 @@
-import { Result } from '@praha/byethrow'
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { UnexpectedVocabRepositoryError } from '../../../errors'
 import type { VocabRepository } from '../../../ports/vocab-repository'
 
 export function createUpsertVocabItems(
@@ -21,12 +19,6 @@ export function createUpsertVocabItems(
       .from('vocab_items')
       .upsert(rows, { onConflict: 'id' })
 
-    if (error) {
-      return Result.fail(
-        new UnexpectedVocabRepositoryError('Failed to upsert vocab items', { cause: error }),
-      )
-    }
-
-    return Result.succeed()
+    if (error) throw new Error('Failed to upsert vocab items', { cause: error })
   }
 }

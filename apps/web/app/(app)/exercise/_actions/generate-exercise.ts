@@ -2,15 +2,11 @@
 
 import { generateExercise } from '@/lib/generate-exercise'
 import { SerialisedResultAsync, serialiseResult } from '@/lib/serialise-result'
-import {
-  EmptyVocabError,
-  Exercise,
-  UnexpectedExerciseError,
-} from '@lingua-hub/exercise'
+import { EmptyVocabError, Exercise } from '@lingua-hub/exercise'
 
 export type GenerateExerciseResult = SerialisedResultAsync<
   Exercise.Exercise,
-  EmptyVocabError | UnexpectedExerciseError
+  EmptyVocabError
 >
 
 export async function generateExerciseAction(): GenerateExerciseResult {

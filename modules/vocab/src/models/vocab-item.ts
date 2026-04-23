@@ -13,3 +13,7 @@ export const vocabItemSchema = z.object({
 export type VocabItem = z.infer<typeof vocabItemSchema>
 
 export const parse = makeParse(vocabItemSchema)
+
+export const dangerouslyCast = (
+  value: z.input<typeof vocabItemSchema>,
+): VocabItem => value as VocabItem

@@ -2,7 +2,7 @@ import type { Language, UserId } from '@lingua-hub/core'
 import type { LlmClient } from '@lingua-hub/llm'
 import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
-import { EmptyVocabError, UnexpectedExerciseError } from '../errors'
+import { EmptyVocabError } from '../errors'
 import { type Exercise, exerciseSchema } from '../models/exercise'
 
 const DEFAULT_VOCAB_COUNT = 5
@@ -30,35 +30,27 @@ export function generateExercise({
   getVocabItems,
   generateObject,
 }: GenerateExerciseDeps) {
-  return ({
+  return async ({
     userId,
     targetLanguage,
     count = DEFAULT_VOCAB_COUNT,
-  }: GenerateExerciseInput): Result.ResultAsync<
-    Exercise,
-    UnexpectedExerciseError | EmptyVocabError
-  > =>
-    Result.pipe(
-      getVocabItems({ userId, language: targetLanguage }),
-      Result.andThen((allItems) => {
-        if (allItems.length === 0) {
-          return Result.fail(new EmptyVocabError('No vocabulary items found'))
-        }
-        const sampled = sampleRandom(allItems, count)
-        return generateObject({
-          schema: exerciseLlmSchema,
-          system: buildSystemPrompt(targetLanguage),
-          messages: [{ role: 'user', content: buildUserPrompt(sampled) }],
-          maxTokens: MAX_OUTPUT_TOKENS,
-        })
-      }),
-      Result.andThen((draft) => Result.succeed({ ...draft, language: targetLanguage })),
-      Result.mapError((err) =>
-        err instanceof EmptyVocabError
-          ? err
-          : new UnexpectedExerciseError('Failed to generate exercise', { cause: err }),
-      ),
-    )
+  }: GenerateExerciseInput): Result.ResultAsync<Exercise, EmptyVocabError> => {
+    const allItems = await getVocabItems({ userId, language: targetLanguage })
+
+    if (allItems.length === 0) {
+      return Result.fail(new EmptyVocabError('No vocabulary items found'))
+    }
+
+    const sampled = sampleRandom(allItems, count)
+    const draft = await generateObject({
+      schema: exerciseLlmSchema,
+      system: buildSystemPrompt(targetLanguage),
+      messages: [{ role: 'user', content: buildUserPrompt(sampled) }],
+      maxTokens: MAX_OUTPUT_TOKENS,
+    })
+
+    return Result.succeed({ ...draft, language: targetLanguage })
+  }
 }
 
 function buildUserPrompt(vocabItems: VocabItem[]): string {

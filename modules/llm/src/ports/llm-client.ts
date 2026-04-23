@@ -1,6 +1,6 @@
 import type { Result } from '@praha/byethrow'
 import type { z } from 'zod'
-import type { LlmStreamError, UnexpectedLlmError } from '../errors'
+import type { LlmStreamError } from '../errors'
 
 export type MessageRole = 'user' | 'assistant'
 
@@ -23,13 +23,8 @@ export type DeepPartial<T> = T extends object
   : T
 
 export type LlmClient = {
-  generateObject<T>(
-    params: GenerateObjectParams<T>,
-  ): Result.ResultAsync<T, UnexpectedLlmError>
+  generateObject<T>(params: GenerateObjectParams<T>): Promise<T>
   streamObject<T>(
     params: GenerateObjectParams<T>,
-  ): Result.ResultAsync<
-    AsyncIterable<Result.Result<DeepPartial<T>, LlmStreamError>>,
-    UnexpectedLlmError
-  >
+  ): Promise<AsyncIterable<Result.Result<DeepPartial<T>, LlmStreamError>>>
 }

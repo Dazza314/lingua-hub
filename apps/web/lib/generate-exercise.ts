@@ -5,7 +5,6 @@ import {
   EmptyVocabError,
   Exercise,
   generateExercise as generateExerciseCommand,
-  UnexpectedExerciseError,
 } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
 import { supabaseVocabRepositoryFactories } from '@lingua-hub/vocab'
@@ -22,7 +21,7 @@ const { generateObject } = createGoogleLlmClient(
 
 export async function generateExercise(): Result.ResultAsync<
   Exercise.Exercise,
-  EmptyVocabError | UnexpectedExerciseError
+  EmptyVocabError
 > {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {

@@ -1,7 +1,5 @@
 import type { Database } from '@lingua-hub/supabase'
-import { Result } from '@praha/byethrow'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { UnexpectedVocabRepositoryError } from '../../../errors'
 import * as VocabItem from '../../../models/vocab-item'
 import type { VocabRepository } from '../../../ports/vocab-repository'
 
@@ -15,25 +13,16 @@ export function createGetVocabItems(
       .eq('user_id', userId)
       .eq('language', language)
 
-    if (error) {
-      return Result.fail(
-        new UnexpectedVocabRepositoryError('Failed to fetch vocab items', { cause: error }),
-      )
-    }
+    if (error) throw new Error('Failed to fetch vocab items', { cause: error })
 
-    return Result.pipe(
-      Result.sequence(data ?? [], (row) =>
-        VocabItem.parse({
-          id: row.id,
-          language: row.language,
-          term: row.term,
-          definition: row.definition,
-          reading: row.reading ?? undefined,
-        }),
-      ),
-      Result.mapError(
-        (err) => new UnexpectedVocabRepositoryError('Failed to parse vocab items', { cause: err }),
-      ),
+    return (data ?? []).map((row) =>
+      VocabItem.dangerouslyCast({
+        id: row.id,
+        language: row.language,
+        term: row.term,
+        definition: row.definition,
+        reading: row.reading ?? undefined,
+      }),
     )
   }
 }
