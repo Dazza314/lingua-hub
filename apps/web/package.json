@@ -20,6 +20,7 @@
     "@praha/byethrow": "catalog:",
     "@supabase/ssr": "catalog:",
     "@supabase/supabase-js": "catalog:",
+    "@t3-oss/env-nextjs": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "next": "catalog:",
