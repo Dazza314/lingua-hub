@@ -20,7 +20,7 @@ export function importVocab({ getVocabItems, upsertVocabItems }: ImportVocabDeps
     userId,
     layout,
   }: ImportVocabInput): Result.ResultAsync<
-    void,
+    { count: number },
     VocabSourceUnavailableError | InvalidLayoutError
   > => {
     const result = await getVocabItems(layout)
@@ -31,6 +31,6 @@ export function importVocab({ getVocabItems, upsertVocabItems }: ImportVocabDeps
 
     await upsertVocabItems(userId, result.value)
 
-    return Result.succeed(undefined)
+    return Result.succeed({ count: result.value.length })
   }
 }

@@ -228,6 +228,9 @@ importers:
       '@hugeicons/react':
         specifier: 'catalog:'
         version: 1.1.6(react@19.2.4)
+      '@lingua-hub/capacitor-ankidroid':
+        specifier: workspace:*
+        version: link:../../modules/capacitor-ankidroid
       '@lingua-hub/core':
         specifier: workspace:*
         version: link:../../modules/core
