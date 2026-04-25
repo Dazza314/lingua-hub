@@ -21,29 +21,15 @@ The bridge schema already supports pagination (`limit`, `offset`, `hasMore`, `to
 
 ## Options
 
-### A. Stream pages through to upsert _(load-bearing)_
+### A. Stream pages through to upsert _(done)_
 
-Replace fetch-all-then-upsert-all with a page-by-page loop:
+`importVocab` now fetches and upserts 500 notes at a time. Gains:
 
-```
-loop:
-  page = fetch(limit=500, offset=N)
-  items = map(page)
-  upsert(items)
-  emit progress { done: N + items.length, total: page.totalCount }
-  if !page.hasMore: break
-```
-
-Gains:
-
-- **Bounded memory** — never hold the whole deck at once.
+- **Bounded memory** — never holds the whole deck at once.
 - **Idempotent resume for free** — UUIDv5 + `onConflict: 'id'` makes a re-run from offset 0 cheap; completed pages are no-op upserts.
-- **Real progress UI** (`done / total`).
 - **Smaller blast radius** — a network blip kills one page, not the whole import.
 
-Shape change: `importVocab` needs a way to emit progress. Cleanest is an optional `onProgress` callback in `ImportVocabDeps`; async iterators are nicer in theory but harder to thread through the `Result.ResultAsync` types.
-
-Tradeoff: more bridge round-trips → slightly higher wall-clock on the happy path. Acceptable.
+Progress UI was considered but dropped: a callback on `ImportVocabDeps` felt like mixing infrastructure with UI concerns, and an async generator is hard to thread through the `Result.ResultAsync` types. The UI keeps the existing spinner.
 
 ### B. Don't fail-fast on `InvalidLayoutError`
 

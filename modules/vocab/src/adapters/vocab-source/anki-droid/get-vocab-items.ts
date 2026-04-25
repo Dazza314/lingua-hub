@@ -17,8 +17,14 @@ const ANKI_VOCAB_ID_NAMESPACE = 'b4a1c6e2-3f8d-4a2b-9c7e-1d5f0e8b3a6c'
 export function createGetVocabItems(
   client: AnkiDroidClient,
 ): VocabSource['getVocabItems'] {
-  return async (layout: VocabSourceLayout.VocabSourceLayout) => {
-    const result = await client.getNotesWithCards({ modelId: layout.id })
+  return async (
+    layout: VocabSourceLayout.VocabSourceLayout,
+    pagination: { limit: number; offset: number },
+  ) => {
+    const result = await client.getNotesWithCards({
+      modelId: layout.id,
+      ...pagination,
+    })
 
     if (Result.isFailure(result)) {
       if (result.error instanceof ValidationError) {
@@ -37,42 +43,50 @@ export function createGetVocabItems(
     )
     const readingMapping = layout.mappings.find((m) => m.target === 'reading')
 
-    return result.value.data.reduce<
-      Result.Result<VocabItem.VocabItem[], InvalidLayoutError>
-    >((acc, { note }) => {
-      if (Result.isFailure(acc)) {
-        return acc
-      }
+    return Result.pipe(
+      result.value.data.reduce<
+        Result.Result<VocabItem.VocabItem[], InvalidLayoutError>
+      >((acc, { note }) => {
+        if (Result.isFailure(acc)) {
+          return acc
+        }
 
-      const term = termMapping
-        ? note.fields[termMapping.sourceField]
-        : undefined
-      const definition = definitionMapping
-        ? note.fields[definitionMapping.sourceField]
-        : undefined
+        const term = termMapping
+          ? note.fields[termMapping.sourceField]
+          : undefined
+        const definition = definitionMapping
+          ? note.fields[definitionMapping.sourceField]
+          : undefined
 
-      if (term === undefined || definition === undefined) {
-        return Result.fail(
-          new InvalidLayoutError(
-            `Note ${note.guid} is missing a required field (term or definition)`,
-          ),
-        )
-      }
+        if (term === undefined || definition === undefined) {
+          return Result.fail(
+            new InvalidLayoutError(
+              `Note ${note.guid} is missing a required field (term or definition)`,
+            ),
+          )
+        }
 
-      return Result.succeed([
-        ...acc.value,
-        {
-          id: VocabId.vocabIdSchema.parse(
-            uuidv5(note.guid, ANKI_VOCAB_ID_NAMESPACE),
-          ),
-          language: layout.language,
-          term,
-          definition,
-          reading: readingMapping
-            ? note.fields[readingMapping.sourceField]
-            : undefined,
-        },
-      ])
-    }, Result.succeed([]))
+        return Result.succeed([
+          ...acc.value,
+          {
+            id: VocabId.vocabIdSchema.parse(
+              uuidv5(note.guid, ANKI_VOCAB_ID_NAMESPACE),
+            ),
+            language: layout.language,
+            term,
+            definition,
+            reading: readingMapping
+              ? note.fields[readingMapping.sourceField]
+              : undefined,
+          },
+        ])
+      }, Result.succeed([])),
+
+      Result.map((items) => ({
+        items,
+        totalCount: result.value.totalCount,
+        hasMore: result.value.hasMore,
+      })),
+    )
   }
 }

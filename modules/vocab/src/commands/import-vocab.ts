@@ -26,14 +26,26 @@ export function importVocab({
     { count: number },
     VocabSourceUnavailableError | InvalidLayoutError
   > => {
-    const result = await getVocabItems(layout)
+    const PAGE_SIZE = 500
+    let offset = 0
+    let done = 0
 
-    if (Result.isFailure(result)) {
-      return result
+    while (true) {
+      const page = await getVocabItems(layout, { limit: PAGE_SIZE, offset })
+
+      if (Result.isFailure(page)) {
+        return page
+      }
+
+      await upsertVocabItems(userId, page.value.items)
+      done += page.value.items.length
+
+      if (!page.value.hasMore) {
+        break
+      }
+      offset += PAGE_SIZE
     }
 
-    await upsertVocabItems(userId, result.value)
-
-    return Result.succeed({ count: result.value.length })
+    return Result.succeed({ count: done })
   }
 }
