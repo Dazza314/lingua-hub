@@ -1,11 +1,10 @@
 'use client'
 
-import { Capacitor } from '@capacitor/core'
 import { FieldSelect } from './FieldSelect'
 import { Message } from './Message'
 import { useImportPage } from './useImportPage'
 
-export function ImportPage() {
+export function AndroidImportPage() {
   const {
     state,
     requestPermission,
@@ -17,10 +16,6 @@ export function ImportPage() {
     sync,
     reset,
   } = useImportPage()
-
-  if (!Capacitor.isNativePlatform()) {
-    return <Message>Import is only available on Android.</Message>
-  }
 
   if (state.phase === 'checking-permission' || state.phase === 'loading-layouts') {
     return <Message>Loading…</Message>
