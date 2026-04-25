@@ -5,12 +5,12 @@ import type { VocabSourceLayout } from '../models/vocab-source-layout'
 import type { VocabRepository } from '../ports/vocab-repository'
 import type { VocabSource } from '../ports/vocab-source'
 
-export type ImportVocabDeps = {
+type ImportVocabDeps = {
   getVocabItems: VocabSource['getVocabItems']
   upsertVocabItems: VocabRepository['upsertVocabItems']
 }
 
-export type ImportVocabInput = {
+type ImportVocabInput = {
   userId: UserId.UserId
   layout: VocabSourceLayout
 }

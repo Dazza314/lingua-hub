@@ -19,10 +19,10 @@ catalogs:
       specifier: ^8.0.0
       version: 8.2.0
     '@capacitor/app':
-      specifier: ^8.0.0
+      specifier: ^8.1.0
       version: 8.1.0
     '@capacitor/browser':
-      specifier: ^8.0.0
+      specifier: ^8.0.3
       version: 8.0.3
     '@capacitor/cli':
       specifier: ^8.0.0
@@ -63,12 +63,6 @@ catalogs:
     '@types/react-dom':
       specifier: ^19.0.0
       version: 19.2.3
-    '@typescript-eslint/eslint-plugin':
-      specifier: ^8.57.2
-      version: 8.57.2
-    '@typescript-eslint/parser':
-      specifier: ^8.57.2
-      version: 8.57.2
     ai:
       specifier: ^6.0.146
       version: 6.0.146
@@ -158,12 +152,6 @@ importers:
       '@eslint/compat':
         specifier: 'catalog:'
         version: 2.0.3(eslint@9.39.4(jiti@2.6.1))
-      '@typescript-eslint/eslint-plugin':
-        specifier: 'catalog:'
-        version: 8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2))(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2)
-      '@typescript-eslint/parser':
-        specifier: 'catalog:'
-        version: 8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2)
       eslint:
         specifier: 'catalog:'
         version: 9.39.4(jiti@2.6.1)
@@ -209,12 +197,6 @@ importers:
       '@capacitor/android':
         specifier: 'catalog:'
         version: 8.2.0(@capacitor/core@8.2.0)
-      '@capacitor/app':
-        specifier: 'catalog:'
-        version: 8.1.0(@capacitor/core@8.2.0)
-      '@capacitor/browser':
-        specifier: 'catalog:'
-        version: 8.0.3(@capacitor/core@8.2.0)
       '@capacitor/core':
         specifier: 'catalog:'
         version: 8.2.0
@@ -437,10 +419,6 @@ importers:
         version: 6.0.2
 
   supabase:
-    dependencies:
-      '@supabase/supabase-js':
-        specifier: 'catalog:'
-        version: 2.100.1
     devDependencies:
       typescript:
         specifier: 'catalog:'

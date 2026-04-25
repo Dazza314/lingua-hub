@@ -2,8 +2,6 @@
   "name": "lingua-hub",
   "devDependencies": {
     "@eslint/compat": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "eslint-plugin-check-file": "catalog:",

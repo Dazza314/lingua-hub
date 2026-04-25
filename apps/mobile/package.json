@@ -3,8 +3,6 @@
   "version": "0.0.0",
   "dependencies": {
     "@capacitor/android": "catalog:",
-    "@capacitor/app": "catalog:",
-    "@capacitor/browser": "catalog:",
     "@capacitor/core": "catalog:",
     "@lingua-hub/capacitor-ankidroid": "workspace:*"
   },

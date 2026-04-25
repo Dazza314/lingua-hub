@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { makeParseUnknown } from '@lingua-hub/core'
 
 const cardSchema = z
   .object({
@@ -64,6 +63,3 @@ export const noteWithCardsSchema = z
       .describe('All cards generated from this note, ordered by ordinal'),
   })
   .describe('Note with cards from AnkiDroid ContentProvider')
-
-export type NoteWithCards = z.infer<typeof noteWithCardsSchema>
-export const parse = makeParseUnknown(noteWithCardsSchema)

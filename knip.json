@@ -2,7 +2,14 @@
   "$schema": "https://unpkg.com/knip@latest/schema.json",
   "workspaces": {
     "apps/mobile": {
+      "ignore": ["android/app/src/main/assets/public/**"],
       "ignoreDependencies": ["@lingua-hub/capacitor-ankidroid"]
+    },
+    "apps/web": {
+      "ignore": ["components/ui/**"]
+    },
+    "supabase": {
+      "ignore": ["src/database.types.ts"]
     }
   }
 }

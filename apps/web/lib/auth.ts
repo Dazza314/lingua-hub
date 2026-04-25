@@ -2,7 +2,7 @@ import { makeParse, UserId } from '@lingua-hub/core'
 import { Result } from '@praha/byethrow'
 import { createClient } from '@/lib/supabase/server'
 
-export class UnauthenticatedError extends Error {
+class UnauthenticatedError extends Error {
   override readonly name = 'UnauthenticatedError' as const
 }
 
