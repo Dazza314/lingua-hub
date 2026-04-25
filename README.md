@@ -127,17 +127,17 @@ pnpm cap add android
 
 ---
 
-### Running on the emulator
+### Running on Android
 
-#### 1. Start the emulator (Windows, Admin PowerShell)
+#### 1. Connect a device
 
-This script auto-detects your WSL2 IP, sets up port forwarding, and starts the emulator:
+**Emulator** — start the emulator from Windows PowerShell and wait for it to fully boot:
 
 ```powershell
 .\scripts\start-emulator.ps1
 ```
 
-Wait for the emulator to fully boot before proceeding.
+**Real device** — enable USB debugging (Settings > Developer Options > USB Debugging), then connect via USB and accept the prompt on the device.
 
 #### 2. Start the dev server (WSL2)
 
@@ -151,6 +151,6 @@ pnpm dev
 pnpm -F android run:device
 ```
 
-This builds the APK, installs it on the emulator, and forwards the port in one step. Then launch the app on the emulator.
+This builds the APK, installs it on the device, and forwards the port in one step. Then launch the app.
 
 > **Note:** Only needed when native code changes. For web-only changes, saving files will hot-reload via the dev server.
