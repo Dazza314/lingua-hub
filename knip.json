@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
   "workspaces": {
-    "apps/android": {
+    "apps/mobile": {
       "ignoreDependencies": ["@lingua-hub/capacitor-ankidroid"]
     }
   }

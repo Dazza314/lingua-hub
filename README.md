@@ -121,7 +121,7 @@ avdmanager create avd -n pixel -k "system-images;android-35;google_apis;x86_64" 
 #### 8. Add the Android platform (WSL2)
 
 ```bash
-cd apps/android
+cd apps/mobile
 pnpm cap add android
 ```
 

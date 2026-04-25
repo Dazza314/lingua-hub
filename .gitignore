@@ -30,8 +30,7 @@ Thumbs.db
 .claude/settings.local.json
 
 # Capacitor / Android
-apps/android/android/
-apps/android/.gradle/
+apps/mobile/.gradle/
 
 # Next.js
 apps/web/.next/

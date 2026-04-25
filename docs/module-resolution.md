@@ -15,7 +15,7 @@ Internal workspace modules (`modules/*`) point their `package.json` entrypoints 
 The two consuming apps have different needs:
 
 - **`apps/web`** (Next.js) — the bundler transpiles all TypeScript itself, including workspace dependencies. There is no reason to pre-compile modules separately.
-- **`apps/android`** (Capacitor) — a thin native wrapper that loads the web app's bundle. The compiled output it needs comes from the Next.js build, not from the modules directly.
+- **`apps/mobile`** (Capacitor) — a thin native wrapper that loads the web app's bundle. The compiled output it needs comes from the Next.js build, not from the modules directly.
 
 Since every consumer is ultimately a bundler or delegates to one, pre-compiling modules to `dist/` adds complexity with no benefit: an extra build step, stale output to manage, and a `dependsOn: ["^build"]` chain in Turbo that slows down `typecheck`.
 
