@@ -6,7 +6,10 @@ export function NavBar() {
     <header className="flex h-14 items-center justify-between border-b border-border px-4">
       <span className="font-semibold">Lingua Hub</span>
       <nav className="flex items-center gap-4">
-        <Link href="/import" className="text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          href="/import"
+          className="text-sm text-muted-foreground hover:text-foreground"
+        >
           Import
         </Link>
         <SignOutButton />

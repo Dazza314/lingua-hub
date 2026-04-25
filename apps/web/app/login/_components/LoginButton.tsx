@@ -13,13 +13,17 @@ export function LoginButton() {
 
     const setupDeepLinkHandler = async () => {
       const { Capacitor } = await import('@capacitor/core')
-      if (!Capacitor.isNativePlatform()) return
+      if (!Capacitor.isNativePlatform()) {
+        return
+      }
 
       const { App } = await import('@capacitor/app')
       const { Browser } = await import('@capacitor/browser')
 
       const handle = await App.addListener('appUrlOpen', async ({ url }) => {
-        if (!url.startsWith('com.linguahub.app://login-callback')) return
+        if (!url.startsWith('com.linguahub.app://login-callback')) {
+          return
+        }
 
         const code = new URL(url).searchParams.get('code')
         if (code) {

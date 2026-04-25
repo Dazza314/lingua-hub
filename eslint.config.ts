@@ -16,7 +16,6 @@ export default tseslint.config(
     files: ['**/*.{ts,tsx}'],
     extends: [...tseslint.configs.strict, ...tseslint.configs.stylistic],
     rules: {
-      curly: ['error', 'all'],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/naming-convention': [
         'error',

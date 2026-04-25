@@ -15,7 +15,10 @@ export type ImportVocabInput = {
   layout: VocabSourceLayout
 }
 
-export function importVocab({ getVocabItems, upsertVocabItems }: ImportVocabDeps) {
+export function importVocab({
+  getVocabItems,
+  upsertVocabItems,
+}: ImportVocabDeps) {
   return async ({
     userId,
     layout,

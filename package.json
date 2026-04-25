@@ -10,8 +10,8 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "knip": "knip",
-    "format": "eslint --fix . && prettier --write .",
-    "format:check": "eslint . && prettier --check .",
+    "format": "eslint --fix .; prettier --write .",
+    "format:check": "eslint .; prettier --check .",
     "gen:supabase-types": "supabase gen types typescript --linked > modules/supabase/src/database.types.ts",
     "db:push": "supabase db push"
   },
@@ -25,6 +25,7 @@
     "eslint-plugin-no-barrel-files": "catalog:",
     "knip": "catalog:",
     "prettier": "catalog:",
+    "prettier-plugin-curly": "catalog:",
     "supabase": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",

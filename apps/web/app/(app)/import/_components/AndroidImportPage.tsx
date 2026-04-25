@@ -2,7 +2,7 @@
 
 import { FieldSelect } from './FieldSelect'
 import { Message } from './Message'
-import { useImportPage } from './useImportPage'
+import { useImportPage } from './use-import-page'
 
 export function AndroidImportPage() {
   const {
@@ -17,7 +17,10 @@ export function AndroidImportPage() {
     reset,
   } = useImportPage()
 
-  if (state.phase === 'checking-permission' || state.phase === 'loading-layouts') {
+  if (
+    state.phase === 'checking-permission' ||
+    state.phase === 'loading-layouts'
+  ) {
     return <Message>Loading…</Message>
   }
 
@@ -141,7 +144,9 @@ export function AndroidImportPage() {
   if (state.phase === 'sync-error') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
-        <p className="text-muted-foreground text-center text-sm">{state.message}</p>
+        <p className="text-muted-foreground text-center text-sm">
+          {state.message}
+        </p>
         <button
           className="text-primary text-sm underline-offset-4 hover:underline"
           onClick={reset}

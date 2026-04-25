@@ -1,3 +1,4 @@
+import { useRunOnMount } from '@/hooks/use-run-on-mount'
 import { createClient } from '@/lib/supabase/client'
 import { ankiDroidClient } from '@lingua-hub/capacitor-ankidroid'
 import { Language, makeParse, UserId } from '@lingua-hub/core'
@@ -8,7 +9,7 @@ import {
   supabaseVocabRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
-import { useEffect, useReducer } from 'react'
+import { useReducer } from 'react'
 
 type State =
   | { phase: 'checking-permission' }
@@ -59,7 +60,9 @@ function reducer(state: State, action: Action): State {
     case 'layout-error':
       return { phase: 'layout-error', message: action.message }
     case 'select-layout':
-      if (state.phase !== 'picking-layout') return state
+      if (state.phase !== 'picking-layout') {
+        return state
+      }
       return {
         phase: 'mapping',
         layouts: state.layouts,
@@ -69,13 +72,19 @@ function reducer(state: State, action: Action): State {
         reading: '',
       }
     case 'set-term':
-      if (state.phase !== 'mapping') return state
+      if (state.phase !== 'mapping') {
+        return state
+      }
       return { ...state, term: action.value }
     case 'set-definition':
-      if (state.phase !== 'mapping') return state
+      if (state.phase !== 'mapping') {
+        return state
+      }
       return { ...state, definition: action.value }
     case 'set-reading':
-      if (state.phase !== 'mapping') return state
+      if (state.phase !== 'mapping') {
+        return state
+      }
       return { ...state, reading: action.value }
     case 'sync-start':
       return { phase: 'syncing' }
@@ -97,7 +106,15 @@ export function useImportPage() {
     phase: 'checking-permission',
   })
 
-  useEffect(() => { void checkPermission() }, [])
+  async function loadLayouts() {
+    dispatch({ type: 'permission-granted' })
+    const result = await adapter.getAvailableLayouts()
+    if (Result.isFailure(result)) {
+      dispatch({ type: 'layout-error', message: result.error.message })
+      return
+    }
+    dispatch({ type: 'layouts-loaded', layouts: result.value })
+  }
 
   async function checkPermission() {
     const result = await ankiDroidClient.checkPermission()
@@ -117,19 +134,13 @@ export function useImportPage() {
     }
   }
 
-  async function loadLayouts() {
-    dispatch({ type: 'permission-granted' })
-    const result = await adapter.getAvailableLayouts()
-    if (Result.isFailure(result)) {
-      dispatch({ type: 'layout-error', message: result.error.message })
+  async function sync() {
+    if (state.phase !== 'mapping') {
       return
     }
-    dispatch({ type: 'layouts-loaded', layouts: result.value })
-  }
-
-  async function sync() {
-    if (state.phase !== 'mapping') return
-    if (!state.term || !state.definition) return
+    if (!state.term || !state.definition) {
+      return
+    }
 
     const mappings: Models.VocabFieldMapping.VocabFieldMapping[] = [
       { sourceField: state.term, target: 'term' },
@@ -184,7 +195,9 @@ export function useImportPage() {
   }
 
   function back() {
-    if (state.phase !== 'mapping') return
+    if (state.phase !== 'mapping') {
+      return
+    }
     dispatch({ type: 'layouts-loaded', layouts: state.layouts })
   }
 
@@ -200,6 +213,8 @@ export function useImportPage() {
   function reset() {
     dispatch({ type: 'reset' })
   }
+
+  useRunOnMount(() => void checkPermission())
 
   return {
     state,

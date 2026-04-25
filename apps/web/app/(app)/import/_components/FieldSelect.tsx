@@ -17,7 +17,14 @@ type Props = {
 
 const NONE = '__none__'
 
-export function FieldSelect({ label, required, fields, value, sampleValues, onChange }: Props) {
+export function FieldSelect({
+  label,
+  required,
+  fields,
+  value,
+  sampleValues,
+  onChange,
+}: Props) {
   const sample = value ? sampleValues[value] : undefined
   return (
     <div className="flex flex-col gap-1">
