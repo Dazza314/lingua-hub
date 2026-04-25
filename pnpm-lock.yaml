@@ -18,6 +18,12 @@ catalogs:
     '@capacitor/android':
       specifier: ^8.0.0
       version: 8.2.0
+    '@capacitor/app':
+      specifier: ^8.0.0
+      version: 8.1.0
+    '@capacitor/browser':
+      specifier: ^8.0.0
+      version: 8.0.3
     '@capacitor/cli':
       specifier: ^8.0.0
       version: 8.2.0
@@ -185,6 +191,12 @@ importers:
       '@capacitor/android':
         specifier: 'catalog:'
         version: 8.2.0(@capacitor/core@8.2.0)
+      '@capacitor/app':
+        specifier: 'catalog:'
+        version: 8.1.0(@capacitor/core@8.2.0)
+      '@capacitor/browser':
+        specifier: 'catalog:'
+        version: 8.0.3(@capacitor/core@8.2.0)
       '@capacitor/core':
         specifier: 'catalog:'
         version: 8.2.0
@@ -201,6 +213,15 @@ importers:
       '@base-ui/react':
         specifier: 'catalog:'
         version: 1.4.1(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@capacitor/app':
+        specifier: 'catalog:'
+        version: 8.1.0(@capacitor/core@8.2.0)
+      '@capacitor/browser':
+        specifier: 'catalog:'
+        version: 8.0.3(@capacitor/core@8.2.0)
+      '@capacitor/core':
+        specifier: 'catalog:'
+        version: 8.2.0
       '@hugeicons/core-free-icons':
         specifier: 'catalog:'
         version: 4.1.1
@@ -608,6 +629,16 @@ packages:
     resolution: {integrity: sha512-XLm5OsWLPfXQxDxzFS7SOdMEgGvW+2c7TGLXkTR2cSKdkWK5Abns4imlT5qghKYhjM9r74IrDkBWg/9ALUGNKQ==}
     peerDependencies:
       '@capacitor/core': ^8.2.0
+
+  '@capacitor/app@8.1.0':
+    resolution: {integrity: sha512-MlmttTOWHDedr/G4SrhNRxsXMqY+R75S4MM4eIgzsgCzOYhb/MpCkA5Q3nuOCfL1oHm26xjUzqZ5aupbOwdfYg==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
+  '@capacitor/browser@8.0.3':
+    resolution: {integrity: sha512-WJWPHEPbweiFoHYmVlCbZf5yrqJ2Rchx2Xvbmd+3Lf+Zkpq3nXBThThY2CF69lYEg1NINGF9BcHThIOEU1gZlQ==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
 
   '@capacitor/cli@8.2.0':
     resolution: {integrity: sha512-1cMEk0d/I6tl1U+v/lnJR5Oylpx8ZBIHrvQxD5zK0MkjYOUyQAAGJgh97rkhGJqjAUvrGpa8H4BmyhNQN9a17A==}
@@ -4857,6 +4888,14 @@ snapshots:
       '@types/react': 19.2.14
 
   '@capacitor/android@8.2.0(@capacitor/core@8.2.0)':
+    dependencies:
+      '@capacitor/core': 8.2.0
+
+  '@capacitor/app@8.1.0(@capacitor/core@8.2.0)':
+    dependencies:
+      '@capacitor/core': 8.2.0
+
+  '@capacitor/browser@8.0.3(@capacitor/core@8.2.0)':
     dependencies:
       '@capacitor/core': 8.2.0
 
