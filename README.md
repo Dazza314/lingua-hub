@@ -139,16 +139,16 @@ This script auto-detects your WSL2 IP, sets up port forwarding, and starts the e
 
 Wait for the emulator to fully boot before proceeding.
 
-#### 3. Start the dev server (WSL2)
+#### 2. Start the dev server (WSL2)
 
 ```bash
 pnpm dev
 ```
 
-#### 4. Build, install and forward the port (WSL2)
+#### 3. Build, install and forward the port (WSL2)
 
 ```bash
-pnpm -F android dev
+pnpm -F android run:device
 ```
 
 This builds the APK, installs it on the emulator, and forwards the port in one step. Then launch the app on the emulator.
