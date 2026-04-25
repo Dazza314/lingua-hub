@@ -1,15 +1,6 @@
 {
   "name": "@lingua-hub/android",
   "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build": "cd android && ANDROID_HOME=/mnt/c/Android ./gradlew assembleDebug",
-    "install:device": "/mnt/c/Android/platform-tools/adb.exe install android/app/build/outputs/apk/debug/app-debug.apk",
-    "forward": "/mnt/c/Android/platform-tools/adb.exe reverse tcp:3000 tcp:3000",
-    "run:device": "pnpm build && pnpm install:device && pnpm forward",
-    "open": "cap open android",
-    "sync": "cap sync android"
-  },
   "dependencies": {
     "@capacitor/android": "catalog:",
     "@capacitor/app": "catalog:",
@@ -19,5 +10,14 @@
   },
   "devDependencies": {
     "@capacitor/cli": "catalog:"
+  },
+  "private": true,
+  "scripts": {
+    "build": "cd android && ANDROID_HOME=/mnt/c/Android ./gradlew assembleDebug",
+    "forward": "/mnt/c/Android/platform-tools/adb.exe reverse tcp:3000 tcp:3000",
+    "install:device": "/mnt/c/Android/platform-tools/adb.exe install android/app/build/outputs/apk/debug/app-debug.apk",
+    "open": "cap open android",
+    "run:device": "pnpm build && pnpm install:device && pnpm forward",
+    "sync": "cap sync android"
   }
 }

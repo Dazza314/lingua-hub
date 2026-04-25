@@ -1,12 +1,6 @@
 {
   "name": "@lingua-hub/web",
   "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --turbopack",
-    "typecheck": "tsc"
-  },
   "dependencies": {
     "@base-ui/react": "catalog:",
     "@capacitor/app": "catalog:",
@@ -14,7 +8,6 @@
     "@capacitor/core": "catalog:",
     "@hugeicons/core-free-icons": "catalog:",
     "@hugeicons/react": "catalog:",
-    "@capacitor/core": "catalog:",
     "@lingua-hub/capacitor-ankidroid": "workspace:*",
     "@lingua-hub/core": "workspace:*",
     "@lingua-hub/exercise": "workspace:*",
@@ -42,5 +35,11 @@
     "postcss": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
+  },
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbopack",
+    "typecheck": "tsc"
   }
 }

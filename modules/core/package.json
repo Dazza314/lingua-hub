@@ -1,19 +1,19 @@
 {
   "name": "@lingua-hub/core",
   "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "scripts": {
-    "typecheck": "tsc"
-  },
   "dependencies": {
     "@praha/byethrow": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:"
-  }
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "type": "module",
+  "types": "src/index.ts"
 }

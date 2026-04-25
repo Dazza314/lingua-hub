@@ -1,23 +1,23 @@
 {
   "name": "@lingua-hub/capacitor-ankidroid",
   "version": "0.0.0",
-  "private": true,
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "scripts": {
-    "typecheck": "tsc"
-  },
   "dependencies": {
     "@lingua-hub/core": "workspace:*",
     "@praha/byethrow": "catalog:",
     "zod": "catalog:"
   },
-  "peerDependencies": {
-    "@capacitor/core": "catalog:"
-  },
   "devDependencies": {
     "@capacitor/core": "catalog:",
     "typescript": "catalog:"
-  }
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "peerDependencies": {
+    "@capacitor/core": "catalog:"
+  },
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "types": "src/index.ts"
 }

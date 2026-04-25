@@ -1,20 +1,5 @@
 {
   "name": "lingua-hub",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "knip": "knip",
-    "format": "eslint --fix .; prettier --write .",
-    "format:check": "eslint .; prettier --check .",
-    "gen:supabase-types": "supabase gen types typescript --linked > modules/supabase/src/database.types.ts",
-    "db:push": "supabase db push"
-  },
   "devDependencies": {
     "@eslint/compat": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",
@@ -23,10 +8,12 @@
     "eslint-config-next": "catalog:",
     "eslint-plugin-check-file": "catalog:",
     "eslint-plugin-no-barrel-files": "catalog:",
+    "husky": "catalog:",
     "knip": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-curly": "catalog:",
     "supabase": "catalog:",
+    "syncpack": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:"
@@ -35,5 +22,25 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "db:push": "supabase db push",
+    "dev": "turbo run dev",
+    "check": "pnpm lint && pnpm format:check && pnpm syncpack:lint",
+    "fix": "pnpm lint:fix; pnpm format; pnpm syncpack:format",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "gen:supabase-types": "supabase gen types typescript --linked > modules/supabase/src/database.types.ts",
+    "knip": "knip",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prepare": "husky",
+    "syncpack:format": "syncpack format",
+    "syncpack:lint": "syncpack lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "type": "module"
 }

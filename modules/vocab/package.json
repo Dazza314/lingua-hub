@@ -1,14 +1,6 @@
 {
   "name": "@lingua-hub/vocab",
   "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "scripts": {
-    "typecheck": "tsc"
-  },
   "dependencies": {
     "@lingua-hub/capacitor-ankidroid": "workspace:*",
     "@lingua-hub/core": "workspace:*",
@@ -20,5 +12,13 @@
   },
   "devDependencies": {
     "typescript": "catalog:"
-  }
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "type": "module",
+  "types": "src/index.ts"
 }

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/syncpack@14.3.0/schema.json",
+  "versionGroups": [
+    {
+      "label": "Workspace packages use workspace:*",
+      "packages": ["**"],
+      "dependencies": ["@lingua-hub/**"],
+      "dependencyTypes": ["dev", "prod", "peer"],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "All other dependencies must use the catalog: specifier",
+      "packages": ["**"],
+      "dependencies": ["**"],
+      "dependencyTypes": ["dev", "prod", "peer"],
+      "pinVersion": "catalog:"
+    }
+  ]
+}
