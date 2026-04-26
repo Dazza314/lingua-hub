@@ -271,6 +271,8 @@ class AnkiDroidPlugin : Plugin() {
                 NOTES_URI
             }
 
+            val requestedModelId = call.getString("modelId")?.takeIf { it.isNotEmpty() }
+
             val cursor = context.contentResolver.query(uri, null, null, null, null)
                 ?: run {
                     val result = JSObject()
@@ -317,6 +319,7 @@ class AnkiDroidPlugin : Plugin() {
                 do {
                     val noteId = it.getString(idCol) ?: continue
                     val modelId = if (midCol >= 0) it.getString(midCol) ?: "" else ""
+                    if (requestedModelId != null && modelId != requestedModelId) continue
                     val rawFields = if (fldsCol >= 0) it.getString(fldsCol) ?: "" else ""
                     val fieldValues = rawFields.split(FIELD_SEPARATOR)
                     val fieldNames = modelFieldNames[modelId] ?: emptyList()
@@ -585,17 +588,14 @@ class AnkiDroidPlugin : Plugin() {
         val parts = mutableListOf<String>()
 
         if (!deckId.isNullOrEmpty()) {
-            // Look up deck name from ID to use in search syntax
             val deckName = fetchDeckName(deckId)
-            if (deckName != null) {
-                parts.add("deck:\"$deckName\"")
-            }
+                ?: throw IllegalArgumentException("Deck not found for ID: $deckId")
+            parts.add("deck:\"$deckName\"")
         }
         if (!modelId.isNullOrEmpty()) {
             val modelName = fetchModelName(modelId)
-            if (modelName != null) {
-                parts.add("note:\"$modelName\"")
-            }
+                ?: throw IllegalArgumentException("Model not found for ID: $modelId")
+            parts.add("note:\"$modelName\"")
         }
         // modifiedSince filtering: Anki search syntax supports "edited:N" (edited within N days)
         // but not "edited after timestamp". We filter in-cursor instead — handled by caller
@@ -609,24 +609,26 @@ class AnkiDroidPlugin : Plugin() {
     }
 
     private fun fetchDeckName(deckId: String): String? {
-        val cursor = context.contentResolver.query(
-            Uri.parse("content://$AUTHORITY/decks/$deckId"),
-            arrayOf("deck_name"),
-            null, null, null,
-        ) ?: return null
+        val cursor = context.contentResolver.query(DECKS_URI, null, null, null, null) ?: return null
         return cursor.use {
-            if (it.moveToFirst()) it.getString(0) else null
+            val idCol = it.getColumnIndex("deck_id")
+            val nameCol = it.getColumnIndex("deck_name")
+            while (it.moveToNext()) {
+                if (it.getString(idCol) == deckId) return@use it.getString(nameCol)
+            }
+            null
         }
     }
 
     private fun fetchModelName(modelId: String): String? {
-        val cursor = context.contentResolver.query(
-            Uri.parse("content://$AUTHORITY/models/$modelId"),
-            arrayOf("name"),
-            null, null, null,
-        ) ?: return null
+        val cursor = context.contentResolver.query(MODELS_URI, null, null, null, null) ?: return null
         return cursor.use {
-            if (it.moveToFirst()) it.getString(0) else null
+            val idCol = it.getColumnIndex("_id")
+            val nameCol = it.getColumnIndex("name")
+            while (it.moveToNext()) {
+                if (it.getString(idCol) == modelId) return@use it.getString(nameCol)
+            }
+            null
         }
     }
 }
