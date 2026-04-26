@@ -16,7 +16,7 @@ const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 const { generateObject } = createGoogleLlmClient(
   env.GOOGLE_GENERATIVE_AI_API_KEY,
-  GoogleModel.Gemini20Flash,
+  GoogleModel.Gemma4_31B,
 )
 
 export async function generateExercise(): Result.ResultAsync<
