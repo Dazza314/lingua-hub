@@ -20,7 +20,8 @@ export function AndroidImportPage() {
 
   if (
     state.phase === 'checking-permission' ||
-    state.phase === 'loading-layouts'
+    state.phase === 'loading-layouts' ||
+    state.phase === 'loading-layouts-for-deck'
   ) {
     return <Message>Loading…</Message>
   }
@@ -54,7 +55,7 @@ export function AndroidImportPage() {
             <li key={deck.id}>
               <button
                 className="bg-card w-full rounded-xl border p-4 text-left"
-                onClick={() => selectDeck(deck)}
+                onClick={() => void selectDeck(deck)}
               >
                 <p className="font-medium">{deck.name}</p>
               </button>

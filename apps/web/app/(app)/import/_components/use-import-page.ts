@@ -4,6 +4,7 @@ import { ankiDroidClient } from '@lingua-hub/capacitor-ankidroid'
 import { Language, makeParse, UserId } from '@lingua-hub/core'
 import {
   AvailableLayout,
+  AvailableLayoutId,
   createAnkiDroidAdapter,
   Deck,
   importAnkiVocab,
@@ -23,6 +24,12 @@ type State =
       phase: 'picking-deck'
       layouts: AvailableLayout.AvailableLayout[]
       decks: Deck.Deck[]
+    }
+  | {
+      phase: 'loading-layouts-for-deck'
+      layouts: AvailableLayout.AvailableLayout[]
+      decks: Deck.Deck[]
+      deck: Deck.Deck
     }
   | {
       phase: 'picking-layout'
@@ -55,6 +62,10 @@ type Action =
   | { type: 'layout-error'; message: string }
   | { type: 'select-layout'; layout: AvailableLayout.AvailableLayout }
   | { type: 'select-deck'; deck: Deck.Deck }
+  | {
+      type: 'deck-layouts-loaded'
+      layouts: AvailableLayout.AvailableLayout[]
+    }
   | { type: 'set-term'; value: string }
   | { type: 'set-definition'; value: string }
   | { type: 'set-reading'; value: string }
@@ -83,10 +94,20 @@ function reducer(state: State, action: Action): State {
         return state
       }
       return {
-        phase: 'picking-layout',
+        phase: 'loading-layouts-for-deck',
         layouts: state.layouts,
         decks: state.decks,
         deck: action.deck,
+      }
+    case 'deck-layouts-loaded':
+      if (state.phase !== 'loading-layouts-for-deck') {
+        return state
+      }
+      return {
+        phase: 'picking-layout',
+        layouts: action.layouts,
+        decks: state.decks,
+        deck: state.deck,
       }
     case 'select-layout':
       if (state.phase !== 'picking-layout') {
@@ -126,7 +147,10 @@ function reducer(state: State, action: Action): State {
           deck: state.deck,
         }
       }
-      if (state.phase === 'picking-layout') {
+      if (
+        state.phase === 'picking-layout' ||
+        state.phase === 'loading-layouts-for-deck'
+      ) {
         return {
           phase: 'picking-deck',
           layouts: state.layouts,
@@ -253,8 +277,24 @@ export function useImportPage() {
     dispatch({ type: 'select-layout', layout })
   }
 
-  function selectDeck(deck: Deck.Deck) {
+  async function selectDeck(deck: Deck.Deck) {
+    if (state.phase !== 'picking-deck') {
+      return
+    }
+    const allLayouts = state.layouts
     dispatch({ type: 'select-deck', deck })
+
+    const result = await adapter.getModelIdsForDeck(deck.id)
+    if (Result.isFailure(result)) {
+      dispatch({ type: 'layout-error', message: result.error.message })
+      return
+    }
+
+    const modelIdSet = new Set<AvailableLayoutId.AvailableLayoutId>(
+      result.value,
+    )
+    const filtered = allLayouts.filter((l) => modelIdSet.has(l.id))
+    dispatch({ type: 'deck-layouts-loaded', layouts: filtered })
   }
 
   function back() {
