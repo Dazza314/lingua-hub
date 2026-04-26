@@ -7,7 +7,6 @@ import {
 } from '../../../errors'
 import * as VocabId from '../../../models/vocab-id'
 import * as VocabItem from '../../../models/vocab-item'
-import * as VocabSourceLayout from '../../../models/vocab-source-layout'
 import type { VocabSource } from '../../../ports/vocab-source'
 import type { AnkiDroidClient } from './anki-droid-adapter'
 
@@ -17,13 +16,12 @@ const ANKI_VOCAB_ID_NAMESPACE = 'b4a1c6e2-3f8d-4a2b-9c7e-1d5f0e8b3a6c'
 export function createGetVocabItems(
   client: AnkiDroidClient,
 ): VocabSource['getVocabItems'] {
-  return async (
-    layout: VocabSourceLayout.VocabSourceLayout,
-    pagination: { limit: number; offset: number },
-  ) => {
+  return async (layout, query) => {
     const result = await client.getNotesWithCards({
       modelId: layout.id,
-      ...pagination,
+      deckId: query.deckId,
+      limit: query.limit,
+      offset: query.offset,
     })
 
     if (Result.isFailure(result)) {

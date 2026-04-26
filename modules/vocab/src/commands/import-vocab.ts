@@ -1,6 +1,7 @@
 import type { UserId } from '@lingua-hub/core'
 import { Result } from '@praha/byethrow'
 import type { InvalidLayoutError, VocabSourceUnavailableError } from '../errors'
+import type { DeckId } from '../models/deck-id'
 import type { VocabSourceLayout } from '../models/vocab-source-layout'
 import type { VocabRepository } from '../ports/vocab-repository'
 import type { VocabSource } from '../ports/vocab-source'
@@ -13,6 +14,7 @@ type ImportVocabDeps = {
 type ImportVocabInput = {
   userId: UserId.UserId
   layout: VocabSourceLayout
+  deckId: DeckId
 }
 
 export function importVocab({
@@ -22,6 +24,7 @@ export function importVocab({
   return async ({
     userId,
     layout,
+    deckId,
   }: ImportVocabInput): Result.ResultAsync<
     { count: number },
     VocabSourceUnavailableError | InvalidLayoutError
@@ -31,7 +34,11 @@ export function importVocab({
     let done = 0
 
     while (true) {
-      const page = await getVocabItems(layout, { limit: PAGE_SIZE, offset })
+      const page = await getVocabItems(layout, {
+        deckId,
+        limit: PAGE_SIZE,
+        offset,
+      })
 
       if (Result.isFailure(page)) {
         return page

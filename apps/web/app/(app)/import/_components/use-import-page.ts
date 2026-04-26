@@ -3,13 +3,18 @@ import { createClient } from '@/lib/supabase/client'
 import { ankiDroidClient } from '@lingua-hub/capacitor-ankidroid'
 import { Language, makeParse, UserId } from '@lingua-hub/core'
 import {
+  AvailableLayout,
   createAnkiDroidAdapter,
+  DeckId,
   importVocab,
-  Models,
   supabaseVocabRepositoryFactories,
+  VocabFieldMapping,
+  VocabSourceLayout,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { useReducer } from 'react'
+
+type Deck = { id: DeckId.DeckId; name: string }
 
 type State =
   | { phase: 'checking-permission' }
@@ -18,12 +23,21 @@ type State =
   | { phase: 'layout-error'; message: string }
   | {
       phase: 'picking-layout'
-      layouts: Models.AvailableLayout.AvailableLayout[]
+      layouts: AvailableLayout.AvailableLayout[]
+      decks: Deck[]
+    }
+  | {
+      phase: 'picking-deck'
+      layouts: AvailableLayout.AvailableLayout[]
+      layout: AvailableLayout.AvailableLayout
+      decks: Deck[]
     }
   | {
       phase: 'mapping'
-      layouts: Models.AvailableLayout.AvailableLayout[]
-      layout: Models.AvailableLayout.AvailableLayout
+      layouts: AvailableLayout.AvailableLayout[]
+      layout: AvailableLayout.AvailableLayout
+      decks: Deck[]
+      deck: Deck
       term: string
       definition: string
       reading: string
@@ -37,16 +51,19 @@ type Action =
   | { type: 'permission-denied' }
   | {
       type: 'layouts-loaded'
-      layouts: Models.AvailableLayout.AvailableLayout[]
+      layouts: AvailableLayout.AvailableLayout[]
+      decks: Deck[]
     }
   | { type: 'layout-error'; message: string }
-  | { type: 'select-layout'; layout: Models.AvailableLayout.AvailableLayout }
+  | { type: 'select-layout'; layout: AvailableLayout.AvailableLayout }
+  | { type: 'select-deck'; deck: Deck }
   | { type: 'set-term'; value: string }
   | { type: 'set-definition'; value: string }
   | { type: 'set-reading'; value: string }
   | { type: 'sync-start' }
   | { type: 'sync-success'; count: number }
   | { type: 'sync-error'; message: string }
+  | { type: 'back' }
   | { type: 'reset' }
 
 function reducer(state: State, action: Action): State {
@@ -56,7 +73,11 @@ function reducer(state: State, action: Action): State {
     case 'permission-denied':
       return { phase: 'permission-denied' }
     case 'layouts-loaded':
-      return { phase: 'picking-layout', layouts: action.layouts }
+      return {
+        phase: 'picking-layout',
+        layouts: action.layouts,
+        decks: action.decks,
+      }
     case 'layout-error':
       return { phase: 'layout-error', message: action.message }
     case 'select-layout':
@@ -64,9 +85,21 @@ function reducer(state: State, action: Action): State {
         return state
       }
       return {
-        phase: 'mapping',
+        phase: 'picking-deck',
         layouts: state.layouts,
         layout: action.layout,
+        decks: state.decks,
+      }
+    case 'select-deck':
+      if (state.phase !== 'picking-deck') {
+        return state
+      }
+      return {
+        phase: 'mapping',
+        layouts: state.layouts,
+        layout: state.layout,
+        decks: state.decks,
+        deck: action.deck,
         term: '',
         definition: '',
         reading: '',
@@ -86,6 +119,23 @@ function reducer(state: State, action: Action): State {
         return state
       }
       return { ...state, reading: action.value }
+    case 'back':
+      if (state.phase === 'mapping') {
+        return {
+          phase: 'picking-deck',
+          layouts: state.layouts,
+          layout: state.layout,
+          decks: state.decks,
+        }
+      }
+      if (state.phase === 'picking-deck') {
+        return {
+          phase: 'picking-layout',
+          layouts: state.layouts,
+          decks: state.decks,
+        }
+      }
+      return state
     case 'sync-start':
       return { phase: 'syncing' }
     case 'sync-success':
@@ -108,12 +158,26 @@ export function useImportPage() {
 
   async function loadLayouts() {
     dispatch({ type: 'permission-granted' })
-    const result = await adapter.getAvailableLayouts()
-    if (Result.isFailure(result)) {
-      dispatch({ type: 'layout-error', message: result.error.message })
+    const [layoutsResult, decksResult] = await Promise.all([
+      adapter.getAvailableLayouts(),
+      ankiDroidClient.getDecks(),
+    ])
+    if (Result.isFailure(layoutsResult)) {
+      dispatch({ type: 'layout-error', message: layoutsResult.error.message })
       return
     }
-    dispatch({ type: 'layouts-loaded', layouts: result.value })
+    if (Result.isFailure(decksResult)) {
+      dispatch({ type: 'layout-error', message: decksResult.error.message })
+      return
+    }
+    dispatch({
+      type: 'layouts-loaded',
+      layouts: layoutsResult.value,
+      decks: decksResult.value.decks.map((d) => ({
+        id: DeckId.deckIdSchema.parse(d.id),
+        name: d.name,
+      })),
+    })
   }
 
   async function checkPermission() {
@@ -142,7 +206,7 @@ export function useImportPage() {
       return
     }
 
-    const mappings: Models.VocabFieldMapping.VocabFieldMapping[] = [
+    const mappings: VocabFieldMapping.VocabFieldMapping[] = [
       { sourceField: state.term, target: 'term' },
       { sourceField: state.definition, target: 'definition' },
       ...(state.reading
@@ -150,7 +214,7 @@ export function useImportPage() {
         : []),
     ]
 
-    const layout: Models.VocabSourceLayout.VocabSourceLayout = {
+    const layout: VocabSourceLayout.VocabSourceLayout = {
       id: state.layout.id,
       name: state.layout.name,
       fields: state.layout.fields,
@@ -180,7 +244,7 @@ export function useImportPage() {
       getVocabItems: adapter.getVocabItems,
       upsertVocabItems:
         supabaseVocabRepositoryFactories.createUpsertVocabItems(supabase),
-    })({ userId: userIdResult.value, layout })
+    })({ userId: userIdResult.value, layout, deckId: state.deck.id })
 
     if (Result.isFailure(result)) {
       dispatch({ type: 'sync-error', message: result.error.message })
@@ -190,15 +254,16 @@ export function useImportPage() {
     dispatch({ type: 'sync-success', count: result.value.count })
   }
 
-  function selectLayout(layout: Models.AvailableLayout.AvailableLayout) {
+  function selectLayout(layout: AvailableLayout.AvailableLayout) {
     dispatch({ type: 'select-layout', layout })
   }
 
+  function selectDeck(deck: Deck) {
+    dispatch({ type: 'select-deck', deck })
+  }
+
   function back() {
-    if (state.phase !== 'mapping') {
-      return
-    }
-    dispatch({ type: 'layouts-loaded', layouts: state.layouts })
+    dispatch({ type: 'back' })
   }
 
   function setTerm(value: string) {
@@ -220,6 +285,7 @@ export function useImportPage() {
     state,
     requestPermission,
     selectLayout,
+    selectDeck,
     back,
     setTerm,
     setDefinition,

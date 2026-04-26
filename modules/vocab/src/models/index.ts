@@ -1,5 +1,6 @@
 export * as AvailableLayout from './available-layout'
 export * as AvailableLayoutId from './available-layout-id'
+export * as DeckId from './deck-id'
 export * as VocabFieldMapping from './vocab-field-mapping'
 export * as VocabFieldTarget from './vocab-field-target'
 export * as VocabId from './vocab-id'
