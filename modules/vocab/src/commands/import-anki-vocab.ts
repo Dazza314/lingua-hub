@@ -3,8 +3,8 @@ import { Result } from '@praha/byethrow'
 import type { InvalidLayoutError, VocabSourceUnavailableError } from '../errors'
 import type { DeckId } from '../models/deck-id'
 import type { VocabSourceLayout } from '../models/vocab-source-layout'
-import type { VocabRepository } from '../ports/vocab-repository'
 import type { AnkiVocabSource } from '../ports/anki-vocab-source'
+import type { VocabRepository } from '../ports/vocab-repository'
 
 type ImportVocabDeps = {
   getVocabItems: AnkiVocabSource['getVocabItems']

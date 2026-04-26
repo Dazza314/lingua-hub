@@ -59,7 +59,8 @@ export function createGetVocabItems(
         if (term === undefined || definition === undefined) {
           return Result.fail(
             new InvalidLayoutError(
-              `Note ${note.guid} is missing a required field (term or definition)`,
+              `Note is missing a required field (term or definition)`,
+              { context: note },
             ),
           )
         }
