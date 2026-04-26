@@ -7,7 +7,7 @@ import {
 } from '../../../errors'
 import * as VocabId from '../../../models/vocab-id'
 import * as VocabItem from '../../../models/vocab-item'
-import type { VocabSource } from '../../../ports/vocab-source'
+import type { AnkiVocabSource } from '../../../ports/anki-vocab-source'
 import type { AnkiDroidClient } from './anki-droid-adapter'
 
 // Dedicated namespace for deriving VocabIds from Anki note guids
@@ -15,7 +15,7 @@ const ANKI_VOCAB_ID_NAMESPACE = 'b4a1c6e2-3f8d-4a2b-9c7e-1d5f0e8b3a6c'
 
 export function createGetVocabItems(
   client: AnkiDroidClient,
-): VocabSource['getVocabItems'] {
+): AnkiVocabSource['getVocabItems'] {
   return async (layout, query) => {
     const result = await client.getNotesWithCards({
       modelId: layout.id,

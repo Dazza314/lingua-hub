@@ -2,7 +2,7 @@ export * from './models/index'
 
 export { supabaseVocabRepositoryFactories } from './adapters/vocab-repository/supabase-vocab-repository/supabase-vocab-repository'
 export { createAnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
-export { importVocab } from './commands/import-vocab'
+export { importAnkiVocab } from './commands/import-anki-vocab'
 export {
   InvalidLayoutError,
   VocabItemNotFoundError,
@@ -10,4 +10,4 @@ export {
 } from './errors'
 export type { VocabItem } from './models/vocab-item'
 export type { VocabRepository } from './ports/vocab-repository'
-export type { VocabSource } from './ports/vocab-source'
+export type { AnkiVocabSource } from './ports/anki-vocab-source'

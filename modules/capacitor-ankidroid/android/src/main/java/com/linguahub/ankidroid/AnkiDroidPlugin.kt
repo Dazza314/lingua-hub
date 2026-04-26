@@ -177,6 +177,44 @@ class AnkiDroidPlugin : Plugin() {
         }
     }
 
+    @PluginMethod
+    fun getModelIdsForDeck(call: PluginCall) {
+        if (!hasAnkiDroidPermission()) {
+            call.reject("Permission not granted", "PERMISSION_DENIED")
+            return
+        }
+        val deckId = call.getString("deckId")
+        if (deckId.isNullOrEmpty()) {
+            call.reject("deckId is required", "INVALID_ARGUMENTS")
+            return
+        }
+        try {
+            val searchQuery = buildNoteSearchQuery(deckId = deckId)
+            val uri = if (searchQuery != null) {
+                NOTES_URI.buildUpon().appendQueryParameter("search", searchQuery).build()
+            } else {
+                NOTES_URI
+            }
+            val seen = mutableSetOf<String>()
+            val modelIds = JSArray()
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                val midCol = it.getColumnIndex("mid")
+                while (it.moveToNext()) {
+                    val mid = if (midCol >= 0) it.getString(midCol) ?: "" else ""
+                    if (mid.isNotEmpty() && seen.add(mid)) {
+                        modelIds.put(mid)
+                    }
+                }
+            }
+            val result = JSObject()
+            result.put("modelIds", modelIds)
+            call.resolve(result)
+        } catch (e: Exception) {
+            call.reject("Failed to query model IDs for deck: ${e.message}", "UNKNOWN")
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Reading data
     // -------------------------------------------------------------------------

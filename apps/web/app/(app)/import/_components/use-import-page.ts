@@ -5,16 +5,14 @@ import { Language, makeParse, UserId } from '@lingua-hub/core'
 import {
   AvailableLayout,
   createAnkiDroidAdapter,
-  DeckId,
-  importVocab,
+  Deck,
+  importAnkiVocab,
   supabaseVocabRepositoryFactories,
   VocabFieldMapping,
   VocabSourceLayout,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { useReducer } from 'react'
-
-type Deck = { id: DeckId.DeckId; name: string }
 
 type State =
   | { phase: 'checking-permission' }
@@ -24,20 +22,20 @@ type State =
   | {
       phase: 'picking-deck'
       layouts: AvailableLayout.AvailableLayout[]
-      decks: Deck[]
+      decks: Deck.Deck[]
     }
   | {
       phase: 'picking-layout'
       layouts: AvailableLayout.AvailableLayout[]
-      decks: Deck[]
-      deck: Deck
+      decks: Deck.Deck[]
+      deck: Deck.Deck
     }
   | {
       phase: 'mapping'
       layouts: AvailableLayout.AvailableLayout[]
       layout: AvailableLayout.AvailableLayout
-      decks: Deck[]
-      deck: Deck
+      decks: Deck.Deck[]
+      deck: Deck.Deck
       term: string
       definition: string
       reading: string
@@ -52,11 +50,11 @@ type Action =
   | {
       type: 'layouts-loaded'
       layouts: AvailableLayout.AvailableLayout[]
-      decks: Deck[]
+      decks: Deck.Deck[]
     }
   | { type: 'layout-error'; message: string }
   | { type: 'select-layout'; layout: AvailableLayout.AvailableLayout }
-  | { type: 'select-deck'; deck: Deck }
+  | { type: 'select-deck'; deck: Deck.Deck }
   | { type: 'set-term'; value: string }
   | { type: 'set-definition'; value: string }
   | { type: 'set-reading'; value: string }
@@ -160,7 +158,7 @@ export function useImportPage() {
     dispatch({ type: 'permission-granted' })
     const [layoutsResult, decksResult] = await Promise.all([
       adapter.getAvailableLayouts(),
-      ankiDroidClient.getDecks(),
+      adapter.getDecks(),
     ])
     if (Result.isFailure(layoutsResult)) {
       dispatch({ type: 'layout-error', message: layoutsResult.error.message })
@@ -173,10 +171,7 @@ export function useImportPage() {
     dispatch({
       type: 'layouts-loaded',
       layouts: layoutsResult.value,
-      decks: decksResult.value.decks.map((d) => ({
-        id: DeckId.deckIdSchema.parse(d.id),
-        name: d.name,
-      })),
+      decks: decksResult.value,
     })
   }
 
@@ -240,7 +235,7 @@ export function useImportPage() {
       return
     }
 
-    const result = await importVocab({
+    const result = await importAnkiVocab({
       getVocabItems: adapter.getVocabItems,
       upsertVocabItems:
         supabaseVocabRepositoryFactories.createUpsertVocabItems(supabase),
@@ -258,7 +253,7 @@ export function useImportPage() {
     dispatch({ type: 'select-layout', layout })
   }
 
-  function selectDeck(deck: Deck) {
+  function selectDeck(deck: Deck.Deck) {
     dispatch({ type: 'select-deck', deck })
   }
 

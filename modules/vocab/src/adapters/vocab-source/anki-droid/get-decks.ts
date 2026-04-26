@@ -1,16 +1,15 @@
 import { ValidationError } from '@lingua-hub/core'
 import { Result } from '@praha/byethrow'
 import { VocabSourceUnavailableError } from '../../../errors'
-import * as AvailableLayout from '../../../models/available-layout'
-import * as AvailableLayoutId from '../../../models/available-layout-id'
+import { deckSchema } from '../../../models/deck'
 import type { AnkiVocabSource } from '../../../ports/anki-vocab-source'
 import type { AnkiDroidClient } from './anki-droid-adapter'
 
-export function createGetAvailableLayouts(
+export function createGetDecks(
   client: AnkiDroidClient,
-): AnkiVocabSource['getAvailableLayouts'] {
+): AnkiVocabSource['getDecks'] {
   return async () => {
-    const result = await client.getModels()
+    const result = await client.getDecks()
 
     if (Result.isFailure(result)) {
       if (result.error instanceof ValidationError) {
@@ -23,15 +22,6 @@ export function createGetAvailableLayouts(
       )
     }
 
-    const layouts = result.value.models.map<AvailableLayout.AvailableLayout>(
-      (model) => ({
-        id: AvailableLayoutId.availableLayoutIdSchema.parse(model.id),
-        name: model.name,
-        fields: model.fieldNames,
-        sampleValues: {},
-      }),
-    )
-
-    return Result.succeed(layouts)
+    return Result.succeed(result.value.decks.map((d) => deckSchema.parse(d)))
   }
 }

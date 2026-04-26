@@ -7,6 +7,7 @@ import {
   AddNoteResponse,
   CountNotesResponse,
   DecksResponse,
+  ModelIdsResponse,
   ModelsResponse,
   NoteQuery,
   NoteWithCardsResponse,
@@ -24,6 +25,7 @@ type AnkiDroidBridge = {
   requestPermission(): Promise<unknown>
   getDecks(): Promise<unknown>
   getModels(): Promise<unknown>
+  getModelIdsForDeck(options: unknown): Promise<unknown>
   getNotesWithCards(options?: unknown): Promise<unknown>
   getNoteWithCards(options: unknown): Promise<unknown>
   countNotes(options?: unknown): Promise<unknown>
@@ -75,6 +77,15 @@ export const ankiDroidClient = {
 
   getModels(): AnkiDroidResult<ModelsResponse.ModelsResponse> {
     return call(() => bridge.getModels(), ModelsResponse.parse)
+  },
+
+  getModelIdsForDeck(options: {
+    deckId: string
+  }): AnkiDroidResult<ModelIdsResponse.ModelIdsResponse> {
+    return call(
+      () => bridge.getModelIdsForDeck(options),
+      ModelIdsResponse.parse,
+    )
   },
 
   getNotesWithCards(
