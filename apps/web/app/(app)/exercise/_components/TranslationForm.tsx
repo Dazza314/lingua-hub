@@ -1,17 +1,15 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 type Props = {
-  onNextAction: (answer: string) => void
+  onSubmit: (answer: string) => void
 }
 
-export function TranslationForm({ onNextAction }: Props) {
+export function TranslationForm({ onSubmit }: Props) {
   const [answer, setAnswer] = useState('')
 
-  function handleNext() {
-    onNextAction(answer)
+  function handleSubmit() {
+    onSubmit(answer)
     setAnswer('')
   }
 
@@ -24,8 +22,8 @@ export function TranslationForm({ onNextAction }: Props) {
         placeholder="Your translation…"
         className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring/50 min-h-28 w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none focus-visible:ring-[3px]"
       />
-      <Button size="lg" className="w-full" onClick={handleNext}>
-        Next
+      <Button size="lg" className="w-full" onClick={handleSubmit}>
+        Submit
       </Button>
     </div>
   )
