@@ -45,10 +45,38 @@ export function AndroidImportPage() {
     return <Message>{state.message}</Message>
   }
 
+  if (state.phase === 'picking-deck') {
+    return (
+      <div className="flex flex-1 flex-col gap-4 px-4 py-6">
+        <h2 className="text-sm font-medium">Select a deck</h2>
+        <ul className="flex flex-col gap-2">
+          {state.decks.map((deck) => (
+            <li key={deck.id}>
+              <button
+                className="bg-card w-full rounded-xl border p-4 text-left"
+                onClick={() => selectDeck(deck)}
+              >
+                <p className="font-medium">{deck.name}</p>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
   if (state.phase === 'picking-layout') {
     return (
       <div className="flex flex-1 flex-col gap-4 px-4 py-6">
-        <h2 className="text-sm font-medium">Select a note type</h2>
+        <div className="flex items-center gap-2">
+          <button
+            className="text-muted-foreground text-sm underline-offset-4 hover:underline"
+            onClick={back}
+          >
+            ← Back
+          </button>
+          <h2 className="text-sm font-medium">Select a note type</h2>
+        </div>
         <ul className="flex flex-col gap-2">
           {state.layouts.map((layout) => (
             <li key={layout.id}>
@@ -60,34 +88,6 @@ export function AndroidImportPage() {
                 <p className="text-muted-foreground mt-1 text-xs">
                   {layout.fields.join(', ')}
                 </p>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
-
-  if (state.phase === 'picking-deck') {
-    return (
-      <div className="flex flex-1 flex-col gap-4 px-4 py-6">
-        <div className="flex items-center gap-2">
-          <button
-            className="text-muted-foreground text-sm underline-offset-4 hover:underline"
-            onClick={back}
-          >
-            ← Back
-          </button>
-          <h2 className="text-sm font-medium">Select a deck</h2>
-        </div>
-        <ul className="flex flex-col gap-2">
-          {state.decks.map((deck) => (
-            <li key={deck.id}>
-              <button
-                className="bg-card w-full rounded-xl border p-4 text-left"
-                onClick={() => selectDeck(deck)}
-              >
-                <p className="font-medium">{deck.name}</p>
               </button>
             </li>
           ))}

@@ -22,15 +22,15 @@ type State =
   | { phase: 'loading-layouts' }
   | { phase: 'layout-error'; message: string }
   | {
-      phase: 'picking-layout'
+      phase: 'picking-deck'
       layouts: AvailableLayout.AvailableLayout[]
       decks: Deck[]
     }
   | {
-      phase: 'picking-deck'
+      phase: 'picking-layout'
       layouts: AvailableLayout.AvailableLayout[]
-      layout: AvailableLayout.AvailableLayout
       decks: Deck[]
+      deck: Deck
     }
   | {
       phase: 'mapping'
@@ -74,32 +74,32 @@ function reducer(state: State, action: Action): State {
       return { phase: 'permission-denied' }
     case 'layouts-loaded':
       return {
-        phase: 'picking-layout',
+        phase: 'picking-deck',
         layouts: action.layouts,
         decks: action.decks,
       }
     case 'layout-error':
       return { phase: 'layout-error', message: action.message }
-    case 'select-layout':
-      if (state.phase !== 'picking-layout') {
-        return state
-      }
-      return {
-        phase: 'picking-deck',
-        layouts: state.layouts,
-        layout: action.layout,
-        decks: state.decks,
-      }
     case 'select-deck':
       if (state.phase !== 'picking-deck') {
         return state
       }
       return {
-        phase: 'mapping',
+        phase: 'picking-layout',
         layouts: state.layouts,
-        layout: state.layout,
         decks: state.decks,
         deck: action.deck,
+      }
+    case 'select-layout':
+      if (state.phase !== 'picking-layout') {
+        return state
+      }
+      return {
+        phase: 'mapping',
+        layouts: state.layouts,
+        layout: action.layout,
+        decks: state.decks,
+        deck: state.deck,
         term: '',
         definition: '',
         reading: '',
@@ -122,15 +122,15 @@ function reducer(state: State, action: Action): State {
     case 'back':
       if (state.phase === 'mapping') {
         return {
-          phase: 'picking-deck',
+          phase: 'picking-layout',
           layouts: state.layouts,
-          layout: state.layout,
           decks: state.decks,
+          deck: state.deck,
         }
       }
-      if (state.phase === 'picking-deck') {
+      if (state.phase === 'picking-layout') {
         return {
-          phase: 'picking-layout',
+          phase: 'picking-deck',
           layouts: state.layouts,
           decks: state.decks,
         }
