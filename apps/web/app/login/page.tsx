@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { LoginButton } from './_components/LoginButton'
 
+export const dynamic = 'force-dynamic'
+
 export default async function LoginPage() {
   const supabase = await createClient()
   const {
