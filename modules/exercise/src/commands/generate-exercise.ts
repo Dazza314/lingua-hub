@@ -12,7 +12,7 @@ const MAX_OUTPUT_TOKENS = 1024
 const exerciseLlmSchema = exerciseSchema.omit({ language: true })
 
 function buildSystemPrompt(targetLanguage: Language.Language): string {
-  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a short, natural sentence in ${targetLanguage}, situated in a specific scenario (setting + situation). The scenario should be in English. The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items and that a learner at this vocabulary level can plausibly decode.`
+  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a short, natural sentence in ${targetLanguage}, situated in a specific scenario (setting + situation). The scenario should be in English. The scenario should only provide additional context, not describe the sentence itself. The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items. It does not need to include all of them - prioritise sounding natural.`
 }
 
 export type GenerateExerciseDeps = {
