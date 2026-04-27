@@ -1,2 +1,3 @@
 pnpm-lock.yaml
 supabase/src/database.types.ts
+apps/mobile/android/app/src/main/assets/
