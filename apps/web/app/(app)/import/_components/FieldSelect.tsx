@@ -5,6 +5,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSafeAreaInsetBottom } from '@/hooks/use-safe-area-inset-bottom'
+
+const DROPDOWN_SCREEN_MARGIN = 8
 
 type Props = {
   label: string
@@ -25,6 +28,7 @@ export function FieldSelect({
   sampleValues,
   onChange,
 }: Props) {
+  const safeAreaBottom = useSafeAreaInsetBottom()
   const sample = value ? sampleValues[value] : undefined
   return (
     <div className="flex flex-col gap-1">
@@ -39,7 +43,9 @@ export function FieldSelect({
         <SelectTrigger className="w-full">
           <SelectValue />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+          collisionPadding={{ bottom: safeAreaBottom + DROPDOWN_SCREEN_MARGIN }}
+        >
           {fields.map((f) => (
             <SelectItem key={f || NONE} value={f || NONE}>
               {f || '— none —'}

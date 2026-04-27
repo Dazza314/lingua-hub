@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Figtree } from 'next/font/google'
 import { cn } from '@/lib/utils'
@@ -8,6 +8,10 @@ const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' })
 export const metadata: Metadata = {
   title: 'Lingua Hub',
   description: 'Language learning powered by your Anki vocabulary',
+}
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({
