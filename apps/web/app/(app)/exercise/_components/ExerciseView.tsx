@@ -116,6 +116,7 @@ export function ExerciseView({ initialExercise }: Props) {
               </p>
             )}
             <Button
+              ref={(ref) => ref?.focus()}
               size="lg"
               className="w-full"
               onClick={handleNext}
