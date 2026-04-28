@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { motionTokens, transitions } from '@/lib/animations'
 import type { Exercise } from '@lingua-hub/exercise'
 import { Result } from '@praha/byethrow'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -42,14 +43,6 @@ export function ExerciseView({ initialExercise }: Props) {
     })
   }
 
-  if (isPending) {
-    return (
-      <div className="flex flex-1 items-center justify-center">
-        <p className="text-muted-foreground text-sm">Generating exercise…</p>
-      </div>
-    )
-  }
-
   if (Result.isFailure(result)) {
     if (result.error.type === 'EmptyVocabError') {
       return (
@@ -77,21 +70,36 @@ export function ExerciseView({ initialExercise }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
-      <ExerciseCard exercise={result.value} />
+      <ExerciseCard exercise={result.value} isLoading={isPending} />
       <AnimatePresence mode="wait">
         {userTranslation === null ? (
-          <TranslationForm key="form" onSubmit={handleSubmit} />
+          <motion.div
+            key="form"
+            initial={{ opacity: 0, y: motionTokens.distance.sm }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -motionTokens.distance.sm }}
+            transition={transitions.ease}
+          >
+            <TranslationForm onSubmit={handleSubmit} />
+          </motion.div>
         ) : (
-          <motion.div key="evaluated" className="flex flex-col gap-6">
+          <motion.div
+            key="evaluated"
+            className="flex flex-col gap-6"
+            initial={{ opacity: 0, y: motionTokens.distance.sm }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -motionTokens.distance.sm }}
+            transition={transitions.ease}
+          >
             <div className="bg-background border-input rounded-xl border px-4 py-3">
               <p className="text-sm">{userTranslation}</p>
             </div>
             {(evaluationState.status === 'streaming' ||
               evaluationState.status === 'complete') && (
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: motionTokens.distance.sm }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={transitions.ease}
               >
                 <EvaluationCard
                   evaluation={
