@@ -1,17 +1,18 @@
 import { Exercise } from '@lingua-hub/exercise'
 import { useCallback, useState } from 'react'
+import { streamOrderedFields } from '../../stream-ordered-fields'
 
 type GenerateState =
-  | { status: 'idle' }
+  | { status: 'loading' }
   | { status: 'streaming'; partial: Partial<Exercise.Exercise> }
   | { status: 'complete'; exercise: Exercise.Exercise }
   | { status: 'error'; kind: 'empty-vocab' | 'other'; message: string }
 
 export function useGenerateExercise() {
-  const [state, setState] = useState<GenerateState>({ status: 'idle' })
+  const [state, setState] = useState<GenerateState>({ status: 'loading' })
 
   const generate = useCallback(async () => {
-    setState({ status: 'streaming', partial: {} })
+    setState({ status: 'loading' })
 
     try {
       const response = await fetch('/api/exercise/generate', { method: 'POST' })
@@ -35,34 +36,16 @@ export function useGenerateExercise() {
       }
 
       const reader = response.body.getReader()
-      const decoder = new TextDecoder()
-      let buffer = ''
-      let lastPartial: Partial<Exercise.Exercise> = {}
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) {
-          break
-        }
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() ?? ''
-        for (const line of lines) {
-          if (!line.trim()) {
-            continue
-          }
-          const partial = JSON.parse(line) as Partial<Exercise.Exercise>
-          lastPartial = partial
+      const exercise = await streamOrderedFields<Exercise.Exercise>({
+        reader,
+        setState: (partial) => {
           setState({ status: 'streaming', partial })
-        }
-      }
+        },
+        fieldNames: ['scenario', 'sentence'],
+      })
 
-      const parsed = Exercise.exerciseSchema.safeParse(lastPartial)
-      if (parsed.success) {
-        setState({ status: 'complete', exercise: parsed.data })
-      } else {
-        throw new Error('Invalid exercise response')
-      }
+      setState({ status: 'complete', exercise })
     } catch (err) {
       setState({
         status: 'error',

@@ -68,7 +68,7 @@ export function ExerciseView() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
-      <ExerciseCard exercise={exercise} />
+      <ExerciseCard exercise={exercise} status={generateState.status} />
       <AnimatePresence mode="wait">
         {userTranslation === null ? (
           <motion.div key="form">
