@@ -84,7 +84,7 @@ export function ExerciseView() {
               <motion.div
                 initial={{ opacity: 0, y: motionTokens.distance.sm }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={transitions.ease}
+                transition={transitions.slow}
               >
                 <EvaluationCard
                   evaluation={

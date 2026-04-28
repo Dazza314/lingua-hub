@@ -13,16 +13,17 @@ export function ExerciseCard({ exercise }: Props) {
 
   return (
     <motion.div
+      layout
       initial={{ opacity: 0, y: -motionTokens.distance.sm }}
       animate={{ opacity: 1, y: 0 }}
-      transition={transitions.ease}
+      transition={transitions.slow}
       className="relative bg-card rounded-2xl border p-6"
     >
-      <p className="text-muted-foreground mb-4 text-sm">
+      <motion.p layout className="text-muted-foreground mb-4 text-sm min-h-5">
         {setting}
         {setting && situation ? ' — ' : ''}
         {situation}
-      </p>
+      </motion.p>
       <p className="text-2xl leading-snug font-medium">{sentence}</p>
     </motion.div>
   )
