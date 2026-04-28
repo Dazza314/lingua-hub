@@ -18,6 +18,12 @@ export function TranslationForm({ onSubmit }: Props) {
       <textarea
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSubmit()
+          }
+        }}
         rows={1}
         autoFocus
         placeholder="Your translation…"
