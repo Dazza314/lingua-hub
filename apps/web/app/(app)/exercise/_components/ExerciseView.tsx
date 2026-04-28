@@ -3,48 +3,38 @@
 import { Button } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
 import type { Exercise } from '@lingua-hub/exercise'
-import { Result } from '@praha/byethrow'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState, useTransition } from 'react'
-import {
-  generateExerciseAction,
-  type GenerateExerciseResult,
-} from '../_actions/generate-exercise'
+import { useEffect, useState } from 'react'
 import { EvaluationCard } from './EvaluationCard'
 import { ExerciseCard } from './ExerciseCard'
 import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
+import { useGenerateExercise } from './use-generate-exercise'
 
-type Props = {
-  initialExercise: Exercise.Exercise
-}
-
-export function ExerciseView({ initialExercise }: Props) {
-  const [result, setResult] = useState<Awaited<GenerateExerciseResult>>(() =>
-    Result.succeed(initialExercise),
-  )
-  const [isPending, startTransition] = useTransition()
-  const [userTranslation, setUserTranslation] = useState<string | null>(null)
+export function ExerciseView() {
+  const { state: generateState, generate } = useGenerateExercise()
   const { state: evaluationState, evaluate } = useEvaluateExercise()
+  const [userTranslation, setUserTranslation] = useState<string | null>(null)
+
+  useEffect(() => {
+    void generate()
+  }, [generate])
 
   function handleSubmit(translation: string) {
-    if (Result.isFailure(result)) {
+    if (generateState.status !== 'complete') {
       return
     }
     setUserTranslation(translation)
-    evaluate(result.value, translation)
+    evaluate(generateState.exercise, translation)
   }
 
   function handleNext() {
     setUserTranslation(null)
-    startTransition(async () => {
-      const next = await generateExerciseAction()
-      setResult(next)
-    })
+    void generate()
   }
 
-  if (Result.isFailure(result)) {
-    if (result.error.type === 'EmptyVocabError') {
+  if (generateState.status === 'error') {
+    if (generateState.kind === 'empty-vocab') {
       return (
         <div className="flex flex-1 items-center justify-center px-6">
           <p className="text-muted-foreground text-center text-sm">
@@ -56,7 +46,7 @@ export function ExerciseView({ initialExercise }: Props) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
         <p className="text-muted-foreground text-center text-sm">
-          {result.error.message}
+          {generateState.message}
         </p>
         <button
           className="text-primary text-sm underline-offset-4 hover:underline"
@@ -68,29 +58,24 @@ export function ExerciseView({ initialExercise }: Props) {
     )
   }
 
+  const exercise: Partial<Exercise.Exercise> =
+    generateState.status === 'complete'
+      ? generateState.exercise
+      : generateState.status === 'streaming'
+        ? generateState.partial
+        : {}
+  const isStreaming = generateState.status !== 'complete'
+
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
-      <ExerciseCard exercise={result.value} isLoading={isPending} />
+      <ExerciseCard exercise={exercise} />
       <AnimatePresence mode="wait">
         {userTranslation === null ? (
-          <motion.div
-            key="form"
-            initial={{ opacity: 0, y: motionTokens.distance.sm }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -motionTokens.distance.sm }}
-            transition={transitions.ease}
-          >
-            <TranslationForm onSubmit={handleSubmit} />
+          <motion.div key="form">
+            <TranslationForm onSubmit={handleSubmit} disabled={isStreaming} />
           </motion.div>
         ) : (
-          <motion.div
-            key="evaluated"
-            className="flex flex-col gap-6"
-            initial={{ opacity: 0, y: motionTokens.distance.sm }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -motionTokens.distance.sm }}
-            transition={transitions.ease}
-          >
+          <motion.div key="evaluated" className="flex flex-col gap-6">
             <div className="bg-background border-input rounded-xl border px-4 py-3">
               <p className="text-sm">{userTranslation}</p>
             </div>

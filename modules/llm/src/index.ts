@@ -6,6 +6,7 @@ export {
 } from './adapters/google-llm-client/google-llm-client'
 export { LlmStreamError } from './errors'
 export type {
+  DeepPartial,
   GenerateObjectParams,
   LlmClient,
   MessageParam,

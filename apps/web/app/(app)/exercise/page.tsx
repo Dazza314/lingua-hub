@@ -1,7 +1,5 @@
-import { Exercise } from './_components/Exercise'
-
-export const dynamic = 'force-dynamic'
+import { ExerciseView } from './_components/ExerciseView'
 
 export default function Page() {
-  return <Exercise />
+  return <ExerciseView />
 }

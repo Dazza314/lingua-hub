@@ -1,22 +1,23 @@
 import type { Language, UserId } from '@lingua-hub/core'
-import type { LlmClient } from '@lingua-hub/llm'
+import type { DeepPartial, LlmClient, LlmStreamError } from '@lingua-hub/llm'
 import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
+import z from 'zod'
 import { EmptyVocabError } from '../errors'
-import { type Exercise, exerciseSchema } from '../models/exercise'
+import * as Exercise from '../models/exercise'
 
 const DEFAULT_VOCAB_COUNT = 5
 const MAX_OUTPUT_TOKENS = 1024
 
-// Schema for what the LLM generates — excludes `language`, which is known from input
-const exerciseLlmSchema = exerciseSchema.omit({ language: true })
+// Schema for what the LLM generates — excludes `language`, which is injected from input
+const exerciseLlmSchema = Exercise.exerciseSchema.omit({ language: true })
 
 function buildSystemPrompt(targetLanguage: Language.Language): string {
   return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a short, natural sentence in ${targetLanguage}, situated in a specific scenario (setting + situation). The scenario should be in English. The scenario should only provide additional context, not describe the sentence itself. The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items. It does not need to include all of them - prioritise sounding natural.`
 }
 
 export type GenerateExerciseDeps = {
-  generateObject: LlmClient['generateObject']
+  streamObject: LlmClient['streamObject']
   getVocabItems: VocabRepository['getVocabItems']
 }
 
@@ -26,15 +27,20 @@ export type GenerateExerciseInput = {
   count?: number
 }
 
+type GenerateExerciseResult = Result.ResultAsync<
+  AsyncIterable<Result.Result<DeepPartial<Exercise.Exercise>, LlmStreamError>>,
+  EmptyVocabError
+>
+
 export function generateExercise({
   getVocabItems,
-  generateObject,
+  streamObject,
 }: GenerateExerciseDeps) {
   return async ({
     userId,
     targetLanguage,
     count = DEFAULT_VOCAB_COUNT,
-  }: GenerateExerciseInput): Result.ResultAsync<Exercise, EmptyVocabError> => {
+  }: GenerateExerciseInput): GenerateExerciseResult => {
     const allItems = await getVocabItems({ userId, language: targetLanguage })
 
     if (allItems.length === 0) {
@@ -42,14 +48,34 @@ export function generateExercise({
     }
 
     const sampled = sampleRandom(allItems, count)
-    const draft = await generateObject({
+    const stream = await streamObject({
       schema: exerciseLlmSchema,
       system: buildSystemPrompt(targetLanguage),
       messages: [{ role: 'user', content: buildUserPrompt(sampled) }],
       maxTokens: MAX_OUTPUT_TOKENS,
     })
 
-    return Result.succeed({ ...draft, language: targetLanguage })
+    return Result.succeed(withLanguage(stream, targetLanguage))
+  }
+}
+
+async function* withLanguage(
+  stream: AsyncIterable<
+    Result.Result<
+      DeepPartial<z.infer<typeof exerciseLlmSchema>>,
+      LlmStreamError
+    >
+  >,
+  language: Language.Language,
+): AsyncIterable<
+  Result.Result<DeepPartial<Exercise.Exercise>, LlmStreamError>
+> {
+  for await (const chunk of stream) {
+    if (Result.isSuccess(chunk)) {
+      yield Result.succeed({ ...chunk.value, language })
+    } else {
+      yield chunk
+    }
   }
 }
 
