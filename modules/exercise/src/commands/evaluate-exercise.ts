@@ -10,7 +10,7 @@ function buildSystemPrompt(): string {
 
 function buildUserPrompt(exercise: Exercise, userTranslation: string): string {
   return `Sentence: ${exercise.sentence}
-Scenario: ${exercise.scenarioFrame.setting} — ${exercise.scenarioFrame.situation}
+Scenario: ${exercise.scenario}
 Learner's translation: ${userTranslation}`
 }
 
