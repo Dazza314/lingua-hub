@@ -1,6 +1,6 @@
 import { Evaluation, Exercise } from '@lingua-hub/exercise'
 import { Result } from '@praha/byethrow'
-import { setTimeout as sleep } from 'timers/promises'
+import { setTimeout } from 'timers/promises'
 
 const FEEDBACK = 'Good attempt, but the word order is off.'
 const SUGGESTED = 'Je mange une pomme.'
@@ -14,14 +14,14 @@ export async function* mockEvaluateExercise(
 
   let feedback = ''
   for (const word of FEEDBACK.split(' ')) {
-    await sleep(WORD_DELAY_MS)
+    await setTimeout(WORD_DELAY_MS)
     feedback += (feedback ? ' ' : '') + word
     yield Result.succeed({ isCorrect: false, feedback })
   }
 
   let suggestedTranslation = ''
   for (const word of SUGGESTED.split(' ')) {
-    await sleep(WORD_DELAY_MS)
+    await setTimeout(WORD_DELAY_MS)
     suggestedTranslation += (suggestedTranslation ? ' ' : '') + word
     yield Result.succeed({
       isCorrect: false,
