@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import type { Exercise } from '@lingua-hub/exercise'
 import { Result } from '@praha/byethrow'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useTransition } from 'react'
 import {
   generateExerciseAction,
@@ -77,36 +78,46 @@ export function ExerciseView({ initialExercise }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
       <ExerciseCard exercise={result.value} />
-      {userTranslation === null ? (
-        <TranslationForm onSubmit={handleSubmit} />
-      ) : (
-        <>
-          <p className="text-sm">{userTranslation}</p>
-          {(evaluationState.status === 'streaming' ||
-            evaluationState.status === 'complete') && (
-            <EvaluationCard
-              evaluation={
-                evaluationState.status === 'streaming'
-                  ? evaluationState.partial
-                  : evaluationState.evaluation
-              }
-            />
-          )}
-          {evaluationState.status === 'error' && (
-            <p className="text-muted-foreground text-sm">
-              {evaluationState.error.message}
-            </p>
-          )}
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={handleNext}
-            disabled={evaluationState.status === 'streaming'}
-          >
-            Next
-          </Button>
-        </>
-      )}
+      <AnimatePresence mode="wait">
+        {userTranslation === null ? (
+          <TranslationForm key="form" onSubmit={handleSubmit} />
+        ) : (
+          <motion.div key="evaluated" className="flex flex-col gap-6">
+            <div className="bg-background border-input rounded-xl border px-4 py-3">
+              <p className="text-sm">{userTranslation}</p>
+            </div>
+            {(evaluationState.status === 'streaming' ||
+              evaluationState.status === 'complete') && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <EvaluationCard
+                  evaluation={
+                    evaluationState.status === 'streaming'
+                      ? evaluationState.partial
+                      : evaluationState.evaluation
+                  }
+                />
+              </motion.div>
+            )}
+            {evaluationState.status === 'error' && (
+              <p className="text-muted-foreground text-sm">
+                {evaluationState.error.message}
+              </p>
+            )}
+            <Button
+              size="lg"
+              className="w-full"
+              onClick={handleNext}
+              disabled={evaluationState.status === 'streaming'}
+            >
+              Next
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

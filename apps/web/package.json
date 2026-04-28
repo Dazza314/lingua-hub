@@ -19,6 +19,7 @@
     "@t3-oss/env-nextjs": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
+    "framer-motion": "catalog:",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

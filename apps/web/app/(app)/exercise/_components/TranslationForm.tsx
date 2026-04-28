@@ -18,9 +18,10 @@ export function TranslationForm({ onSubmit }: Props) {
       <textarea
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
+        rows={1}
         autoFocus
         placeholder="Your translation…"
-        className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring/50 min-h-28 w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none focus-visible:ring-[3px]"
+        className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring/50 field-sizing-content w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none focus-visible:ring-[3px]"
       />
       <Button size="lg" className="w-full" onClick={handleSubmit}>
         Submit
