@@ -82,9 +82,10 @@ export function ExerciseView() {
             {(evaluationState.status === 'streaming' ||
               evaluationState.status === 'complete') && (
               <motion.div
-                initial={{ opacity: 0, y: motionTokens.distance.lg }}
+                initial={{ opacity: 0, y: motionTokens.distance.md }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={transitions.slow}
+                exit={{ opacity: 0, y: -motionTokens.distance.lg }}
+                transition={transitions.ease}
               >
                 <EvaluationCard
                   evaluation={

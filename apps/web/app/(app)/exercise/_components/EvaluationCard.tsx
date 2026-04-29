@@ -1,4 +1,5 @@
 import type { Evaluation } from '@lingua-hub/exercise'
+import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
@@ -33,7 +34,9 @@ export function EvaluationCard({ evaluation, status }: Props) {
     >
       <div ref={innerRef} className="p-6 gap-3 flex flex-col">
         {evaluation.isCorrect !== undefined && (
-          <p
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className={
               evaluation.isCorrect
                 ? 'font-medium text-green-600'
@@ -41,7 +44,7 @@ export function EvaluationCard({ evaluation, status }: Props) {
             }
           >
             {evaluation.isCorrect ? 'Correct' : 'Not quite'}
-          </p>
+          </motion.p>
         )}
         {evaluation.feedback && (
           <p className="text-sm">
