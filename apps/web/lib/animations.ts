@@ -5,9 +5,9 @@ export const motionTokens = {
     lg: 40,
   },
   duration: {
-    fast: 0.15,
-    normal: 0.25,
-    slow: 0.5,
+    fast: 0.25,
+    normal: 0.5,
+    slow: 1,
   },
   stiffness: {
     loose: 150,
