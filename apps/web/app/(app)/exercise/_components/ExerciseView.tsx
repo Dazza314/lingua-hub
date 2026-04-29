@@ -92,6 +92,7 @@ export function ExerciseView() {
                       ? evaluationState.partial
                       : evaluationState.evaluation
                   }
+                  status={evaluationState.status}
                 />
               </motion.div>
             )}

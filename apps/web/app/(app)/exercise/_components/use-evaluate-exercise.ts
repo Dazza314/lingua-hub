@@ -1,6 +1,7 @@
-import { Evaluation } from '@lingua-hub/exercise'
 import type { Exercise } from '@lingua-hub/exercise'
+import { Evaluation } from '@lingua-hub/exercise'
 import { useState } from 'react'
+import { streamOrderedFields } from '../../stream-ordered-fields'
 
 type EvaluationState =
   | { status: 'idle' }
@@ -29,29 +30,14 @@ export function useEvaluateExercise() {
       }
 
       const reader = response.body.getReader()
-      const decoder = new TextDecoder()
-      let buffer = ''
-      let lastPartial: Partial<Evaluation.Evaluation> = {}
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) {
-          break
-        }
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() ?? ''
-        for (const line of lines) {
-          if (!line.trim()) {
-            continue
-          }
-          const partial = JSON.parse(line) as Partial<Evaluation.Evaluation>
-          lastPartial = partial
-          setState({ status: 'streaming', partial })
-        }
-      }
+      const raw = await streamOrderedFields<Evaluation.Evaluation>({
+        reader,
+        setState: (partial) => setState({ status: 'streaming', partial }),
+        fieldNames: ['feedback', 'suggestedTranslation'],
+      })
 
-      const parsed = Evaluation.evaluationSchema.safeParse(lastPartial)
+      const parsed = Evaluation.evaluationSchema.safeParse(raw)
       if (parsed.success) {
         setState({ status: 'complete', evaluation: parsed.data })
       } else {

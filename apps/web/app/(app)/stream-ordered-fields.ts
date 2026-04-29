@@ -1,7 +1,11 @@
+type StringFields<T> = keyof {
+  [Key in keyof T as T[Key] extends string | null ? Key : never]: unknown
+}
+
 type StreamOrderedFieldsOptions<T> = {
   reader: ReadableStreamDefaultReader<Uint8Array>
   setState: (state: Partial<T>) => void
-  fieldNames: (keyof T)[]
+  fieldNames: StringFields<T>[]
   speedMs?: number
 }
 
@@ -55,6 +59,18 @@ export async function streamOrderedFields<T>({
       // merge latest values
       for (const key of Object.keys(partial) as (keyof T)[]) {
         values[key] = partial[key] as string
+      }
+
+      // pass through non-animated fields immediately
+      let hasPassThrough = false
+      for (const key of Object.keys(partial) as (keyof T)[]) {
+        if (!(fieldNames as (keyof T)[]).includes(key)) {
+          display[key] = partial[key] as string
+          hasPassThrough = true
+        }
+      }
+      if (hasPassThrough) {
+        setState({ ...display } as Partial<T>)
       }
 
       // 👉 animate in strict order
