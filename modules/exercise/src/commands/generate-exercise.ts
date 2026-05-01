@@ -6,14 +6,14 @@ import z from 'zod'
 import { EmptyVocabError } from '../errors'
 import * as Exercise from '../models/exercise'
 
-const DEFAULT_VOCAB_COUNT = 5
+const DEFAULT_VOCAB_COUNT = 10
 const MAX_OUTPUT_TOKENS = 1024
 
 // Schema for what the LLM generates — excludes `language`, which is injected from input
 const exerciseLlmSchema = Exercise.exerciseSchema.omit({ language: true })
 
 function buildSystemPrompt(targetLanguage: Language.Language): string {
-  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a short, natural sentence in ${targetLanguage}, situated in a specific scenario (setting + situation). The scenario should be in English. The scenario should only provide additional context, not describe the sentence itself. The learner will translate your sentence into English as practice. Prefer sentences that naturally incorporate several of the provided vocab items. It does not need to include all of them - prioritise sounding natural.`
+  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary in ${targetLanguage}, produce a natural sentence in ${targetLanguage} using a subset of the vocabularly provided. Also provide a "scenario" in English. This is to provide additional required context, not describe the sentence itself (avoid using words which are present in the sentence as these will inadvertently help the leaner). The learner will translate your sentence into English as practice. Try to avoid using complex vocabularly not included in the list`
 }
 
 export type GenerateExerciseDeps = {
