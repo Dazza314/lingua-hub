@@ -12,8 +12,6 @@ export function AndroidImportPage() {
     selectDeck,
     back,
     setTerm,
-    setDefinition,
-    setReading,
     sync,
     reset,
   } = useImportPage()
@@ -98,9 +96,9 @@ export function AndroidImportPage() {
   }
 
   if (state.phase === 'mapping') {
-    const { layout, term, definition, reading } = state
+    const { layout, term } = state
     const fieldOptions = ['', ...layout.fields]
-    const canSync = !!term && !!definition
+    const canSync = !!term
 
     return (
       <div className="flex flex-1 flex-col gap-6 px-4 py-6">
@@ -122,21 +120,6 @@ export function AndroidImportPage() {
             value={term}
             sampleValues={layout.sampleValues}
             onChange={setTerm}
-          />
-          <FieldSelect
-            label="Definition"
-            required
-            fields={fieldOptions}
-            value={definition}
-            sampleValues={layout.sampleValues}
-            onChange={setDefinition}
-          />
-          <FieldSelect
-            label="Reading"
-            fields={fieldOptions}
-            value={reading}
-            sampleValues={layout.sampleValues}
-            onChange={setReading}
           />
         </div>
 

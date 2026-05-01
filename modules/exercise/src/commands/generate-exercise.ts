@@ -80,12 +80,7 @@ async function* withLanguage(
 }
 
 function buildUserPrompt(vocabItems: VocabItem[]): string {
-  const list = vocabItems
-    .map(
-      (v) =>
-        `- ${v.term}${v.reading ? ` (${v.reading})` : ''}: ${v.definition}`,
-    )
-    .join('\n')
+  const list = vocabItems.map((v) => `- ${v.term}`).join('\n')
   return `Vocabulary the learner knows:\n${list}\n\nGenerate one exercise.`
 }
 

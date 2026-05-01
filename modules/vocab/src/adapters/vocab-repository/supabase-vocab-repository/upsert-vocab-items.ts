@@ -11,8 +11,6 @@ export function createUpsertVocabItems(
       user_id: userId,
       language: item.language,
       term: item.term,
-      definition: item.definition,
-      reading: item.reading ?? null,
     }))
 
     const { error } = await client

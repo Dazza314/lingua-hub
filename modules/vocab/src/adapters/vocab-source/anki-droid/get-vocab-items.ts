@@ -35,12 +35,6 @@ export function createGetVocabItems(
       )
     }
 
-    const termMapping = layout.mappings.find((m) => m.target === 'term')
-    const definitionMapping = layout.mappings.find(
-      (m) => m.target === 'definition',
-    )
-    const readingMapping = layout.mappings.find((m) => m.target === 'reading')
-
     return Result.pipe(
       result.value.data.reduce<
         Result.Result<VocabItem.VocabItem[], InvalidLayoutError>
@@ -49,19 +43,13 @@ export function createGetVocabItems(
           return acc
         }
 
-        const term = termMapping
-          ? note.fields[termMapping.sourceField]
-          : undefined
-        const definition = definitionMapping
-          ? note.fields[definitionMapping.sourceField]
-          : undefined
+        const term = note.fields[layout.termField]
 
-        if (term === undefined || definition === undefined) {
+        if (term === undefined) {
           return Result.fail(
-            new InvalidLayoutError(
-              `Note is missing a required field (term or definition)`,
-              { context: note },
-            ),
+            new InvalidLayoutError(`Note is missing a required field (term)`, {
+              context: note,
+            }),
           )
         }
 
@@ -73,10 +61,6 @@ export function createGetVocabItems(
             ),
             language: layout.language,
             term,
-            definition,
-            reading: readingMapping
-              ? note.fields[readingMapping.sourceField]
-              : undefined,
           },
         ])
       }, Result.succeed([])),

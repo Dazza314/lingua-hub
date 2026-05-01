@@ -42,28 +42,22 @@ export type Database = {
       vocab_items: {
         Row: {
           created_at: string
-          definition: string
           id: string
           language: string
-          reading: string | null
           term: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          definition: string
           id: string
           language: string
-          reading?: string | null
           term: string
           user_id: string
         }
         Update: {
           created_at?: string
-          definition?: string
           id?: string
           language?: string
-          reading?: string | null
           term?: string
           user_id?: string
         }

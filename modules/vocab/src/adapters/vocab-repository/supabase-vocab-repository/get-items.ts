@@ -9,7 +9,7 @@ export function createGetVocabItems(
   return async ({ userId, language }) => {
     const { data, error } = await client
       .from('vocab_items')
-      .select('id, language, term, definition, reading')
+      .select('id, language, term')
       .eq('user_id', userId)
       .eq('language', language)
 
@@ -22,8 +22,6 @@ export function createGetVocabItems(
         id: row.id,
         language: row.language,
         term: row.term,
-        definition: row.definition,
-        reading: row.reading ?? undefined,
       }),
     )
   }

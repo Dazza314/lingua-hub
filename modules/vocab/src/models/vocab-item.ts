@@ -6,8 +6,6 @@ export const vocabItemSchema = z.object({
   id: vocabIdSchema,
   language: Language.languageSchema,
   term: z.string(),
-  definition: z.string(),
-  reading: z.string().optional(),
 })
 
 export type VocabItem = z.infer<typeof vocabItemSchema>

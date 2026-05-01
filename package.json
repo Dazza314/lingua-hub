@@ -2,6 +2,7 @@
   "name": "lingua-hub",
   "devDependencies": {
     "@eslint/compat": "catalog:",
+    "dotenv-cli": "catalog:",
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "eslint-plugin-check-file": "catalog:",
@@ -30,7 +31,7 @@
     "fix": "pnpm lint:fix; pnpm format; pnpm syncpack:format",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "gen:supabase-types": "supabase gen types typescript --linked > modules/supabase/src/database.types.ts",
+    "gen:supabase-types": "dotenv -- supabase gen types typescript --linked > supabase/src/database.types.ts",
     "knip": "knip",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

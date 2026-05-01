@@ -9,7 +9,6 @@ import {
   Deck,
   importAnkiVocab,
   supabaseVocabRepositoryFactories,
-  VocabFieldMapping,
   VocabSourceLayout,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
@@ -44,8 +43,6 @@ type State =
       decks: Deck.Deck[]
       deck: Deck.Deck
       term: string
-      definition: string
-      reading: string
     }
   | { phase: 'syncing' }
   | { phase: 'sync-success'; count: number }
@@ -67,8 +64,6 @@ type Action =
       layouts: AvailableLayout.AvailableLayout[]
     }
   | { type: 'set-term'; value: string }
-  | { type: 'set-definition'; value: string }
-  | { type: 'set-reading'; value: string }
   | { type: 'sync-start' }
   | { type: 'sync-success'; count: number }
   | { type: 'sync-error'; message: string }
@@ -120,24 +115,12 @@ function reducer(state: State, action: Action): State {
         decks: state.decks,
         deck: state.deck,
         term: '',
-        definition: '',
-        reading: '',
       }
     case 'set-term':
       if (state.phase !== 'mapping') {
         return state
       }
       return { ...state, term: action.value }
-    case 'set-definition':
-      if (state.phase !== 'mapping') {
-        return state
-      }
-      return { ...state, definition: action.value }
-    case 'set-reading':
-      if (state.phase !== 'mapping') {
-        return state
-      }
-      return { ...state, reading: action.value }
     case 'back':
       if (state.phase === 'mapping') {
         return {
@@ -221,24 +204,16 @@ export function useImportPage() {
     if (state.phase !== 'mapping') {
       return
     }
-    if (!state.term || !state.definition) {
+    if (!state.term) {
       return
     }
-
-    const mappings: VocabFieldMapping.VocabFieldMapping[] = [
-      { sourceField: state.term, target: 'term' },
-      { sourceField: state.definition, target: 'definition' },
-      ...(state.reading
-        ? [{ sourceField: state.reading, target: 'reading' as const }]
-        : []),
-    ]
 
     const layout: VocabSourceLayout.VocabSourceLayout = {
       id: state.layout.id,
       name: state.layout.name,
       fields: state.layout.fields,
       language: TARGET_LANGUAGE,
-      mappings,
+      termField: state.term,
     }
 
     dispatch({ type: 'sync-start' })
@@ -304,12 +279,6 @@ export function useImportPage() {
   function setTerm(value: string) {
     dispatch({ type: 'set-term', value })
   }
-  function setDefinition(value: string) {
-    dispatch({ type: 'set-definition', value })
-  }
-  function setReading(value: string) {
-    dispatch({ type: 'set-reading', value })
-  }
   function reset() {
     dispatch({ type: 'reset' })
   }
@@ -323,8 +292,6 @@ export function useImportPage() {
     selectDeck,
     back,
     setTerm,
-    setDefinition,
-    setReading,
     sync,
     reset,
   }
