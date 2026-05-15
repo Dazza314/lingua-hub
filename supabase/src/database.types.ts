@@ -39,6 +39,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      curated_grammar_points: {
+        Row: {
+          explanation: string
+          id: string
+          language: string
+          title: string
+        }
+        Insert: {
+          explanation: string
+          id: string
+          language: string
+          title: string
+        }
+        Update: {
+          explanation?: string
+          id?: string
+          language?: string
+          title?: string
+        }
+        Relationships: []
+      }
       curated_vocab_items: {
         Row: {
           id: string
