@@ -2,18 +2,6 @@
 
 One-off idempotent script that populates `curated_vocab_items`, `sets`, and `set_vocab_items` for JLPT N5–N1.
 
-## Open: source the vocab files
-
-Need N5–N1 word lists as plain text files (one term per line). Proposed location once sourced:
-
-```
-supabase/seeds/jlpt/N5.txt
-supabase/seeds/jlpt/N4.txt
-supabase/seeds/jlpt/N3.txt
-supabase/seeds/jlpt/N2.txt
-supabase/seeds/jlpt/N1.txt
-```
-
 ## Idempotency strategy
 
 - **Vocab items** — upsert on `(language, term)`. The unique constraint already exists.
@@ -23,8 +11,6 @@ supabase/seeds/jlpt/N1.txt
 ## Script
 
 `supabase/scripts/seed-jlpt.ts` — TypeScript, run directly with Node. Uses the Supabase JS client.
-
-Generate the five set UUIDs when implementing and commit them here.
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
@@ -38,11 +24,31 @@ const SEEDS_DIR = join(__dirname, '..', 'seeds', 'jlpt')
 const LANGUAGE = 'ja'
 
 const LEVELS = [
-  { id: '<uuid-n5>', file: 'N5.txt', title: 'JLPT N5' },
-  { id: '<uuid-n4>', file: 'N4.txt', title: 'JLPT N4' },
-  { id: '<uuid-n3>', file: 'N3.txt', title: 'JLPT N3' },
-  { id: '<uuid-n2>', file: 'N2.txt', title: 'JLPT N2' },
-  { id: '<uuid-n1>', file: 'N1.txt', title: 'JLPT N1' },
+  {
+    id: '2492a856-9ea0-4020-80ad-94cf162690c3',
+    file: 'N5.txt',
+    title: 'JLPT N5',
+  },
+  {
+    id: '74bc49f8-b8a4-4cde-8639-2879a2fe5525',
+    file: 'N4.txt',
+    title: 'JLPT N4',
+  },
+  {
+    id: '85b487f8-8aa7-4e6d-93de-7c1861b2af99',
+    file: 'N3.txt',
+    title: 'JLPT N3',
+  },
+  {
+    id: '67790f1c-39e1-4916-93b5-e845f7b06bca',
+    file: 'N2.txt',
+    title: 'JLPT N2',
+  },
+  {
+    id: '6cfbea7a-a7b3-45f7-a1af-c65dc68db895',
+    file: 'N1.txt',
+    title: 'JLPT N1',
+  },
 ]
 
 const client = createClient<Database>(

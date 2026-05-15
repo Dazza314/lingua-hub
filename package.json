@@ -36,6 +36,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "husky",
+    "seed:jlpt": "dotenv -- node --experimental-strip-types supabase/scripts/seed-jlpt.ts",
     "syncpack:format": "syncpack format",
     "syncpack:lint": "syncpack lint",
     "test": "turbo run test",

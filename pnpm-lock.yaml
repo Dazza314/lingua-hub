@@ -432,6 +432,9 @@ importers:
 
   supabase:
     devDependencies:
+      '@supabase/supabase-js':
+        specifier: 'catalog:'
+        version: 2.100.1
       typescript:
         specifier: 'catalog:'
         version: 6.0.2

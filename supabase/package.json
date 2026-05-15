@@ -2,6 +2,7 @@
   "name": "@lingua-hub/supabase",
   "version": "0.0.0",
   "devDependencies": {
+    "@supabase/supabase-js": "catalog:",
     "typescript": "catalog:"
   },
   "main": "src/index.ts",
