@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import { generateExercise as generateExerciseCommand } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
-import { supabaseVocabRepositoryFactories } from '@lingua-hub/vocab'
+import { supabaseImportedVocabRepositoryFactories } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { getAuthenticatedUserId } from './auth'
 
@@ -26,7 +26,9 @@ export async function generateExercise() {
   return generateExerciseCommand({
     streamObject,
     getImportedVocabItems:
-      supabaseVocabRepositoryFactories.createGetImportedVocabItems(supabase),
+      supabaseImportedVocabRepositoryFactories.createGetImportedVocabItems(
+        supabase,
+      ),
   })({
     userId: authResult.value,
     targetLanguage: TARGET_LANGUAGE,

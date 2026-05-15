@@ -1,6 +1,9 @@
 import type { Language, UserId } from '@lingua-hub/core'
 import type { DeepPartial, LlmClient, LlmStreamError } from '@lingua-hub/llm'
-import type { ImportedVocabItem, VocabRepository } from '@lingua-hub/vocab'
+import type {
+  ImportedVocabItem,
+  ImportedVocabRepository,
+} from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import z from 'zod'
 import { EmptyVocabError } from '../errors'
@@ -18,7 +21,7 @@ function buildSystemPrompt(targetLanguage: Language.Language): string {
 
 export type GenerateExerciseDeps = {
   streamObject: LlmClient['streamObject']
-  getImportedVocabItems: VocabRepository['getImportedVocabItems']
+  getImportedVocabItems: ImportedVocabRepository['getImportedVocabItems']
 }
 
 export type GenerateExerciseInput = {

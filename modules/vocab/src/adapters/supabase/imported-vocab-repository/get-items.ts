@@ -1,11 +1,11 @@
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import * as ImportedVocabItem from '../../../models/imported-vocab-item'
-import type { VocabRepository } from '../../../ports/vocab-repository'
+import type { ImportedVocabRepository } from '../../../ports/imported-vocab-repository'
 
 export function createGetImportedVocabItems(
   client: SupabaseClient<Database>,
-): VocabRepository['getImportedVocabItems'] {
+): ImportedVocabRepository['getImportedVocabItems'] {
   return async ({ userId, language }) => {
     const { data, error } = await client
       .from('imported_vocab_items')

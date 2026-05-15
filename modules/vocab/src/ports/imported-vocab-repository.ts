@@ -4,7 +4,7 @@ import type { ImportedVocabItemNotFoundError } from '../errors'
 import type { ImportedVocabId } from '../models/imported-vocab-id'
 import type { ImportedVocabItem } from '../models/imported-vocab-item'
 
-export type VocabRepository = {
+export type ImportedVocabRepository = {
   upsertImportedVocabItems(
     userId: UserId.UserId,
     items: ImportedVocabItem[],

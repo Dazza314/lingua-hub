@@ -4,11 +4,11 @@ import type { InvalidLayoutError, VocabSourceUnavailableError } from '../errors'
 import type { DeckId } from '../models/deck-id'
 import type { VocabSourceLayout } from '../models/vocab-source-layout'
 import type { AnkiVocabSource } from '../ports/anki-vocab-source'
-import type { VocabRepository } from '../ports/vocab-repository'
+import type { ImportedVocabRepository } from '../ports/imported-vocab-repository'
 
 type ImportVocabDeps = {
   getVocabItems: AnkiVocabSource['getVocabItems']
-  upsertImportedVocabItems: VocabRepository['upsertImportedVocabItems']
+  upsertImportedVocabItems: ImportedVocabRepository['upsertImportedVocabItems']
 }
 
 type ImportVocabInput = {

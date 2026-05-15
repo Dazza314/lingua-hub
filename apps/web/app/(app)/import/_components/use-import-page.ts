@@ -8,7 +8,7 @@ import {
   createAnkiDroidAdapter,
   Deck,
   importAnkiVocab,
-  supabaseVocabRepositoryFactories,
+  supabaseImportedVocabRepositoryFactories,
   VocabSourceLayout,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
@@ -237,7 +237,7 @@ export function useImportPage() {
     const result = await importAnkiVocab({
       getVocabItems: adapter.getVocabItems,
       upsertImportedVocabItems:
-        supabaseVocabRepositoryFactories.createUpsertImportedVocabItems(
+        supabaseImportedVocabRepositoryFactories.createUpsertImportedVocabItems(
           supabase,
         ),
     })({ userId: userIdResult.value, layout, deckId: state.deck.id })

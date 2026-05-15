@@ -1,18 +1,18 @@
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { VocabRepository } from '../../../ports/vocab-repository'
+import type { ImportedVocabRepository } from '../../../ports/imported-vocab-repository'
 import { createDeleteImportedVocabItems } from './delete-items'
 import { createGetImportedVocabItems } from './get-items'
 import { createUpsertImportedVocabItems } from './upsert-vocab-items'
 
-type VocabRepositoryFactories = {
-  [Key in keyof VocabRepository as `create${Capitalize<Key>}`]: (
+type ImportedVocabRepositoryFactories = {
+  [Key in keyof ImportedVocabRepository as `create${Capitalize<Key>}`]: (
     client: SupabaseClient<Database>,
-  ) => VocabRepository[Key]
+  ) => ImportedVocabRepository[Key]
 }
 
-export const supabaseVocabRepositoryFactories = {
+export const supabaseImportedVocabRepositoryFactories = {
   createGetImportedVocabItems,
   createUpsertImportedVocabItems,
   createDeleteImportedVocabItems,
-} satisfies VocabRepositoryFactories
+} satisfies ImportedVocabRepositoryFactories

@@ -4,7 +4,10 @@ import {
   type LlmClient,
   LlmStreamError,
 } from '@lingua-hub/llm'
-import type { ImportedVocabItem, VocabRepository } from '@lingua-hub/vocab'
+import type {
+  ImportedVocabItem,
+  ImportedVocabRepository,
+} from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
 import { EmptyVocabError } from '../errors'
@@ -42,13 +45,13 @@ function makeImportedVocabItem(n: number): ImportedVocabItem {
 
 function makeGetImportedVocabItems(
   items: ImportedVocabItem[],
-): VocabRepository['getImportedVocabItems'] {
+): ImportedVocabRepository['getImportedVocabItems'] {
   return () => Promise.resolve(items)
 }
 
 function makeGetImportedVocabItemsThrowing(
   error: Error,
-): VocabRepository['getImportedVocabItems'] {
+): ImportedVocabRepository['getImportedVocabItems'] {
   return () => Promise.reject(error)
 }
 
