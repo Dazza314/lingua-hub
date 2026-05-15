@@ -11,3 +11,7 @@ export class InvalidLayoutError extends TypedError {
 export class ImportedVocabItemNotFoundError extends TypedError {
   override readonly type = 'ImportedVocabItemNotFoundError' as const
 }
+
+export class CuratedSetNotFoundError extends TypedError {
+  override readonly type = 'CuratedSetNotFoundError' as const
+}

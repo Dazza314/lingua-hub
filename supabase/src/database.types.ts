@@ -105,6 +105,84 @@ export type Database = {
         }
         Relationships: []
       }
+      set_grammar_points: {
+        Row: {
+          grammar_point_id: string
+          set_id: string
+        }
+        Insert: {
+          grammar_point_id: string
+          set_id: string
+        }
+        Update: {
+          grammar_point_id?: string
+          set_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "set_grammar_points_grammar_point_id_fkey"
+            columns: ["grammar_point_id"]
+            isOneToOne: false
+            referencedRelation: "curated_grammar_points"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "set_grammar_points_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      set_vocab_items: {
+        Row: {
+          set_id: string
+          vocab_item_id: string
+        }
+        Insert: {
+          set_id: string
+          vocab_item_id: string
+        }
+        Update: {
+          set_id?: string
+          vocab_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "set_vocab_items_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "set_vocab_items_vocab_item_id_fkey"
+            columns: ["vocab_item_id"]
+            isOneToOne: false
+            referencedRelation: "curated_vocab_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sets: {
+        Row: {
+          id: string
+          language: string
+          title: string
+        }
+        Insert: {
+          id: string
+          language: string
+          title: string
+        }
+        Update: {
+          id?: string
+          language?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
