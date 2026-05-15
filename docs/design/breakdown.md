@@ -27,7 +27,7 @@ Migration: create sets, set_vocab_items, set_grammar_points tables. Public read 
 Create Set domain model and persistence port. Decide how junction relationships are exposed on the model (eager list of item IDs, lazy lookup, or separate query).
 Create Supabase adapter for Set port. Read methods only (seed data, no user writes). Includes fetching associated vocab items and grammar points.
 
-- [ ] Phase 5: User sets
+- [ ] Phase 5: User sets _(descoped — future)_
 
 Migration: create user_sets table. RLS scoped to the owning user.
 Create UserSet domain model and persistence port.
