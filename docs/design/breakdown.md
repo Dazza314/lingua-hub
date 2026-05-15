@@ -1,11 +1,11 @@
 Ticket sketch
 I've grouped these into rough phases. Within a phase, tickets are roughly independent and could be parallelized; across phases, there are dependencies.
 
-- [ ] Phase 1a: DB rename
+- [x] Phase 1a: DB rename
 
 Migration: rename vocab_items to imported_vocab_items, add source column. Update RLS policies if present.
 
-- [ ] Phase 1b: Code rename
+- [x] Phase 1b: Code rename
 
 Rename domain model VocabItem → ImportedVocabItem. Update port interface and Supabase adapter. Update generated Supabase types. Update all references in the codebase.
 

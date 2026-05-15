@@ -6,7 +6,7 @@ import {
   VocabSourceUnavailableError,
 } from '../../../errors'
 import * as VocabId from '../../../models/vocab-id'
-import * as VocabItem from '../../../models/vocab-item'
+import * as ImportedVocabItem from '../../../models/imported-vocab-item'
 import type { AnkiVocabSource } from '../../../ports/anki-vocab-source'
 import type { AnkiDroidClient } from './anki-droid-adapter'
 
@@ -37,7 +37,7 @@ export function createGetVocabItems(
 
     return Result.pipe(
       result.value.data.reduce<
-        Result.Result<VocabItem.VocabItem[], InvalidLayoutError>
+        Result.Result<ImportedVocabItem.ImportedVocabItem[], InvalidLayoutError>
       >((acc, { note }) => {
         if (Result.isFailure(acc)) {
           return acc

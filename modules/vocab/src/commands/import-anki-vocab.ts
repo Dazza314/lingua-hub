@@ -8,7 +8,7 @@ import type { VocabRepository } from '../ports/vocab-repository'
 
 type ImportVocabDeps = {
   getVocabItems: AnkiVocabSource['getVocabItems']
-  upsertVocabItems: VocabRepository['upsertVocabItems']
+  upsertImportedVocabItems: VocabRepository['upsertImportedVocabItems']
 }
 
 type ImportVocabInput = {
@@ -19,7 +19,7 @@ type ImportVocabInput = {
 
 export function importAnkiVocab({
   getVocabItems,
-  upsertVocabItems,
+  upsertImportedVocabItems,
 }: ImportVocabDeps) {
   return async ({
     userId,
@@ -44,7 +44,7 @@ export function importAnkiVocab({
         return page
       }
 
-      await upsertVocabItems(userId, page.value.items)
+      await upsertImportedVocabItems(userId, page.value.items)
       done += page.value.items.length
 
       if (!page.value.hasMore) {

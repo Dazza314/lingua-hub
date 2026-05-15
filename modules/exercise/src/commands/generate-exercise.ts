@@ -1,6 +1,6 @@
 import type { Language, UserId } from '@lingua-hub/core'
 import type { DeepPartial, LlmClient, LlmStreamError } from '@lingua-hub/llm'
-import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
+import type { ImportedVocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import z from 'zod'
 import { EmptyVocabError } from '../errors'
@@ -18,7 +18,7 @@ function buildSystemPrompt(targetLanguage: Language.Language): string {
 
 export type GenerateExerciseDeps = {
   streamObject: LlmClient['streamObject']
-  getVocabItems: VocabRepository['getVocabItems']
+  getImportedVocabItems: VocabRepository['getImportedVocabItems']
 }
 
 export type GenerateExerciseInput = {
@@ -33,7 +33,7 @@ type GenerateExerciseResult = Result.ResultAsync<
 >
 
 export function generateExercise({
-  getVocabItems,
+  getImportedVocabItems,
   streamObject,
 }: GenerateExerciseDeps) {
   return async ({
@@ -41,7 +41,10 @@ export function generateExercise({
     targetLanguage,
     count = DEFAULT_VOCAB_COUNT,
   }: GenerateExerciseInput): GenerateExerciseResult => {
-    const allItems = await getVocabItems({ userId, language: targetLanguage })
+    const allItems = await getImportedVocabItems({
+      userId,
+      language: targetLanguage,
+    })
 
     if (allItems.length === 0) {
       return Result.fail(new EmptyVocabError('No vocabulary items found'))
@@ -79,7 +82,7 @@ async function* withLanguage(
   }
 }
 
-function buildUserPrompt(vocabItems: VocabItem[]): string {
+function buildUserPrompt(vocabItems: ImportedVocabItem[]): string {
   const list = vocabItems.map((v) => `- ${v.term}`).join('\n')
   return `Vocabulary the learner knows:\n${list}\n\nGenerate one exercise.`
 }

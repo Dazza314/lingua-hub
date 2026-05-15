@@ -236,8 +236,10 @@ export function useImportPage() {
 
     const result = await importAnkiVocab({
       getVocabItems: adapter.getVocabItems,
-      upsertVocabItems:
-        supabaseVocabRepositoryFactories.createUpsertVocabItems(supabase),
+      upsertImportedVocabItems:
+        supabaseVocabRepositoryFactories.createUpsertImportedVocabItems(
+          supabase,
+        ),
     })({ userId: userIdResult.value, layout, deckId: state.deck.id })
 
     if (Result.isFailure(result)) {

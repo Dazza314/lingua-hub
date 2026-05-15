@@ -8,6 +8,6 @@ export class InvalidLayoutError extends TypedError {
   override readonly type = 'InvalidLayoutError' as const
 }
 
-export class VocabItemNotFoundError extends TypedError {
-  override readonly type = 'VocabItemNotFoundError' as const
+export class ImportedVocabItemNotFoundError extends TypedError {
+  override readonly type = 'ImportedVocabItemNotFoundError' as const
 }

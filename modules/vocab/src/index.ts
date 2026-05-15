@@ -4,10 +4,10 @@ export { supabaseVocabRepositoryFactories } from './adapters/vocab-repository/su
 export { createAnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
 export { importAnkiVocab } from './commands/import-anki-vocab'
 export {
+  ImportedVocabItemNotFoundError,
   InvalidLayoutError,
-  VocabItemNotFoundError,
   VocabSourceUnavailableError,
 } from './errors'
-export type { VocabItem } from './models/vocab-item'
+export type { ImportedVocabItem } from './models/imported-vocab-item'
 export type { VocabRepository } from './ports/vocab-repository'
 export type { AnkiVocabSource } from './ports/anki-vocab-source'

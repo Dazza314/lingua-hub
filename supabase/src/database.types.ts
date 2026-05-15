@@ -39,11 +39,12 @@ export type Database = {
   }
   public: {
     Tables: {
-      vocab_items: {
+      imported_vocab_items: {
         Row: {
           created_at: string
           id: string
           language: string
+          source: Database['public']['Enums']['imported_vocab_source']
           term: string
           user_id: string
         }
@@ -51,6 +52,7 @@ export type Database = {
           created_at?: string
           id: string
           language: string
+          source: Database['public']['Enums']['imported_vocab_source']
           term: string
           user_id: string
         }
@@ -58,6 +60,7 @@ export type Database = {
           created_at?: string
           id?: string
           language?: string
+          source?: Database['public']['Enums']['imported_vocab_source']
           term?: string
           user_id?: string
         }
@@ -71,7 +74,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      imported_vocab_source: 'anki'
     }
     CompositeTypes: {
       [_ in never]: never

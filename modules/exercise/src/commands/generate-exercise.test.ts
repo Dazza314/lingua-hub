@@ -4,7 +4,7 @@ import {
   type LlmClient,
   LlmStreamError,
 } from '@lingua-hub/llm'
-import type { VocabItem, VocabRepository } from '@lingua-hub/vocab'
+import type { ImportedVocabItem, VocabRepository } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
 import { EmptyVocabError } from '../errors'
@@ -30,25 +30,25 @@ const FINAL_DRAFT: ExerciseDraft = {
   },
 }
 
-function makeVocabItem(n: number): VocabItem {
+function makeImportedVocabItem(n: number): ImportedVocabItem {
   vocabCounter += 1
   const suffix = vocabCounter.toString(16).padStart(12, '0')
   return {
-    id: `00000000-0000-4000-8000-${suffix}` as VocabItem['id'],
-    language: 'ja' as VocabItem['language'],
+    id: `00000000-0000-4000-8000-${suffix}` as ImportedVocabItem['id'],
+    language: 'ja' as ImportedVocabItem['language'],
     term: `term-${n}`,
   }
 }
 
-function makeGetVocabItems(
-  items: VocabItem[],
-): VocabRepository['getVocabItems'] {
+function makeGetImportedVocabItems(
+  items: ImportedVocabItem[],
+): VocabRepository['getImportedVocabItems'] {
   return () => Promise.resolve(items)
 }
 
-function makeGetVocabItemsThrowing(
+function makeGetImportedVocabItemsThrowing(
   error: Error,
-): VocabRepository['getVocabItems'] {
+): VocabRepository['getImportedVocabItems'] {
   return () => Promise.reject(error)
 }
 
@@ -104,12 +104,12 @@ function countBulletLines(content: string): number {
 
 describe('generateExercise', () => {
   it('streams partial chunks and a final draft on the happy path', async () => {
-    const items = Array.from({ length: 10 }, (_, i) => makeVocabItem(i))
+    const items = Array.from({ length: 10 }, (_, i) => makeImportedVocabItem(i))
     const { streamObject, calls } = makeStreamObject(chunksFor(FINAL_DRAFT))
 
     const result = await generateExercise({
       streamObject,
-      getVocabItems: makeGetVocabItems(items),
+      getImportedVocabItems: makeGetImportedVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(result.type).toBe('Success')
@@ -128,24 +128,24 @@ describe('generateExercise', () => {
   })
 
   it('passes exactly `count` vocab items to the LLM when vocab is larger than count', async () => {
-    const items = Array.from({ length: 10 }, (_, i) => makeVocabItem(i))
+    const items = Array.from({ length: 10 }, (_, i) => makeImportedVocabItem(i))
     const { streamObject, calls } = makeStreamObject(chunksFor(FINAL_DRAFT))
 
     await generateExercise({
       streamObject,
-      getVocabItems: makeGetVocabItems(items),
+      getImportedVocabItems: makeGetImportedVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 3 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(3)
   })
 
   it('passes all vocab items when `count` exceeds the vocab size', async () => {
-    const items = Array.from({ length: 2 }, (_, i) => makeVocabItem(i))
+    const items = Array.from({ length: 2 }, (_, i) => makeImportedVocabItem(i))
     const { streamObject, calls } = makeStreamObject(chunksFor(FINAL_DRAFT))
 
     await generateExercise({
       streamObject,
-      getVocabItems: makeGetVocabItems(items),
+      getImportedVocabItems: makeGetImportedVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, count: 5 })
 
     expect(countBulletLines(getUserPrompt(calls))).toBe(2)
@@ -156,7 +156,7 @@ describe('generateExercise', () => {
 
     const result = await generateExercise({
       streamObject,
-      getVocabItems: makeGetVocabItems([]),
+      getImportedVocabItems: makeGetImportedVocabItems([]),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Failure')
@@ -173,26 +173,26 @@ describe('generateExercise', () => {
     await expect(
       generateExercise({
         streamObject,
-        getVocabItems: makeGetVocabItemsThrowing(repoError),
+        getImportedVocabItems: makeGetImportedVocabItemsThrowing(repoError),
       })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE }),
     ).rejects.toThrow(repoError)
   })
 
   it('throws when the LLM call itself rejects', async () => {
     const llmError = new Error('model timed out')
-    const items = [makeVocabItem(0)]
+    const items = [makeImportedVocabItem(0)]
 
     await expect(
       generateExercise({
         streamObject: makeStreamObjectThrowing(llmError),
-        getVocabItems: makeGetVocabItems(items),
+        getImportedVocabItems: makeGetImportedVocabItems(items),
       })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE }),
     ).rejects.toThrow(llmError)
   })
 
   it('surfaces stream errors as failed chunks within the iterable', async () => {
     const streamError = new LlmStreamError('mid-stream failure')
-    const items = [makeVocabItem(0)]
+    const items = [makeImportedVocabItem(0)]
     const { streamObject } = makeStreamObject([
       Result.succeed({ scenarioFrame: { setting: 'a' } }),
       Result.fail(streamError),
@@ -200,7 +200,7 @@ describe('generateExercise', () => {
 
     const result = await generateExercise({
       streamObject,
-      getVocabItems: makeGetVocabItems(items),
+      getImportedVocabItems: makeGetImportedVocabItems(items),
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE })
 
     expect(result.type).toBe('Success')

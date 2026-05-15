@@ -1,14 +1,14 @@
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import * as VocabItem from '../../../models/vocab-item'
+import * as ImportedVocabItem from '../../../models/imported-vocab-item'
 import type { VocabRepository } from '../../../ports/vocab-repository'
 
-export function createGetVocabItems(
+export function createGetImportedVocabItems(
   client: SupabaseClient<Database>,
-): VocabRepository['getVocabItems'] {
+): VocabRepository['getImportedVocabItems'] {
   return async ({ userId, language }) => {
     const { data, error } = await client
-      .from('vocab_items')
+      .from('imported_vocab_items')
       .select('id, language, term')
       .eq('user_id', userId)
       .eq('language', language)
@@ -18,7 +18,7 @@ export function createGetVocabItems(
     }
 
     return (data ?? []).map((row) =>
-      VocabItem.dangerouslyCast({
+      ImportedVocabItem.dangerouslyCast({
         id: row.id,
         language: row.language,
         term: row.term,

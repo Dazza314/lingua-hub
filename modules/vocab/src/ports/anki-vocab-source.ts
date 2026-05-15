@@ -4,11 +4,11 @@ import type { AvailableLayout } from '../models/available-layout'
 import type { AvailableLayoutId } from '../models/available-layout-id'
 import type { Deck } from '../models/deck'
 import type { DeckId } from '../models/deck-id'
-import type { VocabItem } from '../models/vocab-item'
+import type { ImportedVocabItem } from '../models/imported-vocab-item'
 import type { VocabSourceLayout } from '../models/vocab-source-layout'
 
 type VocabItemsPage = {
-  items: VocabItem[]
+  items: ImportedVocabItem[]
   totalCount: number
   hasMore: boolean
 }

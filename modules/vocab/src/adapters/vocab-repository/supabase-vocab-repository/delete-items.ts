@@ -1,15 +1,15 @@
 import type { Database } from '@lingua-hub/supabase'
 import { Result } from '@praha/byethrow'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { VocabItemNotFoundError } from '../../../errors'
+import { ImportedVocabItemNotFoundError } from '../../../errors'
 import type { VocabRepository } from '../../../ports/vocab-repository'
 
-export function createDeleteVocabItems(
+export function createDeleteImportedVocabItems(
   client: SupabaseClient<Database>,
-): VocabRepository['deleteVocabItems'] {
+): VocabRepository['deleteImportedVocabItems'] {
   return async (userId, ids) => {
     const { data, error } = await client
-      .from('vocab_items')
+      .from('imported_vocab_items')
       .delete()
       .eq('user_id', userId)
       .in('id', ids)
@@ -26,7 +26,7 @@ export function createDeleteVocabItems(
 
     if (missing.length > 0) {
       return Result.fail(
-        new VocabItemNotFoundError(
+        new ImportedVocabItemNotFoundError(
           `Vocab items not found: ${missing.join(', ')}`,
         ),
       )

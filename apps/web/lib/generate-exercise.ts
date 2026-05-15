@@ -25,8 +25,8 @@ export async function generateExercise() {
 
   return generateExerciseCommand({
     streamObject,
-    getVocabItems:
-      supabaseVocabRepositoryFactories.createGetVocabItems(supabase),
+    getImportedVocabItems:
+      supabaseVocabRepositoryFactories.createGetImportedVocabItems(supabase),
   })({
     userId: authResult.value,
     targetLanguage: TARGET_LANGUAGE,
