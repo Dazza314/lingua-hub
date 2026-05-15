@@ -1,6 +1,7 @@
 export * from './models/index'
 
 export { supabaseVocabRepositoryFactories } from './adapters/vocab-repository/supabase-vocab-repository/supabase-vocab-repository'
+export { supabaseCuratedVocabRepositoryFactories } from './adapters/curated-vocab-repository/supabase-curated-vocab-repository/supabase-curated-vocab-repository'
 export { createAnkiDroidAdapter } from './adapters/vocab-source/anki-droid/anki-droid-adapter'
 export { importAnkiVocab } from './commands/import-anki-vocab'
 export {
