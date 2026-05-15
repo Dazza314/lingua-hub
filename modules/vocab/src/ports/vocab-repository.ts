@@ -1,7 +1,7 @@
 import type { Language, UserId } from '@lingua-hub/core'
 import type { Result } from '@praha/byethrow'
 import type { ImportedVocabItemNotFoundError } from '../errors'
-import type { VocabId } from '../models/vocab-id'
+import type { ImportedVocabId } from '../models/imported-vocab-id'
 import type { ImportedVocabItem } from '../models/imported-vocab-item'
 
 export type VocabRepository = {
@@ -15,6 +15,6 @@ export type VocabRepository = {
   }): Promise<ImportedVocabItem[]>
   deleteImportedVocabItems(
     userId: UserId.UserId,
-    ids: VocabId[],
+    ids: ImportedVocabId[],
   ): Result.ResultAsync<void, ImportedVocabItemNotFoundError>
 }
