@@ -21,7 +21,7 @@ Migration: create curated_grammar_points table. Public read, restricted write (R
 Create CuratedGrammarPoint domain model and persistence port.
 Create Supabase adapter for CuratedGrammarPoint port. Read methods only (seed data, no user writes).
 
-- [ ] Phase 4: Sets and junctions
+- [x] Phase 4: Sets and junctions
 
 Migration: create sets, set_vocab_items, set_grammar_points tables. Public read on sets and junctions, restricted write (RLS).
 Create Set domain model and persistence port. Decide how junction relationships are exposed on the model (eager list of item IDs, lazy lookup, or separate query).
