@@ -9,13 +9,13 @@ Migration: rename vocab_items to imported_vocab_items, add source column. Update
 
 Rename domain model VocabItem → ImportedVocabItem. Update port interface and Supabase adapter. Update generated Supabase types. Update all references in the codebase.
 
-- [ ] Phase 2: Curated vocab
+- [x] Phase 2: Curated vocab
 
 Migration: create curated_vocab_items table. Public read, restricted write (RLS).
 Create CuratedVocabItem domain model and persistence port.
 Create Supabase adapter for CuratedVocabItem port. Read methods only (seed data, no user writes).
 
-- [ ] Phase 3: Curated grammar
+- [x] Phase 3: Curated grammar
 
 Migration: create curated_grammar_points table. Public read, restricted write (RLS).
 Create CuratedGrammarPoint domain model and persistence port.
