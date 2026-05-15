@@ -1,11 +1,11 @@
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import * as CuratedVocabItem from '../../../models/curated-vocab-item'
-import type { CuratedVocabRepository } from '../../../ports/curated-vocab-repository'
+import type { CuratedContentRepository } from '../../../ports/curated-content-repository'
 
 export function createGetCuratedVocabItems(
   client: SupabaseClient<Database>,
-): CuratedVocabRepository['getCuratedVocabItems'] {
+): CuratedContentRepository['getCuratedVocabItems'] {
   return async ({ language }) => {
     const { data, error } = await client
       .from('curated_vocab_items')

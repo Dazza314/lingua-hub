@@ -1,11 +1,11 @@
 import type { Database } from '@lingua-hub/supabase'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import * as CuratedGrammarPoint from '../../../models/curated-grammar-point'
-import type { CuratedGrammarPointRepository } from '../../../ports/curated-grammar-point-repository'
+import type { CuratedContentRepository } from '../../../ports/curated-content-repository'
 
 export function createGetCuratedGrammarPoints(
   client: SupabaseClient<Database>,
-): CuratedGrammarPointRepository['getCuratedGrammarPoints'] {
+): CuratedContentRepository['getCuratedGrammarPoints'] {
   return async ({ language }) => {
     const { data, error } = await client
       .from('curated_grammar_points')
