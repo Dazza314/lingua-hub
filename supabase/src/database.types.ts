@@ -48,7 +48,7 @@ export type Database = {
         }
         Insert: {
           explanation: string
-          id: string
+          id?: string
           language: string
           title: string
         }
@@ -67,7 +67,7 @@ export type Database = {
           term: string
         }
         Insert: {
-          id: string
+          id?: string
           language: string
           term: string
         }
@@ -89,7 +89,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          id: string
+          id?: string
           language: string
           source: Database["public"]["Enums"]["imported_vocab_source"]
           term: string
@@ -172,7 +172,7 @@ export type Database = {
           title: string
         }
         Insert: {
-          id: string
+          id?: string
           language: string
           title: string
         }
