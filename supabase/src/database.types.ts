@@ -39,12 +39,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      curated_vocab_items: {
+        Row: {
+          id: string
+          language: string
+          term: string
+        }
+        Insert: {
+          id: string
+          language: string
+          term: string
+        }
+        Update: {
+          id?: string
+          language?: string
+          term?: string
+        }
+        Relationships: []
+      }
       imported_vocab_items: {
         Row: {
           created_at: string
           id: string
           language: string
-          source: Database['public']['Enums']['imported_vocab_source']
+          source: Database["public"]["Enums"]["imported_vocab_source"]
           term: string
           user_id: string
         }
@@ -52,7 +70,7 @@ export type Database = {
           created_at?: string
           id: string
           language: string
-          source: Database['public']['Enums']['imported_vocab_source']
+          source: Database["public"]["Enums"]["imported_vocab_source"]
           term: string
           user_id: string
         }
@@ -60,7 +78,7 @@ export type Database = {
           created_at?: string
           id?: string
           language?: string
-          source?: Database['public']['Enums']['imported_vocab_source']
+          source?: Database["public"]["Enums"]["imported_vocab_source"]
           term?: string
           user_id?: string
         }
@@ -74,7 +92,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      imported_vocab_source: 'anki'
+      imported_vocab_source: "anki"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -204,6 +222,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      imported_vocab_source: ["anki"],
+    },
   },
 } as const
