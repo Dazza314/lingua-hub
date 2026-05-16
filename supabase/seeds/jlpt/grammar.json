@@ -1,0 +1,1452 @@
+[
+  {
+    "level": "N5",
+    "grammar_point": "いちばん",
+    "example_jp": "ここがいちばん面白い場面です。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "が 1",
+    "example_jp": "弟がいる。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "が 2",
+    "example_jp": "難しいが、楽しい。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "か 1",
+    "example_jp": "ここかそこ。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "か 2",
+    "example_jp": "雨ですか。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "がある",
+    "example_jp": "川がある。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "がいる",
+    "example_jp": "可愛い女の子がいる。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "から 1",
+    "example_jp": "車で来ましたから。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "から 2",
+    "example_jp": "西からの風。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "くらい / ぐらい",
+    "example_jp": "東京まで、３０分くらいです。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "けど / けれども",
+    "example_jp": "早く寝たけれども、まだ眠たいです。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "する",
+    "example_jp": "質問する。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "だ / です",
+    "example_jp": "猫だ。猫です。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "たい",
+    "example_jp": "何食べたい？"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "だけ",
+    "example_jp": "これは水だけだ。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "たことがある",
+    "example_jp": "高い肉を食べたことがある。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "だろう 1",
+    "example_jp": "ペンがあるだろう。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "だろう 2",
+    "example_jp": "ここがいいだろう。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "つもり",
+    "example_jp": "日本に行くつもりだ。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "で 1",
+    "example_jp": "バーで飲む。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "で 2",
+    "example_jp": "バスで帰る。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "ている",
+    "example_jp": "何をしている？"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "てから",
+    "example_jp": "映画を見てから、帰ります。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "てください",
+    "example_jp": "食べてください。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "でしょう 1",
+    "example_jp": "雨でしょうね。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "でしょう 2",
+    "example_jp": "いいでしょう。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "てはいけない",
+    "example_jp": "ここに来てはいけない。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "てもいい",
+    "example_jp": "狭くてもいい。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "と 1",
+    "example_jp": "黒と白の猫。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "と 2",
+    "example_jp": "友達と見る。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "な",
+    "example_jp": "泣くな。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "ないでください",
+    "example_jp": "泣かないでください。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "なる",
+    "example_jp": "病気になる。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "に / へ",
+    "example_jp": "駅に行く。駅へ行く。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "に",
+    "example_jp": "街に住む。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "にいく",
+    "example_jp": "エレベーターで５かいにいく。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "にする",
+    "example_jp": "この音楽にする。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "の 1",
+    "example_jp": "私の犬です。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "の 2",
+    "example_jp": "彼は走るのが速い。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "のが下手",
+    "example_jp": "彼は漢字を書くのが下手。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "のが上手",
+    "example_jp": "彼女は歌うのが上手。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "のが好き",
+    "example_jp": "犬と遊ぶのが好き。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "ので",
+    "example_jp": "太いので、走るのは遅い。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "は",
+    "example_jp": "これは何？"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "ほうがいい 1",
+    "example_jp": "靴を脱いだほうがいいです。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "ほうがいい 2",
+    "example_jp": "そのことを言わないほうがいいかもしれない。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "前に",
+    "example_jp": "犬が門の前にいる。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "まだ",
+    "example_jp": "娘はまだ起きていません。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "まで",
+    "example_jp": "駅まで、歩く。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "も",
+    "example_jp": "服も古い。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "もう",
+    "example_jp": "もう帰った。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "や",
+    "example_jp": "鳥や馬が山にいました。"
+  },
+  {
+    "level": "N5",
+    "grammar_point": "より○○のほうが○○",
+    "example_jp": "飛行機より電車のほうが遅いです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "Volitional Form",
+    "example_jp": "映画をみようか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "後で",
+    "example_jp": "後で電話します。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "あまり○○ない",
+    "example_jp": "あまり肉を食べない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "いたす",
+    "example_jp": "今確認いたします。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "いらっしゃる",
+    "example_jp": "ここにはよくいらっしゃるんですか？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "お○○ください",
+    "example_jp": "お水をください。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "お○○になる",
+    "example_jp": "お世話になりました。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "おきに",
+    "example_jp": "一時間おきに電車があります。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "終わる",
+    "example_jp": "終わるまで、頑張った。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "かい",
+    "example_jp": "今朝は飯を食べたかい？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "かしら",
+    "example_jp": "裕子さんは大丈夫かしら。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "がする",
+    "example_jp": "いい匂いがする。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "方",
+    "example_jp": "私の考え方。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "かどうか",
+    "example_jp": "行くかどうか　分からない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "かな",
+    "example_jp": "外は寒いかな。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "かもしれない",
+    "example_jp": "アレルギーかもしれないですね。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "がる",
+    "example_jp": "怖がらないでください。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "急に",
+    "example_jp": "猫が急に噛み付いた。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ございます",
+    "example_jp": "ほかにご質問はございますか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "こと",
+    "example_jp": "これ見たことある？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ことができる",
+    "example_jp": "馬に乗ることができる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ことにする",
+    "example_jp": "家を買うことにした。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ことになる",
+    "example_jp": "他人に知れるとまずいことになるわね。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ごろ",
+    "example_jp": "３時ごろに作り終わる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "さ",
+    "example_jp": "このテーブルは丁度良い高さだ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "させられる",
+    "example_jp": "息子は退学させられた。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "させる",
+    "example_jp": "この美しい話はあなたを感動させるだろう。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "し",
+    "example_jp": "怖かったし、悲しかった。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "しか○○ない",
+    "example_jp": "四つしか椅子がない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "じゃないか",
+    "example_jp": "いいじゃないか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "すぎる",
+    "example_jp": "小さすぎる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ぜんぜん",
+    "example_jp": "お金がぜんぜんない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "そうだ 1",
+    "example_jp": "明日は気温が下がるそうだ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "そうだ 2",
+    "example_jp": "眠そうだね。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "そうに / そうな",
+    "example_jp": "あの時計は高そうに見える。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "それでも",
+    "example_jp": "明日雨降るの？それでも海に行く。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "そんなに",
+    "example_jp": "そんなに心配しないで。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たがる",
+    "example_jp": "彼は動物園に行きたがる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "だけで",
+    "example_jp": "この寒さだけで死ぬよ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "出す",
+    "example_jp": "トムは急に泣き出した。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たところ",
+    "example_jp": "なんか、そんな気がしていたところです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たばかり",
+    "example_jp": "今朝、着いたばかりです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たら",
+    "example_jp": "眠くなったら言ってね。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たらどう",
+    "example_jp": "もっと勉強したらどうですか？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "たり○○たり",
+    "example_jp": "掃除をしたり、洗濯したりした。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "続ける",
+    "example_jp": "仕事を続けてください。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てあげる",
+    "example_jp": "今回だけは許してあげる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てある",
+    "example_jp": "顔に嘘って書いてあるよ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ていく",
+    "example_jp": "大丈夫！お弁当を持って行くから。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ていただけませんか",
+    "example_jp": "窓を閉めていただけませんか？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ているところ",
+    "example_jp": "ボーナスの使い道を考えているところです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ておく / とく",
+    "example_jp": "冷蔵庫でジュースを冷やしておく。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てくる",
+    "example_jp": "泣けてくるなあ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てくれる",
+    "example_jp": "それ取ってくれる？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "でございます",
+    "example_jp": "京都ホテルでございます。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てしまう / ちゃう",
+    "example_jp": "お酒を飲み過ぎると、眠くなってしまう。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てすみません",
+    "example_jp": "遅れてすみません。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てほしい",
+    "example_jp": "一緒に勉強してほしいです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てみる",
+    "example_jp": "今週末に野球をしてみる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ても",
+    "example_jp": "たとえ両親が反対しても私は行く。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "でも",
+    "example_jp": "お茶でもどう？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てもらう",
+    "example_jp": "この仕事を手伝ってもらう。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "てよかった",
+    "example_jp": "今日運動してよかった。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "と",
+    "example_jp": "母と娘。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ということ",
+    "example_jp": "私にパーティに来てほしくないということはわかります。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "と思う",
+    "example_jp": "食べようと思う。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "とか○○とか",
+    "example_jp": "青とか水色が好き。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "とき",
+    "example_jp": "散歩するときは音楽を聴く。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ところ",
+    "example_jp": "今から帰るところです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ないで",
+    "example_jp": "泣かないで。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ながら",
+    "example_jp": "掃除しながら、テレビを見ます。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なくてはいけない / なくてはならない",
+    "example_jp": "毎日学校に行かなくてはいけない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なくてもいい",
+    "example_jp": "急がなくてもいいよ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なければいけない / なければならない",
+    "example_jp": "もっと勉強しなければいけないと思った。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なさい",
+    "example_jp": "勉強しなさい。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なさる",
+    "example_jp": "お飲み物はどうなさいますか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "など",
+    "example_jp": "腰や背中などが痛い。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "なら",
+    "example_jp": "君なら、できる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "にくい",
+    "example_jp": "箸は使いにくいです。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "の中で",
+    "example_jp": "果物の中で何が一番好きですか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "のに 1",
+    "example_jp": "無理って言ったのにまだやるの？"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "のに 2",
+    "example_jp": "手紙が届くのに三日かかりました。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "のように / のような",
+    "example_jp": "お箸はこのように使います。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ば",
+    "example_jp": "天気が良ければフジ山が見える。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "場合は",
+    "example_jp": "なお、雨の場合は中止です。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ばかり 1",
+    "example_jp": "彼女はいつも文句ばかり言う。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "始める",
+    "example_jp": "先生はクラスを始める。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "はずがない",
+    "example_jp": "彼なんかに出来るはずがない。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "はずだ",
+    "example_jp": "もっと良い方法があるはずだ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "必要",
+    "example_jp": "これは、必要ですか。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "必要がある",
+    "example_jp": "私たちは話す必要がある。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ほしい",
+    "example_jp": "君がほしい！"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "までに",
+    "example_jp": "明日までに電話をください。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "みたい",
+    "example_jp": "あの雲は鳥みたいだ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "みたいに/みたいな",
+    "example_jp": "レモンみたいな黄色。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "やすい",
+    "example_jp": "ケーキは作りやすい。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ようだ",
+    "example_jp": "誰か来たようだ。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ようと思う",
+    "example_jp": "今日は早めに寝ようと思う。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ように/ような",
+    "example_jp": "お箸はこのように使います。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ようにする",
+    "example_jp": "無駄にお金を使わないようにしている。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "ようになる",
+    "example_jp": "泥を落としたら、なんと新品のようになった。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "よていだ",
+    "example_jp": "私は九月に行く予定です。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "より",
+    "example_jp": "日本より熱い。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "らしい",
+    "example_jp": "彼女は女らしい。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "られる 1",
+    "example_jp": "その魚は生で食べられる。"
+  },
+  {
+    "level": "N4",
+    "grammar_point": "られる 2",
+    "example_jp": "若い人達に教えられた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "あまり",
+    "example_jp": "あまり肉を食べない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "あまりに",
+    "example_jp": "あまりにうるさかったので耳を塞いだわ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "いくら○○ても / いくら○○でも",
+    "example_jp": "いくら呼んでも彼は返事をしなかったわ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "一方だ",
+    "example_jp": "雨はひどくなる一方だ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "一方で",
+    "example_jp": "父は自分に厳しい一方で、他人には優しい。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "うちに",
+    "example_jp": "母はまだ暗いうちに起きる。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "おかげで",
+    "example_jp": "先生のおかげで大学に合格できました。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "おそらく",
+    "example_jp": "おそらく私のコンピューターには何百万枚もの写真が入っています。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "かけ",
+    "example_jp": "テーブルの上に食べかけのケーキが置いてある。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "がたい",
+    "example_jp": "お～天ぷらも捨てがたいなあ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "がち",
+    "example_jp": "急ぐととかく失敗しがちだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "代わりに",
+    "example_jp": "手紙の代わりにメールをする。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ぎみ",
+    "example_jp": "風邪気味だったので薬を飲ませた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "きり",
+    "example_jp": "私達は二人きりになった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "きる",
+    "example_jp": "何せ朝から晩迄働いて疲れきっているんだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "切れない",
+    "example_jp": "銀河には数え切れないほど星がある。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "くせに",
+    "example_jp": "この部屋は狭いくせに家賃がすごく高い。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "くらい / ぐらい",
+    "example_jp": "家から駅まで十分くらいです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "決して○○ない",
+    "example_jp": "トムは決して笑わない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "こそ",
+    "example_jp": "今年こそダイエットをする。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "こと",
+    "example_jp": "大きい声で喋らないこと。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ことか",
+    "example_jp": "何度注意したことか。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ことがある",
+    "example_jp": "小さい問題が大きい問題になることがある。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ことだ",
+    "example_jp": "同じ過ちを繰り返さないことだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ことに",
+    "example_jp": "兄は交通事故に遭ったが、幸いなことに、軽いけがで済んだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ことはない",
+    "example_jp": "あなたが心配することはないよ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "さえ",
+    "example_jp": "それは子供でさえ分かる。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "さえ○○ば / さえすれば / さえいれば",
+    "example_jp": "薬を飲みさえすれば治ります。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "しかない",
+    "example_jp": "今やるしかない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ずに",
+    "example_jp": "彼は何も言わずに去ってしまった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ずにはいられない",
+    "example_jp": "タツヤを気の毒に思わずにはいられなかったのだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "せいで",
+    "example_jp": "事故のせいで遅刻した。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "そうもない",
+    "example_jp": "我々にはとけそうもない謎さ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "その結果",
+    "example_jp": "その結果、無罪となっていた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "だけ 2",
+    "example_jp": "できるだけ、日本語を話さないようにしよう。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "た結果 / の結果",
+    "example_jp": "よく話し合った結果、やはり離婚ということになりました。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "だけど",
+    "example_jp": "飲み物だけど、辛い。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "確かに",
+    "example_jp": "確かに、そうですね。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たとえ○○ても",
+    "example_jp": "たとえ、嵐になっても絶対に行く。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たとえば",
+    "example_jp": "たとえば、茎を曲げたり、方向を変えたりできます。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たとたん",
+    "example_jp": "立ち上がったとたんに、目まいがした。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たびに",
+    "example_jp": "の本を読むたびに、彼のことを思い出す。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ために 1",
+    "example_jp": "誰かのために料理する。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ために 2",
+    "example_jp": "霧のために列車がおくれてしまった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たらいい / といい 1",
+    "example_jp": "これ何分チンしたらいい？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たらいい / といい 2",
+    "example_jp": "楽しいといいです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "たらいい / といい 3",
+    "example_jp": "今日の晩ご飯カレーだといいな。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "だらけ 1",
+    "example_jp": "靴が泥だらけになったよ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "だらけ 2",
+    "example_jp": "彼の話は矛盾だらけだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ついでに",
+    "example_jp": "郵便局へ行ったついでに、葉書を買ってきた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "っけ",
+    "example_jp": "ごめん、名前何だっけ？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "っぱなし",
+    "example_jp": "窓を開けっぱなしで出かけた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "っぽい",
+    "example_jp": "そのシャツは安っぽいね。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "つまり",
+    "example_jp": "つまり、あなたは何も知らないのですね。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "てごらん",
+    "example_jp": "絵を逆さにして見てごらん。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "て初めて",
+    "example_jp": "生まれて初めて布団を敷いた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "てもかまわない / てもかまいません",
+    "example_jp": "ドアを閉めてもかまいませんか？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "という",
+    "example_jp": "これは何という花ですか？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ということ",
+    "example_jp": "クリスさんから電話があって、少し遅れるということです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "というと",
+    "example_jp": "今日では、ブラウスというと女性用のシャツの事を指す。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "というのは 1",
+    "example_jp": "謎というのは説明できない事柄のことです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "というのは 2",
+    "example_jp": "わたしは肉は食べません。というのは、菜食主義だからです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "というのは 3",
+    "example_jp": "一番最初というのは、常に一番大変です。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "というより",
+    "example_jp": "今日は涼しいというより寒いくらいだった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "といっても",
+    "example_jp": "祝日といっても、特に特別なことは無い。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "とおり",
+    "example_jp": "真理子さんが言ったとおりだった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ところが",
+    "example_jp": "ところが計画は上手くいかなかった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "どころか",
+    "example_jp": "彼はワインどころかビールも飲まない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ところで",
+    "example_jp": "ところで、奥さんは元気？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "としたら / とすれば",
+    "example_jp": "明日死ぬとしたら、何がしたいですか。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "として",
+    "example_jp": "私は留学生として日本に入国しました。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "としない / とはしない",
+    "example_jp": "この部屋の中で遊ぶことはしないでください。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "とする 1",
+    "example_jp": "彼は私の質問から逃れようとしていました。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "とする 2",
+    "example_jp": "何言おうとしたか忘れちゃった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "途中に / 途中で",
+    "example_jp": "駅に行く道の途中にあります。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "と共に",
+    "example_jp": "彼は妻子と共に旅行に出た。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "とは限らない",
+    "example_jp": "テレビが真実を報道しているとは限らない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "どんなに○○ても",
+    "example_jp": "どんなに食べても彼女は太らない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ないことはない",
+    "example_jp": "スキーはできないことはないけど、もう何年もやってないから…"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "中",
+    "example_jp": "今電話中です。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ながら / いながら / ながらも",
+    "example_jp": "彼は毎回遅刻しないと言いながら、遅れています。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "なぜなら / なぜかというと",
+    "example_jp": "学校を変えた。なぜなら、僕のレベルのクラスがなかったからだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "なるべく",
+    "example_jp": "なるべく早く来てください。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "なんか / なんて",
+    "example_jp": "なんか変なもの踏んじゃった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "において / における",
+    "example_jp": "日本において国際会議が開かれた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "にかけて",
+    "example_jp": "明日は昼から夕方にかけて雨でしょう。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "にかわって / にかわり",
+    "example_jp": "野球にかわり、サッカーがさかんになってきた。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "に関する / に関して",
+    "example_jp": "生物に関する本を読む。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "に比べて",
+    "example_jp": "前年に比べて利益が上がりました。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "にしては",
+    "example_jp": "この子は4才にしては語彙が豊富だ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "にしても",
+    "example_jp": "冗談にしてもそれは酷過ぎる。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "に対して",
+    "example_jp": "彼は誰に対しても優しい。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "に違いない",
+    "example_jp": "彼女は日本人に違いない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "について",
+    "example_jp": "私はその事故について証言した。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "につれて",
+    "example_jp": "黒い雲が近づくにつれて、青い空は灰色になった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "にとって",
+    "example_jp": "私にとって貴重な体験でした。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "によって / による",
+    "example_jp": "この地震による津波の心配はありません。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "によると / によれば",
+    "example_jp": "天気予報によると明日は晴れです。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "間 / 間に 1",
+    "example_jp": "旅行の間、犬の世話をしてください。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "間 / 間に 2",
+    "example_jp": "彼は木の間にロープを張った。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ば○○ほど",
+    "example_jp": "この計画は考えば考えるほど気に入りません。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ばいい",
+    "example_jp": "明日のデート、何着て行けばいいと思う？"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ばかりでなく",
+    "example_jp": "おかずばかりでなくご飯も食べなさい。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ばよかった",
+    "example_jp": "電話してくれればよかったのに。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ふと 1",
+    "example_jp": "ふと昔の事を思い出したんだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ふと 2",
+    "example_jp": "ふと右を見たら、大きな木があった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ふりをする",
+    "example_jp": "彼女は聞こえないふりをした。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "べき",
+    "example_jp": "トムはもっと食べるべきだと思う。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "べきではない",
+    "example_jp": "子供の前でそんな話はするべきではない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "べつに○○ない / べつに○○じゃない",
+    "example_jp": "コーヒーはべつに好きじゃない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ほど",
+    "example_jp": "今夜は凍えるほど寒い。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ほど○○ない",
+    "example_jp": "死ほど恐ろしいものはない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "最中に",
+    "example_jp": "パーティーの最中に地震があった。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "まま",
+    "example_jp": "このまま時間を止めたい。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "まるで",
+    "example_jp": "彼のマジックはまるで奇跡です。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "向き 1",
+    "example_jp": "彼は車を後ろ向きに駐車したの。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "向き 2",
+    "example_jp": "これは小学生向きの童話集です。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "向け",
+    "example_jp": "それは少女向けの雑誌です。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "めったに",
+    "example_jp": "彼女はめったに怒りません。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "もしかしたら",
+    "example_jp": "もしかしたら来年転勤になるかもしれない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "もの",
+    "example_jp": "「どうしてパーティーに行かないの。」 「だって、忙しいもの。」"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ものだ",
+    "example_jp": "先人の教えには従うものだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ような気がする",
+    "example_jp": "いや、それを避けてきていたような気がする。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "ように",
+    "example_jp": "迷わないように地図を持って行って。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "わけがない",
+    "example_jp": "あなたのお金をもらえるわけがない！"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "わけだ",
+    "example_jp": "雪が降ってきた。道理で寒いわけだ。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "わけではない",
+    "example_jp": "私は彼を故意に傷つけたわけではない。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "わけにはいかない",
+    "example_jp": "彼の悪事を見過ごすわけにはいきません。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "わりに",
+    "example_jp": "私の息子は、歳のわりに大きい。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "を中心に",
+    "example_jp": "地球は軸を中心に回転します。"
+  },
+  {
+    "level": "N3",
+    "grammar_point": "をはじめ / をはじめとする",
+    "example_jp": "会議には中国をはじめ、アジアの国々が参加した。"
+  }
+]
