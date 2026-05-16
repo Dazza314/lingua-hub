@@ -6,7 +6,11 @@
       "ignoreDependencies": ["@lingua-hub/capacitor-ankidroid"]
     },
     "apps/web": {
-      "ignore": ["components/ui/**"]
+      "ignore": [
+        "components/ui/**",
+        "app/actions.ts",
+        "components/SignOutButton.tsx"
+      ]
     },
     "supabase": {
       "ignore": ["src/database.types.ts"]
