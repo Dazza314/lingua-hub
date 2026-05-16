@@ -1,9 +1,9 @@
-import { makeParse, UserId } from '@lingua-hub/core'
+import { makeParse, TypedError, UserId } from '@lingua-hub/core'
 import { Result } from '@praha/byethrow'
 import { createClient } from '@/lib/supabase/server'
 
-class UnauthenticatedError extends Error {
-  override readonly name = 'UnauthenticatedError' as const
+class UnauthenticatedError extends TypedError {
+  override readonly type = 'UnauthenticatedError' as const
 }
 
 const parseUserId = makeParse(UserId.userIdSchema)
