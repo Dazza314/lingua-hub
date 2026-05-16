@@ -12,33 +12,37 @@ const SEEDS_DIR = join(
 )
 const LANGUAGE = 'ja'
 
-const LEVELS = [
+type Level = 'N5' | 'N4' | 'N3' | 'N2' | 'N1'
+
+const LEVELS: { level: Level; id: string; title: string }[] = [
   {
+    level: 'N5',
     id: '2492a856-9ea0-4020-80ad-94cf162690c3',
-    file: 'N5.txt',
     title: 'JLPT N5',
   },
   {
+    level: 'N4',
     id: '74bc49f8-b8a4-4cde-8639-2879a2fe5525',
-    file: 'N4.txt',
     title: 'JLPT N4',
   },
   {
+    level: 'N3',
     id: '85b487f8-8aa7-4e6d-93de-7c1861b2af99',
-    file: 'N3.txt',
     title: 'JLPT N3',
   },
   {
+    level: 'N2',
     id: '67790f1c-39e1-4916-93b5-e845f7b06bca',
-    file: 'N2.txt',
     title: 'JLPT N2',
   },
   {
+    level: 'N1',
     id: '6cfbea7a-a7b3-45f7-a1af-c65dc68db895',
-    file: 'N1.txt',
     title: 'JLPT N1',
   },
 ]
+
+type GrammarEntry = { level: Level; grammar_point: string; example_jp: string }
 
 const supabaseUrl = process.env['SUPABASE_URL']
 const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
@@ -48,8 +52,19 @@ if (!supabaseUrl || !supabaseKey) {
 
 const client = createClient<Database>(supabaseUrl, supabaseKey)
 
-for (const { id, file, title } of LEVELS) {
-  const terms = readFileSync(join(SEEDS_DIR, file), 'utf8')
+const allGrammarEntries: GrammarEntry[] = JSON.parse(
+  readFileSync(join(SEEDS_DIR, 'grammar.json'), 'utf8'),
+)
+
+for (const { level, id, title } of LEVELS) {
+  const { error: setError } = await client
+    .from('sets')
+    .upsert({ id, language: LANGUAGE, title }, { onConflict: 'id' })
+  if (setError) {
+    throw setError
+  }
+
+  const terms = readFileSync(join(SEEDS_DIR, `${level}.txt`), 'utf8')
     .split('\n')
     .map((t) => t.trim())
     .filter(Boolean)
@@ -65,20 +80,44 @@ for (const { id, file, title } of LEVELS) {
     throw vocabError
   }
 
-  const { error: setError } = await client
-    .from('sets')
-    .upsert({ id, language: LANGUAGE, title }, { onConflict: 'id' })
-  if (setError) {
-    throw setError
-  }
-
-  const { error: linkError } = await client.from('set_vocab_items').upsert(
+  const { error: vocabLinkError } = await client.from('set_vocab_items').upsert(
     vocabRows.map((r) => ({ set_id: id, vocab_item_id: r.id })),
     { onConflict: 'set_id,vocab_item_id' },
   )
-  if (linkError) {
-    throw linkError
+  if (vocabLinkError) {
+    throw vocabLinkError
   }
 
-  console.log(`${title}: ${terms.length} terms`)
+  const grammarEntries = allGrammarEntries.filter((e) => e.level === level)
+
+  if (grammarEntries.length > 0) {
+    const { data: grammarRows, error: grammarError } = await client
+      .from('curated_grammar_points')
+      .upsert(
+        grammarEntries.map((e) => ({
+          language: LANGUAGE,
+          title: e.grammar_point,
+          explanation: e.example_jp,
+        })),
+        { onConflict: 'language,title' },
+      )
+      .select('id')
+    if (grammarError) {
+      throw grammarError
+    }
+
+    const { error: grammarLinkError } = await client
+      .from('set_grammar_points')
+      .upsert(
+        grammarRows.map((r) => ({ set_id: id, grammar_point_id: r.id })),
+        { onConflict: 'set_id,grammar_point_id' },
+      )
+    if (grammarLinkError) {
+      throw grammarLinkError
+    }
+  }
+
+  console.log(
+    `${title}: ${terms.length} vocab, ${grammarEntries.length} grammar points`,
+  )
 }
