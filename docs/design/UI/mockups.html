@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Practice App — UI Mockups</title>
+    <style>
+      :root {
+        --bg: #faf8f4;
+        --surface: #ffffff;
+        --surface-2: #f3f0e9;
+        --ink: #1a1a1a;
+        --ink-2: #6b6b6b;
+        --ink-3: #9a9a9a;
+        --line: rgba(0, 0, 0, 0.08);
+        --line-2: rgba(0, 0, 0, 0.14);
+        --accent: #c4452f;
+        --accent-bg: #fbeae5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        padding: 48px 32px 96px;
+      }
+
+      .doc-header {
+        max-width: 1200px;
+        margin: 0 auto 56px;
+      }
+      .doc-eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 12px;
+      }
+      .doc-title {
+        font-family:
+          'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+        font-size: 38px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        margin: 0 0 6px;
+      }
+      .doc-sub {
+        color: var(--ink-2);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .section {
+        max-width: 1200px;
+        margin: 0 auto 64px;
+      }
+      .section-title {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 20px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      /* Mobile row */
+      .mobile-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      .mobile-frame-wrap {
+        width: 280px;
+        flex-shrink: 0;
+      }
+      .mobile-label {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 10px;
+        padding-left: 4px;
+      }
+      .mobile-frame {
+        width: 280px;
+        height: 580px;
+        background: var(--surface);
+        border: 1px solid var(--line-2);
+        border-radius: 32px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow:
+          0 1px 0 rgba(0, 0, 0, 0.04),
+          0 8px 24px -12px rgba(0, 0, 0, 0.12);
+        position: relative;
+      }
+      .status-bar {
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 11px;
+        color: var(--ink-2);
+        font-weight: 500;
+      }
+      .screen-content {
+        flex: 1;
+        padding: 4px 20px 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .bottom-nav {
+        border-top: 1px solid var(--line);
+        display: flex;
+        padding: 8px 0 18px;
+        background: var(--surface);
+      }
+      .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        color: var(--ink-3);
+        font-size: 10px;
+      }
+      .nav-item.active {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .nav-icon {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+
+      /* Practice content */
+      .context-strip {
+        padding: 8px 0 14px;
+      }
+      .context-label {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 2px;
+      }
+      .context-value {
+        font-size: 13px;
+        color: var(--ink-2);
+        margin: 0;
+      }
+
+      .prompt-card {
+        background: var(--surface-2);
+        border-radius: 14px;
+        padding: 18px 16px;
+        margin: 0 0 16px;
+      }
+      .prompt-instr {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 8px;
+      }
+      .prompt-jp {
+        font-size: 19px;
+        line-height: 1.55;
+        margin: 0;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .answer-area {
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        padding: 14px;
+        min-height: 92px;
+        font-size: 13px;
+        color: var(--ink-3);
+        line-height: 1.5;
+      }
+      .check-btn {
+        margin-top: 14px;
+        width: 100%;
+        padding: 13px;
+        background: var(--ink);
+        color: var(--surface);
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: inherit;
+      }
+
+      /* Sets screen */
+      .screen-title {
+        font-family:
+          'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+        font-size: 22px;
+        font-weight: 500;
+        margin: 12px 0 4px;
+        letter-spacing: -0.01em;
+      }
+      .screen-subtitle {
+        font-size: 12px;
+        color: var(--ink-2);
+        margin: 0 0 18px;
+      }
+
+      .set-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-bottom: 8px;
+      }
+      .set-row.active {
+        border-color: var(--ink);
+        background: var(--surface-2);
+      }
+      .set-name {
+        font-size: 13px;
+        font-weight: 500;
+        margin: 0 0 2px;
+      }
+      .set-meta {
+        font-size: 11px;
+        color: var(--ink-3);
+        margin: 0;
+      }
+      .toggle {
+        width: 32px;
+        height: 18px;
+        background: var(--line-2);
+        border-radius: 999px;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .toggle.on {
+        background: var(--ink);
+      }
+      .toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 14px;
+        height: 14px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+      }
+      .toggle.on::after {
+        transform: translateX(14px);
+      }
+
+      .lang-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        background: var(--surface-2);
+        border-radius: 999px;
+        font-size: 11px;
+        color: var(--ink-2);
+        margin-bottom: 16px;
+      }
+
+      /* Settings screen */
+      .settings-group {
+        margin-bottom: 18px;
+      }
+      .settings-label {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 8px;
+        padding: 0 4px;
+      }
+      .settings-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .settings-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .settings-row:last-child {
+        border-bottom: none;
+      }
+      .settings-row .value {
+        color: var(--ink-3);
+        font-size: 12px;
+      }
+      .settings-row .chevron {
+        color: var(--ink-3);
+      }
+
+      .account-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #d4a574, #c4452f);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .account-name {
+        font-size: 13px;
+        font-weight: 500;
+        margin: 0;
+      }
+      .account-email {
+        font-size: 11px;
+        color: var(--ink-3);
+        margin: 0;
+      }
+
+      /* Desktop frame */
+      .desktop-frame {
+        width: 100%;
+        max-width: 1100px;
+        height: 640px;
+        background: var(--surface);
+        border: 1px solid var(--line-2);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        box-shadow:
+          0 1px 0 rgba(0, 0, 0, 0.04),
+          0 12px 32px -16px rgba(0, 0, 0, 0.14);
+        margin: 0 auto;
+      }
+      .desktop-chrome-bar {
+        height: 36px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        gap: 6px;
+      }
+      .chrome-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--line-2);
+      }
+
+      .desktop-shell {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .desktop-body {
+        flex: 1;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 220px;
+        background: var(--surface-2);
+        border-right: 1px solid var(--line);
+        padding: 28px 16px;
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar-brand {
+        font-family:
+          'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+        font-size: 17px;
+        font-weight: 500;
+        padding: 0 10px 24px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 16px;
+        letter-spacing: -0.01em;
+      }
+      .sidebar-brand .accent {
+        color: var(--accent);
+      }
+
+      .side-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        font-size: 13px;
+        margin-bottom: 2px;
+        cursor: pointer;
+      }
+      .side-nav-item.active {
+        background: var(--surface);
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .side-nav-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+      .sidebar-account {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 8px;
+      }
+      .sidebar-account .avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+      }
+
+      .main {
+        flex: 1;
+        padding: 40px 56px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .main-context {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 4px;
+      }
+      .main-context-value {
+        font-size: 13px;
+        color: var(--ink-2);
+        margin: 0 0 32px;
+      }
+
+      .desktop-prompt-card {
+        background: var(--surface-2);
+        border-radius: 16px;
+        padding: 32px 36px;
+        margin-bottom: 20px;
+        max-width: 640px;
+      }
+      .desktop-prompt-instr {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 12px;
+      }
+      .desktop-prompt-jp {
+        font-size: 28px;
+        line-height: 1.5;
+        margin: 0;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .desktop-answer {
+        border: 1px solid var(--line-2);
+        border-radius: 14px;
+        padding: 20px 22px;
+        min-height: 110px;
+        font-size: 14px;
+        color: var(--ink-3);
+        line-height: 1.55;
+        max-width: 640px;
+      }
+      .desktop-actions {
+        margin-top: 16px;
+        max-width: 640px;
+        display: flex;
+        gap: 10px;
+      }
+      .desktop-btn {
+        padding: 11px 22px;
+        background: var(--ink);
+        color: var(--surface);
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .desktop-btn.secondary {
+        background: transparent;
+        color: var(--ink-2);
+        border: 1px solid var(--line-2);
+      }
+
+      /* Notes column next to mobile */
+      .mobile-note {
+        flex: 1;
+        min-width: 260px;
+        padding-top: 28px;
+      }
+      .mobile-note h3 {
+        font-family:
+          'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0 0 10px;
+        letter-spacing: -0.01em;
+      }
+      .mobile-note p {
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--ink-2);
+        margin: 0 0 12px;
+      }
+      .mobile-note .callout {
+        font-size: 12px;
+        color: var(--ink-3);
+        border-left: 2px solid var(--line-2);
+        padding-left: 12px;
+        margin-top: 14px;
+      }
+
+      /* Mode chips on practice screen (just visual context, since modes are dropped, kept as placeholder for future) */
+      /* keeping clean -- no chips for now */
+    </style>
+  </head>
+  <body>
+    <div class="doc-header">
+      <p class="doc-eyebrow">UI Design · Visual mockups</p>
+      <h1 class="doc-title">Language practice app</h1>
+      <p class="doc-sub">
+        Mobile and desktop layouts for v1 — Practice, Sets, Settings
+      </p>
+    </div>
+
+    <!-- ============ MOBILE SECTION ============ -->
+    <div class="section">
+      <p class="section-title">Mobile · three screens</p>
+
+      <div class="mobile-row">
+        <!-- PRACTICE -->
+        <div class="mobile-frame-wrap">
+          <p class="mobile-label">Practice (default landing)</p>
+          <div class="mobile-frame">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span>● ● ●</span>
+            </div>
+            <div class="screen-content">
+              <div class="context-strip">
+                <p class="context-label">Practicing</p>
+                <p class="context-value">JLPT N5 · N5 Grammar</p>
+              </div>
+
+              <div class="prompt-card">
+                <p class="prompt-instr">Translate to English</p>
+                <p class="prompt-jp">毎朝コーヒーを飲みます。</p>
+              </div>
+
+              <div class="answer-area">Your translation…</div>
+              <button class="check-btn">Check</button>
+            </div>
+
+            <div class="bottom-nav">
+              <div class="nav-item active">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path
+                    d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"
+                  />
+                </svg>
+                <span>Practice</span>
+              </div>
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
+                <span>Sets</span>
+              </div>
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+                  />
+                </svg>
+                <span>Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETS -->
+        <div class="mobile-frame-wrap">
+          <p class="mobile-label">Sets (multi-active)</p>
+          <div class="mobile-frame">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span>● ● ●</span>
+            </div>
+            <div class="screen-content">
+              <h2 class="screen-title">Sets</h2>
+              <p class="screen-subtitle">
+                Toggle the ones you want in your practice rotation.
+              </p>
+
+              <div class="lang-pill">
+                <span>Japanese</span>
+                <span style="color: var(--ink-3); font-size: 10px">▾</span>
+              </div>
+
+              <div class="set-row active">
+                <div>
+                  <p class="set-name">JLPT N5 Vocab</p>
+                  <p class="set-meta">800 words · core</p>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="set-row active">
+                <div>
+                  <p class="set-name">JLPT N5 Grammar</p>
+                  <p class="set-meta">60 patterns</p>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="set-row">
+                <div>
+                  <p class="set-name">JLPT N4 Vocab</p>
+                  <p class="set-meta">1,500 words</p>
+                </div>
+                <div class="toggle"></div>
+              </div>
+              <div class="set-row">
+                <div>
+                  <p class="set-name">JLPT N4 Grammar</p>
+                  <p class="set-meta">120 patterns</p>
+                </div>
+                <div class="toggle"></div>
+              </div>
+            </div>
+
+            <div class="bottom-nav">
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path
+                    d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"
+                  />
+                </svg>
+                <span>Practice</span>
+              </div>
+              <div class="nav-item active">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
+                <span>Sets</span>
+              </div>
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+                  />
+                </svg>
+                <span>Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="mobile-frame-wrap">
+          <p class="mobile-label">Settings</p>
+          <div class="mobile-frame">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span>● ● ●</span>
+            </div>
+            <div class="screen-content">
+              <h2 class="screen-title">Settings</h2>
+              <p class="screen-subtitle" style="margin-bottom: 14px">
+                Account and preferences.
+              </p>
+
+              <div class="settings-group">
+                <p class="settings-label">Account</p>
+                <div class="settings-card">
+                  <div class="settings-row">
+                    <div class="account-row">
+                      <div class="avatar">AB</div>
+                      <div>
+                        <p class="account-name">Aiden Brown</p>
+                        <p class="account-email">aiden@gmail.com</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <span>Sign out</span>
+                    <span class="chevron">›</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <p class="settings-label">Preferences</p>
+                <div class="settings-card">
+                  <div class="settings-row">
+                    <span>Language</span>
+                    <span class="value">Japanese ›</span>
+                  </div>
+                  <div class="settings-row">
+                    <span>Appearance</span>
+                    <span class="value">System ›</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <p class="settings-label">Support</p>
+                <div class="settings-card">
+                  <div class="settings-row">
+                    <span>Send feedback</span>
+                    <span class="chevron">›</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-nav">
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path
+                    d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"
+                  />
+                </svg>
+                <span>Practice</span>
+              </div>
+              <div class="nav-item">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
+                <span>Sets</span>
+              </div>
+              <div class="nav-item active">
+                <svg
+                  class="nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+                  />
+                </svg>
+                <span>Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DESKTOP SECTION ============ -->
+    <div class="section">
+      <p class="section-title">Desktop · same destinations, sidebar nav</p>
+
+      <div class="desktop-frame">
+        <div class="desktop-shell">
+          <div class="desktop-chrome-bar">
+            <div class="chrome-dot"></div>
+            <div class="chrome-dot"></div>
+            <div class="chrome-dot"></div>
+          </div>
+          <div class="desktop-body">
+            <div class="sidebar">
+              <div class="sidebar-brand">
+                言 <span class="accent">renshuu</span>
+              </div>
+
+              <div class="side-nav-item active">
+                <svg
+                  class="side-nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path
+                    d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"
+                  />
+                </svg>
+                <span>Practice</span>
+              </div>
+              <div class="side-nav-item">
+                <svg
+                  class="side-nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
+                <span>Sets</span>
+              </div>
+              <div class="side-nav-item">
+                <svg
+                  class="side-nav-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+                  />
+                </svg>
+                <span>Settings</span>
+              </div>
+
+              <div class="sidebar-footer">
+                <div class="sidebar-account">
+                  <div class="avatar">AB</div>
+                  <div>
+                    <p class="account-name" style="font-size: 12px">
+                      Aiden Brown
+                    </p>
+                    <p class="account-email" style="font-size: 10px">
+                      aiden@gmail.com
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="main">
+              <p class="main-context">Practicing</p>
+              <p class="main-context-value">JLPT N5 · N5 Grammar</p>
+
+              <div class="desktop-prompt-card">
+                <p class="desktop-prompt-instr">Translate to English</p>
+                <p class="desktop-prompt-jp">毎朝コーヒーを飲みます。</p>
+              </div>
+
+              <div class="desktop-answer">Your translation…</div>
+              <div class="desktop-actions">
+                <button class="desktop-btn">Check</button>
+                <button class="desktop-btn secondary">Skip</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
