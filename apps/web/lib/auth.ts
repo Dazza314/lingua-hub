@@ -1,6 +1,6 @@
+import { createClient } from '@/lib/supabase/server'
 import { makeParse, TypedError, UserId } from '@lingua-hub/core'
 import { Result } from '@praha/byethrow'
-import { createClient } from '@/lib/supabase/server'
 
 class UnauthenticatedError extends TypedError {
   override readonly type = 'UnauthenticatedError' as const
@@ -22,13 +22,12 @@ export function getAuthenticatedUserId(): Result.ResultAsync<
         }
         return data.user.id
       },
-      catch: (err) =>
-        err instanceof UnauthenticatedError
-          ? err
-          : new UnauthenticatedError(
-              err instanceof Error ? err.message : 'Auth failed',
-              { cause: err },
-            ),
+      catch: (err) => {
+        if (err instanceof UnauthenticatedError) {
+          return err
+        }
+        throw err
+      },
     }),
     Result.andThen((id) =>
       Result.pipe(
