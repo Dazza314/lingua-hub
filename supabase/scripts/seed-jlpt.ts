@@ -12,7 +12,7 @@ const SEEDS_DIR = join(
 )
 const LANGUAGE = 'ja'
 
-type Level = 'N5' | 'N4' | 'N3' | 'N2' | 'N1'
+type Level = 'N5' | 'N4' | 'N3'
 
 const LEVELS: { level: Level; id: string; title: string }[] = [
   {
@@ -29,16 +29,6 @@ const LEVELS: { level: Level; id: string; title: string }[] = [
     level: 'N3',
     id: '85b487f8-8aa7-4e6d-93de-7c1861b2af99',
     title: 'JLPT N3',
-  },
-  {
-    level: 'N2',
-    id: '67790f1c-39e1-4916-93b5-e845f7b06bca',
-    title: 'JLPT N2',
-  },
-  {
-    level: 'N1',
-    id: '6cfbea7a-a7b3-45f7-a1af-c65dc68db895',
-    title: 'JLPT N1',
   },
 ]
 
