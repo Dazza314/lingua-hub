@@ -9,14 +9,47 @@ import * as Exercise from '../models/exercise'
 import * as ExercisePolicy from '../models/exercise-policy'
 import type { evaluateExercisePolicy } from './evaluate-exercise-policy'
 
-const DEFAULT_VOCAB_COUNT = 10
+const DEFAULT_VOCAB_COUNT = 20
 const DEFAULT_GRAMMAR_COUNT = 3
-const MAX_OUTPUT_TOKENS = 1024
+const MAX_OUTPUT_TOKENS = 2048
 
 const exerciseLlmSchema = Exercise.exerciseSchema.omit({ language: true })
 
 function buildSystemPrompt(targetLanguage: Language.Language): string {
-  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary and grammar points in ${targetLanguage}, produce a natural sentence in ${targetLanguage} using a subset of the vocabulary provided, incorporating the grammar points where appropriate. Also provide a "scenario" in English. This is to provide additional required context, not describe the sentence itself (avoid using words which are present in the sentence as these will inadvertently help the learner). The learner will translate your sentence into English as practice. Try to avoid using complex vocabulary not included in the list.`
+  return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary and grammar points in ${targetLanguage}, produce:
+
+1. A SENTENCE in ${targetLanguage} that:
+   - Sounds natural and idiomatic — the kind of thing a native speaker would actually say in context, not a textbook construction
+   - Uses a subset of the provided vocabulary
+   - Incorporates as many of the grammar points as can be done naturally — prioritize naturalness over coverage
+   - Avoids complex vocabulary not in the list where possible
+   - May freely use common function words (articles, prepositions, pronouns, basic conjunctions) even if not listed, as needed for naturalness
+
+2. A CONTEXT TAG in English that:
+   - Identifies who is speaking, and optionally who they're speaking to and/or the setting
+   - Is written as a brief structural tag, not a narrative description
+   - Provides only enough information to disambiguate the sentence (e.g., register, relationship, speaker identity) — never previews the sentence's content
+   - Slots are flexible: include whichever of speaker / listener / setting are needed; omit the rest
+   - Must not name roles or settings whose typical context overlaps with the sentence's content. If the sentence mentions a workplace hierarchy, don't identify the speaker as "a subordinate" or "an employee." If the sentence is about school, don't identify the speaker as "a student." If the sentence mentions driving, don't identify the listener as "a driver." Use a more generic role ("someone," "a friend") or omit the slot.
+
+Format the tag like: [speaker, to listener, in setting] — with any slot optional.
+
+Examples (sentences shown in English for illustration; your actual sentence will be in ${targetLanguage}):
+
+  Tag: [a parent, to a young child at bedtime]
+  Sentence: "We can read one more, then it's time to sleep."
+
+  Tag: [two coworkers, chatting after work]
+  Sentence: "I can't believe she said that in front of everyone."
+
+  Tag: [a technician, to a customer]
+  Sentence: "Please don't touch this part."
+
+  Tag: [someone, on the phone]
+  Sentence: "I'll be there in about twenty minutes."
+
+The tag should feel like a stage direction before a line of dialogue — it sets the scene but does not summarize the line. The learner will translate the sentence into English as practice.
+`
 }
 
 export type GenerateExerciseDeps = {

@@ -25,15 +25,12 @@ const POLICY: ExercisePolicy.ExercisePolicy = {
 
 type ExerciseDraft = {
   sentence: string
-  scenarioFrame: { setting: string; situation: string }
+  contextTag: string
 }
 
 const FINAL_DRAFT: ExerciseDraft = {
   sentence: 'I would like a coffee, please.',
-  scenarioFrame: {
-    setting: 'a coffee shop',
-    situation: 'ordering a drink',
-  },
+  contextTag: '[a customer, at a coffee shop]',
 }
 
 type FakeStreamObject = {
@@ -58,8 +55,11 @@ function makeStreamObject(
 
 function chunksFor(draft: ExerciseDraft): Result.Result<unknown, never>[] {
   return [
-    Result.succeed({ scenarioFrame: { setting: draft.scenarioFrame.setting } }),
-    Result.succeed({ scenarioFrame: draft.scenarioFrame }),
+    Result.succeed({ contextTag: draft.contextTag }),
+    Result.succeed({
+      contextTag: draft.contextTag,
+      sentence: draft.sentence.slice(0, 10),
+    }),
     Result.succeed(draft),
   ]
 }
@@ -184,7 +184,7 @@ describe('generateExercise', () => {
   it('surfaces stream errors as failed chunks within the iterable', async () => {
     const streamError = new LlmStreamError('mid-stream failure')
     const { streamObject } = makeStreamObject([
-      Result.succeed({ scenarioFrame: { setting: 'a' } }),
+      Result.succeed({ contextTag: '[' }),
       Result.fail(streamError),
     ])
 

@@ -2,7 +2,7 @@ import type { LlmClient } from '@lingua-hub/llm'
 import { evaluationSchema } from '../models/evaluation'
 import type { Exercise } from '../models/exercise'
 
-const MAX_OUTPUT_TOKENS = 1024
+const MAX_OUTPUT_TOKENS = 2048
 
 function buildSystemPrompt(): string {
   return `You are evaluating a learner's translation of a sentence. Assess whether the translation is correct. Correctness should be determined by whether the full meaning is conveyed and how natural the translation sounds. Phrase the response by addressing the learner directly. When isCorrect is true, set suggestedTranslation to null. When isCorrect is false, always provide a suggestedTranslation.`
@@ -10,7 +10,7 @@ function buildSystemPrompt(): string {
 
 function buildUserPrompt(exercise: Exercise, userTranslation: string): string {
   return `Sentence: ${exercise.sentence}
-Scenario: ${exercise.scenario}
+Context tag: ${exercise.contextTag}
 Learner's translation: ${userTranslation}`
 }
 

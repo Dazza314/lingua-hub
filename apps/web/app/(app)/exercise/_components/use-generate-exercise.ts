@@ -42,7 +42,7 @@ export function useGenerateExercise() {
         setState: (partial) => {
           setState({ status: 'streaming', partial })
         },
-        fieldNames: ['scenario', 'sentence'],
+        fieldNames: ['contextTag', 'sentence'],
       })
 
       setState({ status: 'complete', exercise })

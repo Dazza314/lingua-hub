@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const exerciseSchema = z.object({
   language: Language.languageSchema,
-  scenario: z.string(),
+  contextTag: z.string(),
   sentence: z.string(),
 })
 

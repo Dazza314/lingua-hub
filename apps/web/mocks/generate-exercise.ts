@@ -5,7 +5,7 @@ import { Result } from '@praha/byethrow'
 import { setTimeout as sleep } from 'timers/promises'
 
 const LANGUAGE = Language.languageSchema.parse('ja')
-const SCENARIO = 'A café in Tokyo. Ordering breakfast'
+const CONTEXT_TAG = '[someone, in a café]'
 const SENTENCE = '私はりんごを食べます。'
 const WORD_DELAY_MS = 60
 
@@ -21,13 +21,13 @@ export async function mockGenerateExercise(): Promise<
 async function* stream(): AsyncIterable<
   Result.Result<Partial<Exercise.Exercise>, LlmStreamError>
 > {
-  let scenario = ''
-  for (const word of SCENARIO.split(' ')) {
+  let contextTag = ''
+  for (const word of CONTEXT_TAG.split(' ')) {
     await sleep(WORD_DELAY_MS)
-    scenario += (scenario ? ' ' : '') + word
+    contextTag += (contextTag ? ' ' : '') + word
     yield Result.succeed({
       language: LANGUAGE,
-      scenario: scenario,
+      contextTag,
     })
   }
 
@@ -37,7 +37,7 @@ async function* stream(): AsyncIterable<
     sentence += ch
     yield Result.succeed({
       language: LANGUAGE,
-      scenario: SCENARIO,
+      contextTag: CONTEXT_TAG,
       sentence,
     })
   }

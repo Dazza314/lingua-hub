@@ -8,6 +8,8 @@ import type {
   LlmClient,
 } from '../../ports/llm-client'
 
+const STREAM_TIMEOUT_MS = 20_000
+
 export function createStreamObject(
   provider: GoogleGenerativeAIProvider,
   model: string,
@@ -22,6 +24,7 @@ export function createStreamObject(
         content: m.content,
       })),
       maxOutputTokens: params.maxTokens,
+      abortSignal: AbortSignal.timeout(STREAM_TIMEOUT_MS),
     })
 
     return (async function* () {
