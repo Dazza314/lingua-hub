@@ -1,7 +1,8 @@
-import type { Metadata, Viewport } from 'next'
-import './globals.css'
-import { Figtree } from 'next/font/google'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { cn } from '@/lib/utils'
+import type { Metadata, Viewport } from 'next'
+import { Figtree } from 'next/font/google'
+import './globals.css'
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -20,8 +21,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={cn('font-sans', figtree.variable)}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={cn('font-sans', figtree.variable)}
+      suppressHydrationWarning
+    >
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   )
 }

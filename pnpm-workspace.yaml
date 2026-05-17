@@ -36,6 +36,7 @@ catalog:
   eslint-plugin-check-file: '^3.3.1'
   eslint-plugin-no-barrel-files: '^1.2.2'
   'framer-motion': '^12.38.0'
+  'next-themes': '^0.4.6'
   husky: '^9.1.7'
   knip: '^6.1.0'
   next: '^16.0.0'
