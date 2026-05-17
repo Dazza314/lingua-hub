@@ -2,6 +2,12 @@ import type { Evaluation } from '@lingua-hub/exercise'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
+function BlinkingCursor() {
+  return (
+    <span className="ml-0.5 w-0.5 h-3.5 bg-foreground animate-blink inline-block align-[center]" />
+  )
+}
+
 type Props = {
   evaluation: Partial<Evaluation.Evaluation>
   status: 'streaming' | 'complete'
@@ -33,6 +39,10 @@ export function EvaluationCard({ evaluation, status }: Props) {
       style={{ height }}
     >
       <div ref={innerRef} className="p-6 gap-3 flex flex-col">
+        {status === 'streaming' &&
+          evaluation.isCorrect === undefined &&
+          !evaluation.feedback &&
+          !evaluation.suggestedTranslation && <BlinkingCursor />}
         {evaluation.isCorrect !== undefined && (
           <motion.p
             initial={{ opacity: 0 }}
@@ -50,7 +60,7 @@ export function EvaluationCard({ evaluation, status }: Props) {
           <p className="text-sm">
             {evaluation.feedback}
             {status === 'streaming' && !evaluation.suggestedTranslation && (
-              <span className="ml-0.5 w-0.5 h-3.5 bg-foreground animate-blink inline-block align-[center]" />
+              <BlinkingCursor />
             )}
           </p>
         )}
@@ -61,9 +71,7 @@ export function EvaluationCard({ evaluation, status }: Props) {
             </p>
             <p className="text-sm">
               {evaluation.suggestedTranslation}
-              {status === 'streaming' && (
-                <span className="ml-0.5 w-0.5 h-3.5 bg-foreground animate-blink inline-block align-[center]" />
-              )}
+              {status === 'streaming' && <BlinkingCursor />}
             </p>
           </div>
         )}
