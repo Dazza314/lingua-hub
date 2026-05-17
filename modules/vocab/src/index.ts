@@ -4,6 +4,7 @@ export { createAnkiDroidAdapter } from './adapters/anki-droid/vocab-source/anki-
 export { supabaseCuratedContentRepositoryFactories } from './adapters/supabase/curated-content-repository/supabase-curated-content-repository'
 export { supabaseImportedVocabRepositoryFactories } from './adapters/supabase/imported-vocab-repository/supabase-imported-vocab-repository'
 export { deselectSet } from './commands/deselect-set'
+export { getSelectedSetsForUser } from './commands/get-selected-sets-for-user'
 export { importAnkiVocab } from './commands/import-anki-vocab'
 export { selectSet } from './commands/select-set'
 export {

@@ -1,5 +1,5 @@
 import { Language } from '@lingua-hub/core'
-import { EmptyVocabError, Exercise } from '@lingua-hub/exercise'
+import { EmptyVocabError, Exercise, ExercisePolicy } from '@lingua-hub/exercise'
 import { LlmStreamError } from '@lingua-hub/llm'
 import { Result } from '@praha/byethrow'
 import { setTimeout as sleep } from 'timers/promises'
@@ -10,7 +10,9 @@ const SENTENCE = '私はりんごを食べます。'
 const INITIAL_DELAY_MS = 700
 const WORD_DELAY_MS = 60
 
-export async function mockGenerateExercise(): Promise<
+export async function mockGenerateExercise(
+  _policy: ExercisePolicy.ExercisePolicy,
+): Promise<
   Result.Result<
     AsyncIterable<Result.Result<Partial<Exercise.Exercise>, LlmStreamError>>,
     EmptyVocabError

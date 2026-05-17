@@ -2,23 +2,48 @@
 
 import { Button } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
-import type { Exercise } from '@lingua-hub/exercise'
+import { Exercise, ExercisePolicy } from '@lingua-hub/exercise'
+import { CuratedSetId } from '@lingua-hub/vocab'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { EvaluationCard } from './EvaluationCard'
 import { ExerciseCard } from './ExerciseCard'
+import { PolicyEditor } from './PolicyEditor'
 import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
 import { useGenerateExercise } from './use-generate-exercise'
 
-export function ExerciseView() {
+const DEFAULT_POLICY: ExercisePolicy.ExercisePolicy =
+  ExercisePolicy.dangerouslyCast({
+    vocab: [{ type: 'selected_sets' }],
+    grammar: [{ type: 'selected_sets' }],
+  })
+
+function isPolicyValid(policy: ExercisePolicy.ExercisePolicy): boolean {
+  const vocabSpecific = policy.vocab.find(
+    (vocabPolicy) => vocabPolicy.type === 'specific_sets',
+  )
+  const grammarSpecific = policy.grammar.find(
+    (grammarPolicy) => grammarPolicy.type === 'specific_sets',
+  )
+  return (
+    (!vocabSpecific || vocabSpecific.setIds.length > 0) &&
+    (!grammarSpecific || grammarSpecific.setIds.length > 0)
+  )
+}
+
+type UserSet = { id: CuratedSetId.CuratedSetId; title: string }
+
+export function ExerciseView({ userSets }: { userSets: UserSet[] }) {
   const { state: generateState, generate } = useGenerateExercise()
   const { state: evaluationState, evaluate } = useEvaluateExercise()
   const [userTranslation, setUserTranslation] = useState<string | null>(null)
+  const [policy, setPolicy] =
+    useState<ExercisePolicy.ExercisePolicy>(DEFAULT_POLICY)
   const translationRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    void generate().then(() => translationRef.current?.focus())
+    void generate(DEFAULT_POLICY).then(() => translationRef.current?.focus())
   }, [generate])
 
   function handleSubmit(translation: string) {
@@ -31,7 +56,7 @@ export function ExerciseView() {
 
   async function handleNext() {
     setUserTranslation(null)
-    await generate()
+    await generate(policy)
     translationRef.current?.focus()
   }
 
@@ -70,6 +95,13 @@ export function ExerciseView() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
+      <div className="flex justify-end">
+        <PolicyEditor
+          policy={policy}
+          onPolicyChange={setPolicy}
+          userSets={userSets}
+        />
+      </div>
       <ExerciseCard exercise={exercise} status={generateState.status} />
       <AnimatePresence mode="wait">
         {userTranslation === null ? (
@@ -113,7 +145,9 @@ export function ExerciseView() {
               size="lg"
               className="w-full"
               onClick={handleNext}
-              disabled={evaluationState.status === 'streaming'}
+              disabled={
+                evaluationState.status === 'streaming' || !isPolicyValid(policy)
+              }
             >
               Next
             </Button>

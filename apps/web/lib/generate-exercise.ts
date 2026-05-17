@@ -17,17 +17,12 @@ import { getAuthenticatedUserId } from './auth'
 // TODO: derive targetLanguage from the authenticated user's study profile
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
-const DEFAULT_POLICY: ExercisePolicy.ExercisePolicy = {
-  vocab: [{ type: 'selected_sets' }],
-  grammar: [{ type: 'selected_sets' }],
-}
-
 const { streamObject } = createGoogleLlmClient(
   env.GOOGLE_GENERATIVE_AI_API_KEY,
   GoogleModel.Gemma4_31B,
 )
 
-export async function generateExercise() {
+export async function generateExercise(policy: ExercisePolicy.ExercisePolicy) {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
     throw authResult.error
@@ -54,6 +49,6 @@ export async function generateExercise() {
   })({
     userId: authResult.value,
     targetLanguage: TARGET_LANGUAGE,
-    policy: DEFAULT_POLICY,
+    policy,
   })
 }
