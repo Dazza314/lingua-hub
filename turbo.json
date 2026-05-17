@@ -14,7 +14,9 @@
       "cache": false,
       "persistent": true
     },
-    "typecheck": {},
+    "typecheck": {
+      "cache": false
+    },
     "test": {}
   }
 }

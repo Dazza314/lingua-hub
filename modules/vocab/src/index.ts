@@ -12,9 +12,6 @@ export {
   InvalidLayoutError,
   VocabSourceUnavailableError,
 } from './errors'
-export type { CuratedGrammarPoint } from './models/curated-grammar-point'
-export type { CuratedVocabItem } from './models/curated-vocab-item'
-export type { ImportedVocabItem } from './models/imported-vocab-item'
 export type { AnkiVocabSource } from './ports/anki-vocab-source'
 export type { CuratedContentRepository } from './ports/curated-content-repository'
 export type { ImportedVocabRepository } from './ports/imported-vocab-repository'
