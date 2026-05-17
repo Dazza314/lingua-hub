@@ -22,7 +22,7 @@ type EvaluateExercisePolicyInput = {
 
 type EvaluateExercisePolicyOutput = {
   vocabTerms: string[]
-  grammarPoints: CuratedGrammarPoint[]
+  grammarPoints: CuratedGrammarPoint.CuratedGrammarPoint[]
 }
 
 export function evaluateExercisePolicy(deps: EvaluateExercisePolicyDeps) {
@@ -107,7 +107,10 @@ function resolveGrammarPoints(
   sources: ExercisePolicy.GrammarSource[],
   userId: UserId.UserId,
   language: Language.Language,
-): Result.ResultAsync<CuratedGrammarPoint[], CuratedSetNotFoundError> {
+): Result.ResultAsync<
+  CuratedGrammarPoint.CuratedGrammarPoint[],
+  CuratedSetNotFoundError
+> {
   const curatedGrammarPointsSets = sources.map((source) =>
     resolveGrammarSource(deps, source, userId, language),
   )
@@ -122,7 +125,10 @@ async function resolveGrammarSource(
   source: ExercisePolicy.GrammarSource,
   userId: UserId.UserId,
   language: Language.Language,
-): Result.ResultAsync<CuratedGrammarPoint[], CuratedSetNotFoundError> {
+): Result.ResultAsync<
+  CuratedGrammarPoint.CuratedGrammarPoint[],
+  CuratedSetNotFoundError
+> {
   switch (source.type) {
     case 'selected_sets': {
       const selectedSets = await deps.findSelectedSetsByUserId({ userId })

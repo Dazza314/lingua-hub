@@ -103,7 +103,7 @@ async function* withLanguage(
 
 function buildUserPrompt(
   vocabTerms: string[],
-  grammarPoints: CuratedGrammarPoint[],
+  grammarPoints: CuratedGrammarPoint.CuratedGrammarPoint[],
 ): string {
   const vocabList = vocabTerms.map((term) => `- ${term}`).join('\n')
   const grammarSection =
