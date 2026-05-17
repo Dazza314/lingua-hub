@@ -39,6 +39,11 @@ export default tseslint.config(
     ...config,
     files: ['apps/web/**/*.{ts,tsx}'],
   })),
+  // no-html-link-for-pages targets Pages Router; this project uses App Router
+  {
+    files: ['apps/web/**/*.{ts,tsx}'],
+    rules: { '@next/next/no-html-link-for-pages': 'off' },
+  },
   // Enforce extensionless imports across all TS source
   {
     files: ['**/*.{ts,tsx}'],
