@@ -1,6 +1,7 @@
 {
   "name": "lingua-hub",
   "devDependencies": {
+    "@types/node": "catalog:",
     "@eslint/compat": "catalog:",
     "dotenv-cli": "catalog:",
     "eslint": "catalog:",
