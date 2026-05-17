@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
 import type { Exercise } from '@lingua-hub/exercise'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EvaluationCard } from './EvaluationCard'
 import { ExerciseCard } from './ExerciseCard'
 import { TranslationForm } from './TranslationForm'
@@ -15,9 +15,10 @@ export function ExerciseView() {
   const { state: generateState, generate } = useGenerateExercise()
   const { state: evaluationState, evaluate } = useEvaluateExercise()
   const [userTranslation, setUserTranslation] = useState<string | null>(null)
+  const translationRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    void generate()
+    void generate().then(() => translationRef.current?.focus())
   }, [generate])
 
   function handleSubmit(translation: string) {
@@ -28,9 +29,10 @@ export function ExerciseView() {
     evaluate(generateState.exercise, translation)
   }
 
-  function handleNext() {
+  async function handleNext() {
     setUserTranslation(null)
-    void generate()
+    await generate()
+    translationRef.current?.focus()
   }
 
   if (generateState.status === 'error') {
@@ -72,7 +74,11 @@ export function ExerciseView() {
       <AnimatePresence mode="wait">
         {userTranslation === null ? (
           <motion.div key="form">
-            <TranslationForm onSubmit={handleSubmit} disabled={isStreaming} />
+            <TranslationForm
+              ref={translationRef}
+              onSubmit={handleSubmit}
+              disabled={isStreaming}
+            />
           </motion.div>
         ) : (
           <motion.div key="evaluated" className="flex flex-col gap-6">

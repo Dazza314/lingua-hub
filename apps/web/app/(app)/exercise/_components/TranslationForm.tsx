@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { type Ref, useState } from 'react'
 
 type Props = {
+  ref: Ref<HTMLTextAreaElement>
   onSubmit: (answer: string) => void
   disabled: boolean
 }
 
-export function TranslationForm({ onSubmit, disabled }: Props) {
+export function TranslationForm({ ref, onSubmit, disabled }: Props) {
   const [answer, setAnswer] = useState('')
 
   const isEmpty = !answer
@@ -31,7 +32,7 @@ export function TranslationForm({ onSubmit, disabled }: Props) {
           }
         }}
         rows={1}
-        autoFocus
+        ref={ref}
         placeholder="Your translation…"
         className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring/50 field-sizing-content w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none focus-visible:ring-[3px]"
       />
