@@ -4,12 +4,14 @@ import { setTimeout } from 'timers/promises'
 
 const FEEDBACK = 'Good attempt, but the word order is off.'
 const SUGGESTED = 'Je mange une pomme.'
+const INITIAL_DELAY_MS = 700
 const WORD_DELAY_MS = 60
 
 export async function* mockEvaluateExercise(
   _exercise: Exercise.Exercise,
   _userTranslation: string,
 ): AsyncGenerator<Result.Result<Partial<Evaluation.Evaluation>, Error>> {
+  await setTimeout(INITIAL_DELAY_MS)
   yield Result.succeed({ isCorrect: false })
 
   let feedback = ''

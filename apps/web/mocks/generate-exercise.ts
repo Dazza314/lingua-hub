@@ -7,6 +7,7 @@ import { setTimeout as sleep } from 'timers/promises'
 const LANGUAGE = Language.languageSchema.parse('ja')
 const CONTEXT_TAG = '[someone, in a café]'
 const SENTENCE = '私はりんごを食べます。'
+const INITIAL_DELAY_MS = 700
 const WORD_DELAY_MS = 60
 
 export async function mockGenerateExercise(): Promise<
@@ -21,6 +22,7 @@ export async function mockGenerateExercise(): Promise<
 async function* stream(): AsyncIterable<
   Result.Result<Partial<Exercise.Exercise>, LlmStreamError>
 > {
+  await sleep(INITIAL_DELAY_MS)
   let contextTag = ''
   for (const word of CONTEXT_TAG.split(' ')) {
     await sleep(WORD_DELAY_MS)
