@@ -183,6 +183,50 @@ export type Database = {
         }
         Relationships: []
       }
+      user_exercise_policy: {
+        Row: {
+          grammar_source: Database["public"]["Enums"]["grammar_source_type"]
+          imported_vocab: boolean
+          user_id: string
+          vocab_source: Database["public"]["Enums"]["vocab_source_type"]
+        }
+        Insert: {
+          grammar_source: Database["public"]["Enums"]["grammar_source_type"]
+          imported_vocab: boolean
+          user_id: string
+          vocab_source: Database["public"]["Enums"]["vocab_source_type"]
+        }
+        Update: {
+          grammar_source?: Database["public"]["Enums"]["grammar_source_type"]
+          imported_vocab?: boolean
+          user_id?: string
+          vocab_source?: Database["public"]["Enums"]["vocab_source_type"]
+        }
+        Relationships: []
+      }
+      user_grammar_policy_specific_sets: {
+        Row: {
+          set_id: string
+          user_id: string
+        }
+        Insert: {
+          set_id: string
+          user_id: string
+        }
+        Update: {
+          set_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_grammar_policy_specific_sets_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_selected_sets: {
         Row: {
           set_id: string
@@ -206,6 +250,29 @@ export type Database = {
           },
         ]
       }
+      user_vocab_policy_specific_sets: {
+        Row: {
+          set_id: string
+          user_id: string
+        }
+        Insert: {
+          set_id: string
+          user_id: string
+        }
+        Update: {
+          set_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_vocab_policy_specific_sets_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -214,7 +281,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      grammar_source_type: "selectedSets" | "specificSets"
       imported_vocab_source: "anki"
+      vocab_source_type: "selectedSets" | "specificSets"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -345,7 +414,9 @@ export const Constants = {
   },
   public: {
     Enums: {
+      grammar_source_type: ["selectedSets", "specificSets"],
       imported_vocab_source: ["anki"],
+      vocab_source_type: ["selectedSets", "specificSets"],
     },
   },
 } as const
