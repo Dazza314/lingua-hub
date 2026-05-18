@@ -18,10 +18,10 @@ const USER_ID = UserId.userIdSchema.parse(
   '00000000-0000-4000-8000-000000000000',
 )
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
-const POLICY: ExercisePolicy.ExercisePolicy = {
-  vocab: [{ type: 'imported_vocab' }],
-  grammar: [],
-}
+const POLICY: ExercisePolicy.ExercisePolicy = ExercisePolicy.dangerouslyCast({
+  vocab: { source: { type: 'selectedSets' }, importedVocab: true },
+  grammar: { source: { type: 'selectedSets' } },
+})
 
 type ExerciseDraft = {
   sentence: string

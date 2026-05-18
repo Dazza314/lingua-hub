@@ -45,19 +45,31 @@ export function evaluateExercisePolicy(deps: EvaluateExercisePolicyDeps) {
     })
 }
 
-function resolveVocabTerms(
+async function resolveVocabTerms(
   deps: EvaluateExercisePolicyDeps,
-  sources: ExercisePolicy.VocabSource[],
+  vocab: ExercisePolicy.VocabPolicy,
   userId: UserId.UserId,
   language: Language.Language,
 ): Result.ResultAsync<string[], CuratedSetNotFoundError> {
-  return Result.pipe(
-    Result.sequence(
-      sources.map((source) =>
-        resolveVocabSource(deps, source, userId, language),
-      ),
-    ),
-    Result.map((termArrays) => unique(termArrays.flat())),
+  const sourceResult = await resolveVocabSource(
+    deps,
+    vocab.source,
+    userId,
+    language,
+  )
+  if (Result.isFailure(sourceResult)) {
+    return sourceResult
+  }
+
+  const sourceTerms = sourceResult.value
+
+  if (!vocab.importedVocab) {
+    return Result.succeed(unique(sourceTerms))
+  }
+
+  const importedItems = await deps.getImportedVocabItems({ userId, language })
+  return Result.succeed(
+    unique([...sourceTerms, ...importedItems.map(({ term }) => term)]),
   )
 }
 
@@ -68,7 +80,7 @@ async function resolveVocabSource(
   language: Language.Language,
 ): Result.ResultAsync<string[], CuratedSetNotFoundError> {
   switch (source.type) {
-    case 'selected_sets': {
+    case 'selectedSets': {
       const selectedSets = await deps.findSelectedSetsByUserId({ userId })
       const setsWithItems = selectedSets
         .filter((set) => set.language === language)
@@ -81,7 +93,7 @@ async function resolveVocabSource(
         ),
       )
     }
-    case 'specific_sets': {
+    case 'specificSets': {
       const setsWithItems = source.setIds.map((id) =>
         deps.findSetWithItemsById({ id }),
       )
@@ -92,31 +104,21 @@ async function resolveVocabSource(
         ),
       )
     }
-    case 'imported_vocab': {
-      const importedVocabItems = await deps.getImportedVocabItems({
-        userId,
-        language,
-      })
-      return Result.succeed(importedVocabItems.map(({ term }) => term))
-    }
   }
 }
 
-function resolveGrammarPoints(
+async function resolveGrammarPoints(
   deps: EvaluateExercisePolicyDeps,
-  sources: ExercisePolicy.GrammarSource[],
+  grammar: ExercisePolicy.GrammarPolicy,
   userId: UserId.UserId,
   language: Language.Language,
 ): Result.ResultAsync<
   CuratedGrammarPoint.CuratedGrammarPoint[],
   CuratedSetNotFoundError
 > {
-  const curatedGrammarPointsSets = sources.map((source) =>
-    resolveGrammarSource(deps, source, userId, language),
-  )
   return Result.pipe(
-    Result.sequence(curatedGrammarPointsSets),
-    Result.map((pointArrays) => uniqueById(pointArrays.flat())),
+    resolveGrammarSource(deps, grammar.source, userId, language),
+    Result.map(uniqueById),
   )
 }
 
@@ -130,7 +132,7 @@ async function resolveGrammarSource(
   CuratedSetNotFoundError
 > {
   switch (source.type) {
-    case 'selected_sets': {
+    case 'selectedSets': {
       const selectedSets = await deps.findSelectedSetsByUserId({ userId })
       const setsWithItems = selectedSets
         .filter((set) => set.language === language)
@@ -141,7 +143,7 @@ async function resolveGrammarSource(
         Result.map((set) => set.flatMap((s) => s.grammarPoints)),
       )
     }
-    case 'specific_sets': {
+    case 'specificSets': {
       const setsWithItems = source.setIds.map((id) =>
         deps.findSetWithItemsById({ id }),
       )

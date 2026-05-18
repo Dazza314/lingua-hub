@@ -13,23 +13,9 @@ import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
 import { useGenerateExercise } from './use-generate-exercise'
 
-const DEFAULT_POLICY: ExercisePolicy.ExercisePolicy =
-  ExercisePolicy.dangerouslyCast({
-    vocab: [{ type: 'selected_sets' }],
-    grammar: [{ type: 'selected_sets' }],
-  })
-
-function isPolicyValid(policy: ExercisePolicy.ExercisePolicy): boolean {
-  const vocabSpecific = policy.vocab.find(
-    (vocabPolicy) => vocabPolicy.type === 'specific_sets',
-  )
-  const grammarSpecific = policy.grammar.find(
-    (grammarPolicy) => grammarPolicy.type === 'specific_sets',
-  )
-  return (
-    (!vocabSpecific || vocabSpecific.setIds.length > 0) &&
-    (!grammarSpecific || grammarSpecific.setIds.length > 0)
-  )
+const DEFAULT_POLICY: ExercisePolicy.ExercisePolicy = {
+  vocab: { source: { type: 'selectedSets' }, importedVocab: false },
+  grammar: { source: { type: 'selectedSets' } },
 }
 
 type UserSet = { id: CuratedSetId.CuratedSetId; title: string }
@@ -145,9 +131,7 @@ export function ExerciseView({ userSets }: { userSets: UserSet[] }) {
               size="lg"
               className="w-full"
               onClick={handleNext}
-              disabled={
-                evaluationState.status === 'streaming' || !isPolicyValid(policy)
-              }
+              disabled={evaluationState.status === 'streaming'}
             >
               Next
             </Button>

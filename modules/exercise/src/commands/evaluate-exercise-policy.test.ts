@@ -99,16 +99,22 @@ function makeFindSetWithItemsById(
   }
 }
 
-const NO_SOURCES_DEPS = {
+const NO_RESULTS_DEPS = {
   getImportedVocabItems: makeGetImportedVocabItems([]),
   findSelectedSetsByUserId: makeFindSelectedSetsByUserId([]),
   findSetWithItemsById: makeFindSetWithItemsById([]),
 }
 
+const SELECTED_SETS_POLICY: ExercisePolicy.ExercisePolicy =
+  ExercisePolicy.dangerouslyCast({
+    vocab: { source: { type: 'selectedSets' }, importedVocab: false },
+    grammar: { source: { type: 'selectedSets' } },
+  })
+
 describe('evaluateExercisePolicy', () => {
-  it('returns empty arrays when the policy has no sources', async () => {
-    const result = await evaluateExercisePolicy(NO_SOURCES_DEPS)({
-      policy: { vocab: [], grammar: [] },
+  it('returns empty arrays when the policy resolves no content', async () => {
+    const result = await evaluateExercisePolicy(NO_RESULTS_DEPS)({
+      policy: SELECTED_SETS_POLICY,
       userId: USER_ID,
       language: LANGUAGE,
     })
@@ -120,16 +126,19 @@ describe('evaluateExercisePolicy', () => {
     }
   })
 
-  describe('vocab: imported_vocab', () => {
+  describe('vocab: importedVocab', () => {
     it('returns terms from the imported vocab repo', async () => {
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         getImportedVocabItems: makeGetImportedVocabItems([
           makeImportedVocabItem('apple'),
           makeImportedVocabItem('banana'),
         ]),
       })({
-        policy: { vocab: [{ type: 'imported_vocab' }], grammar: [] },
+        policy: ExercisePolicy.dangerouslyCast({
+          vocab: { source: { type: 'selectedSets' }, importedVocab: true },
+          grammar: { source: { type: 'selectedSets' } },
+        }),
         userId: USER_ID,
         language: LANGUAGE,
       })
@@ -141,11 +150,11 @@ describe('evaluateExercisePolicy', () => {
     })
   })
 
-  describe('vocab: selected_sets', () => {
+  describe('vocab: selectedSets', () => {
     it('returns terms from selected sets matching the target language', async () => {
       const setId = makeSetId()
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSelectedSetsByUserId: makeFindSelectedSetsByUserId([
           makeCuratedSet(setId),
         ]),
@@ -153,7 +162,7 @@ describe('evaluateExercisePolicy', () => {
           makeCuratedSetWithItems(setId, ['hello', 'world']),
         ]),
       })({
-        policy: { vocab: [{ type: 'selected_sets' }], grammar: [] },
+        policy: SELECTED_SETS_POLICY,
         userId: USER_ID,
         language: LANGUAGE,
       })
@@ -167,7 +176,7 @@ describe('evaluateExercisePolicy', () => {
     it('ignores selected sets for other languages', async () => {
       const setId = makeSetId()
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSelectedSetsByUserId: makeFindSelectedSetsByUserId([
           makeCuratedSet(setId, OTHER_LANGUAGE),
         ]),
@@ -175,7 +184,7 @@ describe('evaluateExercisePolicy', () => {
           makeCuratedSetWithItems(setId, ['hello'], [], OTHER_LANGUAGE),
         ]),
       })({
-        policy: { vocab: [{ type: 'selected_sets' }], grammar: [] },
+        policy: SELECTED_SETS_POLICY,
         userId: USER_ID,
         language: LANGUAGE,
       })
@@ -187,18 +196,21 @@ describe('evaluateExercisePolicy', () => {
     })
   })
 
-  describe('vocab: specific_sets', () => {
+  describe('vocab: specificSets', () => {
     it('returns terms from the specified sets', async () => {
       const setId = makeSetId()
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId, ['cat', 'dog']),
         ]),
       })({
         policy: ExercisePolicy.dangerouslyCast({
-          vocab: [{ type: 'specific_sets', setIds: [setId] }],
-          grammar: [],
+          vocab: {
+            source: { type: 'specificSets', setIds: [setId] },
+            importedVocab: false,
+          },
+          grammar: { source: { type: 'selectedSets' } },
         }),
         userId: USER_ID,
         language: LANGUAGE,
@@ -211,10 +223,13 @@ describe('evaluateExercisePolicy', () => {
     })
 
     it('returns CuratedSetNotFoundError when a specified set does not exist', async () => {
-      const result = await evaluateExercisePolicy(NO_SOURCES_DEPS)({
+      const result = await evaluateExercisePolicy(NO_RESULTS_DEPS)({
         policy: ExercisePolicy.dangerouslyCast({
-          vocab: [{ type: 'specific_sets', setIds: [makeSetId()] }],
-          grammar: [],
+          vocab: {
+            source: { type: 'specificSets', setIds: [makeSetId()] },
+            importedVocab: false,
+          },
+          grammar: { source: { type: 'selectedSets' } },
         }),
         userId: USER_ID,
         language: LANGUAGE,
@@ -227,12 +242,12 @@ describe('evaluateExercisePolicy', () => {
     })
   })
 
-  describe('grammar: selected_sets', () => {
+  describe('grammar: selectedSets', () => {
     it('returns grammar points from selected sets matching the target language', async () => {
       const setId = makeSetId()
       const grammarPoint = makeGrammarPoint({ title: 'Polite form' })
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSelectedSetsByUserId: makeFindSelectedSetsByUserId([
           makeCuratedSet(setId),
         ]),
@@ -240,7 +255,7 @@ describe('evaluateExercisePolicy', () => {
           makeCuratedSetWithItems(setId, [], [grammarPoint]),
         ]),
       })({
-        policy: { vocab: [], grammar: [{ type: 'selected_sets' }] },
+        policy: SELECTED_SETS_POLICY,
         userId: USER_ID,
         language: LANGUAGE,
       })
@@ -252,19 +267,19 @@ describe('evaluateExercisePolicy', () => {
     })
   })
 
-  describe('grammar: specific_sets', () => {
+  describe('grammar: specificSets', () => {
     it('returns grammar points from the specified sets', async () => {
       const setId = makeSetId()
       const grammarPoint = makeGrammarPoint({ title: 'て-form' })
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId, [], [grammarPoint]),
         ]),
       })({
         policy: ExercisePolicy.dangerouslyCast({
-          vocab: [],
-          grammar: [{ type: 'specific_sets', setIds: [setId] }],
+          vocab: { source: { type: 'selectedSets' }, importedVocab: false },
+          grammar: { source: { type: 'specificSets', setIds: [setId] } },
         }),
         userId: USER_ID,
         language: LANGUAGE,
@@ -278,10 +293,10 @@ describe('evaluateExercisePolicy', () => {
   })
 
   describe('deduplication', () => {
-    it('deduplicates vocab terms across multiple sources', async () => {
+    it('deduplicates vocab terms across selectedSets source and importedVocab', async () => {
       const setId = makeSetId()
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         getImportedVocabItems: makeGetImportedVocabItems([
           makeImportedVocabItem('shared'),
         ]),
@@ -290,11 +305,11 @@ describe('evaluateExercisePolicy', () => {
         ]),
       })({
         policy: ExercisePolicy.dangerouslyCast({
-          vocab: [
-            { type: 'imported_vocab' },
-            { type: 'specific_sets', setIds: [setId] },
-          ],
-          grammar: [],
+          vocab: {
+            source: { type: 'specificSets', setIds: [setId] },
+            importedVocab: true,
+          },
+          grammar: { source: { type: 'selectedSets' } },
         }),
         userId: USER_ID,
         language: LANGUAGE,
@@ -306,20 +321,22 @@ describe('evaluateExercisePolicy', () => {
       }
     })
 
-    it('deduplicates grammar points by id across multiple sources', async () => {
+    it('deduplicates grammar points by id across multiple specificSets', async () => {
       const setId1 = makeSetId()
       const setId2 = makeSetId()
       const grammarPoint = makeGrammarPoint({ title: 'Shared Grammar' })
       const result = await evaluateExercisePolicy({
-        ...NO_SOURCES_DEPS,
+        ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId1, [], [grammarPoint]),
           makeCuratedSetWithItems(setId2, [], [grammarPoint]),
         ]),
       })({
         policy: ExercisePolicy.dangerouslyCast({
-          vocab: [],
-          grammar: [{ type: 'specific_sets', setIds: [setId1, setId2] }],
+          vocab: { source: { type: 'selectedSets' }, importedVocab: false },
+          grammar: {
+            source: { type: 'specificSets', setIds: [setId1, setId2] },
+          },
         }),
         userId: USER_ID,
         language: LANGUAGE,
