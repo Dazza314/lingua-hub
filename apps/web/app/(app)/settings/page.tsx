@@ -20,7 +20,7 @@ export default async function SettingsPage() {
     .toUpperCase()
 
   return (
-    <div className="px-4 py-6 max-w-lg">
+    <div className="px-4 py-6">
       <h1 className="mb-1 text-lg font-semibold">Settings</h1>
       <p className="mb-6 text-sm text-muted-foreground">
         Account and preferences.

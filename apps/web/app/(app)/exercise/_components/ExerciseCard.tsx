@@ -1,4 +1,3 @@
-import { motionTokens, transitions } from '@/lib/animations'
 import type { Exercise } from '@lingua-hub/exercise'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
@@ -34,9 +33,6 @@ export function ExerciseCard({ exercise, status }: Props) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -motionTokens.distance.sm }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={transitions.ease}
       className="relative bg-card rounded-2xl border overflow-hidden transition-[height] duration-150 ease-out"
       style={{ height }}
     >

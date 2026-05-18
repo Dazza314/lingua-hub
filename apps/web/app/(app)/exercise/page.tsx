@@ -27,11 +27,5 @@ export default async function Page() {
     Result.unwrap([]),
   )
 
-  return (
-    <div className="grid justify-items-center">
-      <div className="w-full max-w-2xl">
-        <ExerciseView userSets={userSets} />
-      </div>
-    </div>
-  )
+  return <ExerciseView userSets={userSets} />
 }
