@@ -1,7 +1,6 @@
 import type { Language, UserId } from '@lingua-hub/core'
 import type { DeepPartial, LlmClient, LlmStreamError } from '@lingua-hub/llm'
 import type { CuratedGrammarPoint } from '@lingua-hub/vocab'
-import { CuratedSetNotFoundError } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import z from 'zod'
 import { EmptyVocabError } from '../errors'
@@ -67,7 +66,7 @@ export type GenerateExerciseInput = {
 
 type GenerateExerciseResult = Result.ResultAsync<
   AsyncIterable<Result.Result<DeepPartial<Exercise.Exercise>, LlmStreamError>>,
-  EmptyVocabError | CuratedSetNotFoundError
+  EmptyVocabError
 >
 
 export function generateExercise({
@@ -81,16 +80,11 @@ export function generateExercise({
     vocabItemCount = DEFAULT_VOCAB_COUNT,
     grammarPointCount = DEFAULT_GRAMMAR_COUNT,
   }: GenerateExerciseInput): GenerateExerciseResult => {
-    const contentResult = await evaluateExercisePolicy({
+    const { vocabTerms, grammarPoints } = await evaluateExercisePolicy({
       policy,
       userId,
       language: targetLanguage,
     })
-    if (Result.isFailure(contentResult)) {
-      return contentResult
-    }
-
-    const { vocabTerms, grammarPoints } = contentResult.value
 
     if (vocabTerms.length === 0) {
       return Result.fail(new EmptyVocabError('No vocabulary items found'))

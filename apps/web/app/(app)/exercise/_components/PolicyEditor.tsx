@@ -5,14 +5,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { transitions } from '@/lib/animations'
 import { cn } from '@/lib/utils'
 import { FilterIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ExercisePolicy } from '@lingua-hub/exercise'
 import { CuratedSetId } from '@lingua-hub/vocab'
-import { AnimatePresence, motion } from 'framer-motion'
 import { SetPicker } from './SetPicker'
 
 type UserSet = { id: CuratedSetId.CuratedSetId; title: string }
@@ -20,86 +17,36 @@ type UserSet = { id: CuratedSetId.CuratedSetId; title: string }
 type Props = {
   policy: ExercisePolicy.ExercisePolicy
   onPolicyChange: (policy: ExercisePolicy.ExercisePolicy) => void
-  userSets: UserSet[]
+  sets: UserSet[]
 }
 
-export function PolicyEditor({ policy, onPolicyChange, userSets }: Props) {
-  const vocabSourceType = policy.vocab.source.type
-  const vocabSpecificSetIds = new Set<CuratedSetId.CuratedSetId>(
-    vocabSourceType === 'specificSets' ? policy.vocab.source.setIds : [],
+export function PolicyEditor({ policy, onPolicyChange, sets }: Props) {
+  const vocabSetIds = new Set<CuratedSetId.CuratedSetId>(policy.vocab.setIds)
+  const grammarSetIds = new Set<CuratedSetId.CuratedSetId>(
+    policy.grammar.setIds,
   )
 
-  const grammarSourceType = policy.grammar.source.type
-  const grammarSpecificSetIds = new Set<CuratedSetId.CuratedSetId>(
-    grammarSourceType === 'specificSets' ? policy.grammar.source.setIds : [],
-  )
+  function toggleVocabSet(setId: CuratedSetId.CuratedSetId, checked: boolean) {
+    const setIds = checked
+      ? [...policy.vocab.setIds, setId]
+      : policy.vocab.setIds.filter((id) => id !== setId)
+    onPolicyChange({ ...policy, vocab: { ...policy.vocab, setIds } })
+  }
 
-  function setVocabSource(type: ExercisePolicy.VocabSource['type']) {
-    if (type === 'specificSets') {
-      const firstSetId = userSets[0]?.id
-      if (firstSetId === undefined) {
-        return
-      }
-      onPolicyChange({
-        ...policy,
-        vocab: { ...policy.vocab, source: { type, setIds: [firstSetId] } },
-      })
-    } else {
-      onPolicyChange({
-        ...policy,
-        vocab: { ...policy.vocab, source: { type } },
-      })
-    }
+  function toggleGrammarSet(
+    setId: CuratedSetId.CuratedSetId,
+    checked: boolean,
+  ) {
+    const setIds = checked
+      ? [...policy.grammar.setIds, setId]
+      : policy.grammar.setIds.filter((id) => id !== setId)
+    onPolicyChange({ ...policy, grammar: { setIds } })
   }
 
   function toggleImportedVocab(checked: boolean) {
     onPolicyChange({
       ...policy,
       vocab: { ...policy.vocab, importedVocab: checked },
-    })
-  }
-
-  function setGrammarSource(type: ExercisePolicy.GrammarSource['type']) {
-    if (type === 'specificSets') {
-      const firstSetId = userSets[0]?.id
-      if (firstSetId === undefined) {
-        return
-      }
-      onPolicyChange({
-        ...policy,
-        grammar: { source: { type, setIds: [firstSetId] } },
-      })
-    } else {
-      onPolicyChange({ ...policy, grammar: { source: { type } } })
-    }
-  }
-
-  function toggleVocabSpecificSet(
-    setId: CuratedSetId.CuratedSetId,
-    checked: boolean,
-  ) {
-    const newSetIds = checked
-      ? [...Array.from(vocabSpecificSetIds), setId]
-      : Array.from(vocabSpecificSetIds).filter((id) => id !== setId)
-    onPolicyChange({
-      ...policy,
-      vocab: {
-        ...policy.vocab,
-        source: { type: 'specificSets', setIds: newSetIds },
-      },
-    })
-  }
-
-  function toggleGrammarSpecificSet(
-    setId: CuratedSetId.CuratedSetId,
-    checked: boolean,
-  ) {
-    const newSetIds = checked
-      ? [...Array.from(grammarSpecificSetIds), setId]
-      : Array.from(grammarSpecificSetIds).filter((id) => id !== setId)
-    onPolicyChange({
-      ...policy,
-      grammar: { source: { type: 'specificSets', setIds: newSetIds } },
     })
   }
 
@@ -114,34 +61,11 @@ export function PolicyEditor({ policy, onPolicyChange, userSets }: Props) {
       <PopoverContent>
         <div className="flex flex-col gap-4">
           <SourceGroup label="Vocab">
-            <RadioGroup
-              value={vocabSourceType}
-              onValueChange={(v) => setVocabSource(v)}
-            >
-              <RadioRow value="selectedSets" label="My selected sets" />
-              <RadioRow
-                value="specificSets"
-                label="Specific sets"
-                disabled={userSets.length === 0}
-              />
-              <AnimatePresence>
-                {vocabSourceType === 'specificSets' && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={transitions.spring}
-                    className="overflow-hidden"
-                  >
-                    <SetPicker
-                      sets={userSets}
-                      selectedIds={vocabSpecificSetIds}
-                      onToggle={toggleVocabSpecificSet}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </RadioGroup>
+            <SetPicker
+              sets={sets}
+              selectedIds={vocabSetIds}
+              onToggle={toggleVocabSet}
+            />
             <div className="border-t border-border pt-2">
               <CheckboxRow
                 label="Also include imported vocab"
@@ -152,34 +76,11 @@ export function PolicyEditor({ policy, onPolicyChange, userSets }: Props) {
           </SourceGroup>
 
           <SourceGroup label="Grammar">
-            <RadioGroup
-              value={grammarSourceType}
-              onValueChange={(v) => setGrammarSource(v)}
-            >
-              <RadioRow value="selectedSets" label="My selected sets" />
-              <RadioRow
-                value="specificSets"
-                label="Specific sets"
-                disabled={userSets.length === 0}
-              />
-              <AnimatePresence>
-                {grammarSourceType === 'specificSets' && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={transitions.spring}
-                    className="overflow-hidden"
-                  >
-                    <SetPicker
-                      sets={userSets}
-                      selectedIds={grammarSpecificSetIds}
-                      onToggle={toggleGrammarSpecificSet}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </RadioGroup>
+            <SetPicker
+              sets={sets}
+              selectedIds={grammarSetIds}
+              onToggle={toggleGrammarSet}
+            />
           </SourceGroup>
         </div>
       </PopoverContent>
@@ -199,28 +100,6 @@ function SourceGroup({
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
       {children}
     </div>
-  )
-}
-
-function RadioRow({
-  value,
-  label,
-  disabled,
-}: {
-  value: string
-  label: string
-  disabled?: boolean
-}) {
-  return (
-    <label
-      className={cn(
-        'flex items-center gap-2.5',
-        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-      )}
-    >
-      <RadioGroupItem value={value} disabled={disabled} />
-      <span className="text-sm select-none">{label}</span>
-    </label>
   )
 }
 

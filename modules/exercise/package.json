@@ -4,8 +4,10 @@
   "dependencies": {
     "@lingua-hub/core": "workspace:*",
     "@lingua-hub/llm": "workspace:*",
+    "@lingua-hub/supabase": "workspace:*",
     "@lingua-hub/vocab": "workspace:*",
     "@praha/byethrow": "catalog:",
+    "@supabase/supabase-js": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

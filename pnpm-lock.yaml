@@ -366,12 +366,18 @@ importers:
       '@lingua-hub/llm':
         specifier: workspace:*
         version: link:../llm
+      '@lingua-hub/supabase':
+        specifier: workspace:*
+        version: link:../../supabase
       '@lingua-hub/vocab':
         specifier: workspace:*
         version: link:../vocab
       '@praha/byethrow':
         specifier: 'catalog:'
         version: 0.10.1(typescript@6.0.2)
+      '@supabase/supabase-js':
+        specifier: 'catalog:'
+        version: 2.100.1
       zod:
         specifier: 'catalog:'
         version: 4.3.6

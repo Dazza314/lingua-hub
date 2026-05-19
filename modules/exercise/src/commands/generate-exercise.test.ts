@@ -4,7 +4,6 @@ import {
   type LlmClient,
   LlmStreamError,
 } from '@lingua-hub/llm'
-import { CuratedSetNotFoundError } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
 import { EmptyVocabError } from '../errors'
@@ -19,8 +18,8 @@ const USER_ID = UserId.userIdSchema.parse(
 )
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 const POLICY: ExercisePolicy.ExercisePolicy = ExercisePolicy.dangerouslyCast({
-  vocab: { source: { type: 'selectedSets' }, importedVocab: true },
-  grammar: { source: { type: 'selectedSets' } },
+  vocab: { setIds: [], importedVocab: true },
+  grammar: { setIds: [] },
 })
 
 type ExerciseDraft = {
@@ -67,8 +66,7 @@ function chunksFor(draft: ExerciseDraft): Result.Result<unknown, never>[] {
 function makeEvaluateExercisePolicy(
   vocabTerms: string[],
 ): GenerateExerciseDeps['evaluateExercisePolicy'] {
-  return () =>
-    Promise.resolve(Result.succeed({ vocabTerms, grammarPoints: [] }))
+  return () => Promise.resolve({ vocabTerms, grammarPoints: [] })
 }
 
 async function drain<T, E>(
@@ -161,22 +159,6 @@ describe('generateExercise', () => {
     expect(result.type).toBe('Failure')
     if (result.type === 'Failure') {
       expect(result.error).toBeInstanceOf(EmptyVocabError)
-    }
-    expect(calls).toHaveLength(0)
-  })
-
-  it('returns CuratedSetNotFoundError without calling the LLM when policy evaluation fails', async () => {
-    const setError = new CuratedSetNotFoundError('set not found')
-    const { streamObject, calls } = makeStreamObject(chunksFor(FINAL_DRAFT))
-
-    const result = await generateExercise({
-      evaluateExercisePolicy: () => Promise.resolve(Result.fail(setError)),
-      streamObject,
-    })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, policy: POLICY })
-
-    expect(result.type).toBe('Failure')
-    if (result.type === 'Failure') {
-      expect(result.error).toBeInstanceOf(CuratedSetNotFoundError)
     }
     expect(calls).toHaveLength(0)
   })

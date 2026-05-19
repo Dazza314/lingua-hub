@@ -2,6 +2,12 @@
 
 import { getAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { Language } from '@lingua-hub/core'
+import {
+  ExercisePolicy,
+  saveExercisePolicy as saveExercisePolicyCommand,
+  supabaseExercisePolicyRepositoryFactories,
+} from '@lingua-hub/exercise'
 import {
   CuratedSetId,
   deselectSet as deselectSetCommand,
@@ -11,6 +17,8 @@ import {
 import { Result } from '@praha/byethrow'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+
+const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 export async function signOut() {
   const supabase = await createClient()
@@ -56,4 +64,24 @@ export async function deselectSet(setId: string) {
   })
 
   revalidatePath('/sets')
+}
+
+export async function saveExercisePolicy(
+  policy: ExercisePolicy.ExercisePolicy,
+) {
+  const authResult = await getAuthenticatedUserId()
+  if (Result.isFailure(authResult)) {
+    throw authResult.error
+  }
+
+  const supabase = await createClient()
+  await saveExercisePolicyCommand({
+    upsert: supabaseExercisePolicyRepositoryFactories.createUpsert(supabase),
+  })({
+    userId: authResult.value,
+    language: TARGET_LANGUAGE,
+    policy,
+  })
+
+  revalidatePath('/exercise')
 }

@@ -2,14 +2,14 @@ import type { Language, UserId } from '@lingua-hub/core'
 import type {
   CuratedContentRepository,
   CuratedGrammarPoint,
+  CuratedSetId,
+  CuratedSetWithItems,
   ImportedVocabRepository,
 } from '@lingua-hub/vocab'
-import { CuratedSetNotFoundError } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import * as ExercisePolicy from '../models/exercise-policy'
 
 export type EvaluateExercisePolicyDeps = {
-  findSelectedSetsByUserId: CuratedContentRepository['findSelectedSetsByUserId']
   findSetWithItemsById: CuratedContentRepository['findSetWithItemsById']
   getImportedVocabItems: ImportedVocabRepository['getImportedVocabItems']
 }
@@ -26,23 +26,18 @@ type EvaluateExercisePolicyOutput = {
 }
 
 export function evaluateExercisePolicy(deps: EvaluateExercisePolicyDeps) {
-  return ({
+  return async ({
     policy,
     userId,
     language,
-  }: EvaluateExercisePolicyInput): Result.ResultAsync<
-    EvaluateExercisePolicyOutput,
-    CuratedSetNotFoundError
-  > =>
-    Result.sequence({
-      vocabTerms: resolveVocabTerms(deps, policy.vocab, userId, language),
-      grammarPoints: resolveGrammarPoints(
-        deps,
-        policy.grammar,
-        userId,
-        language,
-      ),
-    })
+  }: EvaluateExercisePolicyInput): Promise<EvaluateExercisePolicyOutput> => {
+    const [vocabTerms, grammarPoints] = await Promise.all([
+      resolveVocabTerms(deps, policy.vocab, userId, language),
+      resolveGrammarPoints(deps, policy.grammar),
+    ])
+
+    return { vocabTerms, grammarPoints }
+  }
 }
 
 async function resolveVocabTerms(
@@ -50,109 +45,37 @@ async function resolveVocabTerms(
   vocab: ExercisePolicy.VocabPolicy,
   userId: UserId.UserId,
   language: Language.Language,
-): Result.ResultAsync<string[], CuratedSetNotFoundError> {
-  const sourceResult = await resolveVocabSource(
-    deps,
-    vocab.source,
-    userId,
-    language,
-  )
-  if (Result.isFailure(sourceResult)) {
-    return sourceResult
-  }
-
-  const sourceTerms = sourceResult.value
+): Promise<string[]> {
+  const sets = await resolveSets(deps, vocab.setIds)
+  const sourceTerms = sets.flatMap((set) => set.vocabItems.map((v) => v.term))
 
   if (!vocab.importedVocab) {
-    return Result.succeed(unique(sourceTerms))
+    return unique(sourceTerms)
   }
 
   const importedItems = await deps.getImportedVocabItems({ userId, language })
-  return Result.succeed(
-    unique([...sourceTerms, ...importedItems.map(({ term }) => term)]),
-  )
-}
-
-async function resolveVocabSource(
-  deps: EvaluateExercisePolicyDeps,
-  source: ExercisePolicy.VocabSource,
-  userId: UserId.UserId,
-  language: Language.Language,
-): Result.ResultAsync<string[], CuratedSetNotFoundError> {
-  switch (source.type) {
-    case 'selectedSets': {
-      const selectedSets = await deps.findSelectedSetsByUserId({ userId })
-      const setsWithItems = selectedSets
-        .filter((set) => set.language === language)
-        .map((set) => deps.findSetWithItemsById({ id: set.id }))
-
-      return Result.pipe(
-        Result.sequence(setsWithItems),
-        Result.map((setItems) =>
-          setItems.flatMap((set) => set.vocabItems.map((v) => v.term)),
-        ),
-      )
-    }
-    case 'specificSets': {
-      const setsWithItems = source.setIds.map((id) =>
-        deps.findSetWithItemsById({ id }),
-      )
-      return Result.pipe(
-        Result.sequence(setsWithItems),
-        Result.map((setItems) =>
-          setItems.flatMap((set) => set.vocabItems.map(({ term }) => term)),
-        ),
-      )
-    }
-  }
+  return unique([...sourceTerms, ...importedItems.map(({ term }) => term)])
 }
 
 async function resolveGrammarPoints(
   deps: EvaluateExercisePolicyDeps,
   grammar: ExercisePolicy.GrammarPolicy,
-  userId: UserId.UserId,
-  language: Language.Language,
-): Result.ResultAsync<
-  CuratedGrammarPoint.CuratedGrammarPoint[],
-  CuratedSetNotFoundError
-> {
-  return Result.pipe(
-    resolveGrammarSource(deps, grammar.source, userId, language),
-    Result.map(uniqueById),
-  )
+): Promise<CuratedGrammarPoint.CuratedGrammarPoint[]> {
+  const sets = await resolveSets(deps, grammar.setIds)
+  return uniqueById(sets.flatMap((set) => set.grammarPoints))
 }
 
-async function resolveGrammarSource(
+// Set IDs come from a policy with no DB foreign key (see
+// docs/adr/exercise-policy-set-storage.md): a curated set deleted after it was
+// added to a policy is skipped, not treated as a hard failure.
+async function resolveSets(
   deps: EvaluateExercisePolicyDeps,
-  source: ExercisePolicy.GrammarSource,
-  userId: UserId.UserId,
-  language: Language.Language,
-): Result.ResultAsync<
-  CuratedGrammarPoint.CuratedGrammarPoint[],
-  CuratedSetNotFoundError
-> {
-  switch (source.type) {
-    case 'selectedSets': {
-      const selectedSets = await deps.findSelectedSetsByUserId({ userId })
-      const setsWithItems = selectedSets
-        .filter((set) => set.language === language)
-        .map((set) => deps.findSetWithItemsById({ id: set.id }))
-
-      return Result.pipe(
-        Result.sequence(setsWithItems),
-        Result.map((set) => set.flatMap((s) => s.grammarPoints)),
-      )
-    }
-    case 'specificSets': {
-      const setsWithItems = source.setIds.map((id) =>
-        deps.findSetWithItemsById({ id }),
-      )
-      return Result.pipe(
-        Result.sequence(setsWithItems),
-        Result.map((set) => set.flatMap((s) => s.grammarPoints)),
-      )
-    }
-  }
+  setIds: CuratedSetId.CuratedSetId[],
+): Promise<CuratedSetWithItems.CuratedSetWithItems[]> {
+  const results = await Promise.all(
+    setIds.map((id) => deps.findSetWithItemsById({ id })),
+  )
+  return results.filter(Result.isSuccess).map((result) => result.value)
 }
 
 function unique<T>(items: T[]): T[] {

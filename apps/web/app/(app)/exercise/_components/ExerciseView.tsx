@@ -1,5 +1,6 @@
 'use client'
 
+import { saveExercisePolicy } from '@/app/actions'
 import { Button } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
 import { Exercise, ExercisePolicy } from '@lingua-hub/exercise'
@@ -13,23 +14,24 @@ import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
 import { useGenerateExercise } from './use-generate-exercise'
 
-const DEFAULT_POLICY: ExercisePolicy.ExercisePolicy = {
-  vocab: { source: { type: 'selectedSets' }, importedVocab: false },
-  grammar: { source: { type: 'selectedSets' } },
+type Set = { id: CuratedSetId.CuratedSetId; title: string }
+
+type Props = {
+  initialPolicy: ExercisePolicy.ExercisePolicy
+  sets: Set[]
 }
 
-type UserSet = { id: CuratedSetId.CuratedSetId; title: string }
-
-export function ExerciseView({ userSets }: { userSets: UserSet[] }) {
+export function ExerciseView({ initialPolicy, sets }: Props) {
   const { state: generateState, generate } = useGenerateExercise()
   const { state: evaluationState, evaluate } = useEvaluateExercise()
   const [userTranslation, setUserTranslation] = useState<string | null>(null)
   const [policy, setPolicy] =
-    useState<ExercisePolicy.ExercisePolicy>(DEFAULT_POLICY)
+    useState<ExercisePolicy.ExercisePolicy>(initialPolicy)
   const translationRef = useRef<HTMLTextAreaElement>(null)
+  const savePromiseRef = useRef<Promise<unknown> | null>(null)
 
   useEffect(() => {
-    void generate(DEFAULT_POLICY).then(() => translationRef.current?.focus())
+    void generate().then(() => translationRef.current?.focus())
   }, [generate])
 
   function handleSubmit(translation: string) {
@@ -40,9 +42,15 @@ export function ExerciseView({ userSets }: { userSets: UserSet[] }) {
     evaluate(generateState.exercise, translation)
   }
 
+  function handlePolicyChange(next: ExercisePolicy.ExercisePolicy) {
+    setPolicy(next)
+    savePromiseRef.current = saveExercisePolicy(next)
+  }
+
   async function handleNext() {
     setUserTranslation(null)
-    await generate(policy)
+    await savePromiseRef.current
+    await generate()
     translationRef.current?.focus()
   }
 
@@ -84,8 +92,8 @@ export function ExerciseView({ userSets }: { userSets: UserSet[] }) {
       <div className="flex justify-end">
         <PolicyEditor
           policy={policy}
-          onPolicyChange={setPolicy}
-          userSets={userSets}
+          onPolicyChange={handlePolicyChange}
+          sets={sets}
         />
       </div>
       <ExerciseCard exercise={exercise} status={generateState.status} />

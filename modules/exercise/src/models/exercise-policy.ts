@@ -2,29 +2,17 @@ import { makeParse } from '@lingua-hub/core'
 import { CuratedSetId } from '@lingua-hub/vocab'
 import { z } from 'zod'
 
-export const vocabSourceSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('selectedSets') }),
-  z.object({
-    type: z.literal('specificSets'),
-    setIds: z.array(CuratedSetId.curatedSetIdSchema).min(1),
-  }),
-])
+const setIdsSchema = z
+  .array(CuratedSetId.curatedSetIdSchema)
+  .transform((ids) => [...new Set(ids)])
 
 export const vocabPolicySchema = z.object({
-  source: vocabSourceSchema,
+  setIds: setIdsSchema,
   importedVocab: z.boolean(),
 })
 
-export const grammarSourceSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('selectedSets') }),
-  z.object({
-    type: z.literal('specificSets'),
-    setIds: z.array(CuratedSetId.curatedSetIdSchema).min(1),
-  }),
-])
-
 export const grammarPolicySchema = z.object({
-  source: grammarSourceSchema,
+  setIds: setIdsSchema,
 })
 
 export const exercisePolicySchema = z.object({
@@ -32,11 +20,14 @@ export const exercisePolicySchema = z.object({
   grammar: grammarPolicySchema,
 })
 
-export type VocabSource = z.infer<typeof vocabSourceSchema>
 export type VocabPolicy = z.infer<typeof vocabPolicySchema>
-export type GrammarSource = z.infer<typeof grammarSourceSchema>
 export type GrammarPolicy = z.infer<typeof grammarPolicySchema>
 export type ExercisePolicy = z.infer<typeof exercisePolicySchema>
+
+export const DEFAULT_EXERCISE_POLICY: ExercisePolicy = {
+  vocab: { setIds: [], importedVocab: false },
+  grammar: { setIds: [] },
+}
 
 export const parse = makeParse(exercisePolicySchema)
 

@@ -1,5 +1,4 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { cn } from '@/lib/utils'
 
 import { CuratedSetId } from '@lingua-hub/vocab'
 
@@ -19,16 +18,10 @@ export function SetPicker({
       {sets.map((set) => (
         <label
           key={set.id}
-          className={cn(
-            'flex items-center gap-2.5',
-            selectedIds.has(set.id) && selectedIds.size === 1
-              ? 'cursor-not-allowed opacity-50'
-              : 'cursor-pointer',
-          )}
+          className="flex cursor-pointer items-center gap-2.5"
         >
           <Checkbox
             checked={selectedIds.has(set.id)}
-            disabled={selectedIds.has(set.id) && selectedIds.size === 1}
             onCheckedChange={(checked) => onToggle(set.id, checked)}
           />
           <span className="text-sm">{set.title}</span>

@@ -16,7 +16,7 @@ export function createGetCuratedVocabItems(
       throw new Error('Failed to fetch curated vocab items', { cause: error })
     }
 
-    return (data ?? []).map((row) =>
+    return data.map((row) =>
       CuratedVocabItem.dangerouslyCast({
         id: row.id,
         language: row.language,

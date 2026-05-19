@@ -1,10 +1,11 @@
 import { env } from '@/lib/env'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
-import type { ExercisePolicy } from '@lingua-hub/exercise'
 import {
   evaluateExercisePolicy,
   generateExercise as generateExerciseCommand,
+  getExercisePolicy,
+  supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
 import {
@@ -22,21 +23,25 @@ const { streamObject } = createGoogleLlmClient(
   GoogleModel.Gemma4_31B,
 )
 
-export async function generateExercise(policy: ExercisePolicy.ExercisePolicy) {
+export async function generateExercise() {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
     throw authResult.error
   }
 
   const supabase = await createClient()
+  const userId = authResult.value
+
+  const policy = await getExercisePolicy({
+    findByUserIdAndLanguage:
+      supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+        supabase,
+      ),
+  })({ userId, language: TARGET_LANGUAGE })
 
   return generateExerciseCommand({
     streamObject,
     evaluateExercisePolicy: evaluateExercisePolicy({
-      findSelectedSetsByUserId:
-        supabaseCuratedContentRepositoryFactories.createFindSelectedSetsByUserId(
-          supabase,
-        ),
       findSetWithItemsById:
         supabaseCuratedContentRepositoryFactories.createFindSetWithItemsById(
           supabase,
@@ -47,7 +52,7 @@ export async function generateExercise(policy: ExercisePolicy.ExercisePolicy) {
         ),
     }),
   })({
-    userId: authResult.value,
+    userId,
     targetLanguage: TARGET_LANGUAGE,
     policy,
   })
