@@ -1,4 +1,4 @@
-import type { Language, UserId } from '@lingua-hub/core'
+import type { Language } from '@lingua-hub/core'
 import type { Result } from '@praha/byethrow'
 import type { CuratedSetNotFoundError } from '../errors'
 import type { CuratedGrammarPoint } from '../models/curated-grammar-point'
@@ -23,16 +23,4 @@ export type CuratedContentRepository = {
   findSetWithItemsById(params: {
     id: CuratedSetId
   }): Result.ResultAsync<CuratedSetWithItems, CuratedSetNotFoundError>
-
-  findSelectedSetsByUserId(params: {
-    userId: UserId.UserId
-  }): Promise<CuratedSet[]>
-  insertUserSetSelection(params: {
-    userId: UserId.UserId
-    setId: CuratedSetId
-  }): Promise<void>
-  deleteUserSetSelection(params: {
-    userId: UserId.UserId
-    setId: CuratedSetId
-  }): Promise<void>
 }

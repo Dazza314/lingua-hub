@@ -3,11 +3,8 @@ export * from './models/index'
 export { createAnkiDroidAdapter } from './adapters/anki-droid/vocab-source/anki-droid-adapter'
 export { supabaseCuratedContentRepositoryFactories } from './adapters/supabase/curated-content-repository/supabase-curated-content-repository'
 export { supabaseImportedVocabRepositoryFactories } from './adapters/supabase/imported-vocab-repository/supabase-imported-vocab-repository'
-export { deselectSet } from './commands/deselect-set'
-export { getSelectedSetsForUser } from './commands/get-selected-sets-for-user'
 export { getSetsForLanguage } from './commands/get-sets-for-language'
 export { importAnkiVocab } from './commands/import-anki-vocab'
-export { selectSet } from './commands/select-set'
 export {
   CuratedSetNotFoundError,
   ImportedVocabItemNotFoundError,

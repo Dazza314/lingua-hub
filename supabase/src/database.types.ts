@@ -207,29 +207,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_selected_sets: {
-        Row: {
-          set_id: string
-          user_id: string
-        }
-        Insert: {
-          set_id: string
-          user_id: string
-        }
-        Update: {
-          set_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_selected_sets_set_id_fkey"
-            columns: ["set_id"]
-            isOneToOne: false
-            referencedRelation: "sets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never

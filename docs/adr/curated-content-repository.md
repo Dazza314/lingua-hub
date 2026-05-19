@@ -6,6 +6,8 @@ All curated read-only content — vocab items, grammar points, and sets — is e
 
 One port, one adapter. `CuratedContentRepository` owns all methods for reading curated content: `getCuratedVocabItems`, `getCuratedGrammarPoints`, `findSetsByLanguage`, `findSetWithItemsById`.
 
+The port previously also held user set-selection methods (`findSelectedSetsByUserId`, `insertUserSetSelection`, `deleteUserSetSelection`). These were removed when the selected-sets feature was replaced by the per-skill set picker in `ExercisePolicy` (see `docs/design/exercise-policy-backend.md`).
+
 ## Why not separate ports
 
 The initial implementation did have separate ports (`CuratedVocabRepository`, `CuratedGrammarPointRepository`). They were merged because:
