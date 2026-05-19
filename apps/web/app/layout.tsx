@@ -9,6 +9,14 @@ const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' })
 export const metadata: Metadata = {
   title: 'Lingua Hub',
   description: 'Language learning powered by your Anki vocabulary',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+  },
+  icons: {
+    apple: '/icon-192.png',
+  },
 }
 
 export const viewport: Viewport = {
