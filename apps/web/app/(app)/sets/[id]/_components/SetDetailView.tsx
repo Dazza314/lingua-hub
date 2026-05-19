@@ -162,7 +162,11 @@ function Pagination({
       <NavLink href={pageUrl(1)} disabled={isFirst} title="First page">
         «
       </NavLink>
-      <NavLink href={pageUrl(current - 1)} disabled={isFirst} title="Previous page">
+      <NavLink
+        href={pageUrl(current - 1)}
+        disabled={isFirst}
+        title="Previous page"
+      >
         ‹
       </NavLink>
 
