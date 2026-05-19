@@ -49,7 +49,10 @@ const allGrammarEntries: GrammarEntry[] = JSON.parse(
 for (const { level, id, title } of LEVELS) {
   const { error: setError } = await client
     .from('sets')
-    .upsert({ id, language: LANGUAGE, title }, { onConflict: 'id' })
+    .upsert(
+      { id, language: LANGUAGE, title, category: 'JLPT' },
+      { onConflict: 'id' },
+    )
   if (setError) {
     throw setError
   }
