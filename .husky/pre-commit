@@ -1,1 +1,3 @@
-pnpm check
+pnpm lint-staged
+pnpm syncpack:lint
+pnpm knip

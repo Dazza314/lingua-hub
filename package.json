@@ -10,6 +10,7 @@
     "eslint-plugin-no-barrel-files": "catalog:",
     "husky": "catalog:",
     "knip": "catalog:",
+    "lint-staged": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-curly": "catalog:",
     "supabase": "catalog:",
@@ -42,6 +43,13 @@
     "syncpack:lint": "syncpack lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md,yaml,yml}": "prettier --write"
   },
   "type": "module"
 }
