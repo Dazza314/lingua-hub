@@ -1,4 +1,5 @@
 export * from './models/index'
+export type { Page } from './types/page'
 export { Languages } from './constants/languages'
 export { TypedError } from './errors/typed-error'
 export { ValidationError } from './errors/validation-error'

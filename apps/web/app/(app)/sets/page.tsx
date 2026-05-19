@@ -15,7 +15,10 @@ export default async function SetsPage() {
 
   return (
     <div className="px-4 py-6">
-      <h1 className="mb-6 text-lg font-semibold">Sets</h1>
+      <h1 className="mb-1 text-lg font-semibold">Sets</h1>
+      <p className="mb-6 text-sm text-muted-foreground">
+        Curated collections of vocabulary and grammar.
+      </p>
       <SetsView sets={sets} />
     </div>
   )

@@ -133,6 +133,13 @@ export type Database = {
             referencedRelation: "sets"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "set_grammar_points_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets_with_counts"
+            referencedColumns: ["id"]
+          },
         ]
       }
       set_vocab_items: {
@@ -154,6 +161,13 @@ export type Database = {
             columns: ["set_id"]
             isOneToOne: false
             referencedRelation: "sets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "set_vocab_items_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "sets_with_counts"
             referencedColumns: ["id"]
           },
           {
@@ -212,7 +226,17 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      sets_with_counts: {
+        Row: {
+          category: string | null
+          grammar_count: number | null
+          id: string | null
+          language: string | null
+          title: string | null
+          vocab_count: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

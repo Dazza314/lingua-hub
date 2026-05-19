@@ -4,6 +4,9 @@ export { createAnkiDroidAdapter } from './adapters/anki-droid/vocab-source/anki-
 export { supabaseCuratedContentRepositoryFactories } from './adapters/supabase/curated-content-repository/supabase-curated-content-repository'
 export { supabaseImportedVocabRepositoryFactories } from './adapters/supabase/imported-vocab-repository/supabase-imported-vocab-repository'
 export { getSetsForLanguage } from './commands/get-sets-for-language'
+export { getSetById } from './commands/get-set-by-id'
+export { getSetVocabPage } from './commands/get-set-vocab-page'
+export { getSetGrammarPage } from './commands/get-set-grammar-page'
 export { importAnkiVocab } from './commands/import-anki-vocab'
 export {
   CuratedSetNotFoundError,
