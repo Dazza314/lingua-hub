@@ -167,16 +167,19 @@ export type Database = {
       }
       sets: {
         Row: {
+          category: string
           id: string
           language: string
           title: string
         }
         Insert: {
+          category?: string
           id?: string
           language: string
           title: string
         }
         Update: {
+          category?: string
           id?: string
           language?: string
           title?: string

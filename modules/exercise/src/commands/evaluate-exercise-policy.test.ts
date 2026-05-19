@@ -62,6 +62,7 @@ function makeCuratedSetWithItems(
     id,
     language,
     title: 'Test Set',
+    category: 'Test category',
     vocabItems: vocabTerms.map((term) => ({ id: nextId(), language, term })),
     grammarPoints,
   })

@@ -12,7 +12,7 @@ export function createFindSetWithItemsById(
     const { data, error } = await client
       .from('sets')
       .select(
-        'id, language, title, set_vocab_items(curated_vocab_items(id, language, term)), set_grammar_points(curated_grammar_points(id, language, title, explanation))',
+        'id, language, title, category, set_vocab_items(curated_vocab_items(id, language, term)), set_grammar_points(curated_grammar_points(id, language, title, explanation))',
       )
       .eq('id', id)
       .maybeSingle()
@@ -30,6 +30,7 @@ export function createFindSetWithItemsById(
         id: data.id,
         language: data.language,
         title: data.title,
+        category: data.category,
         vocabItems: data.set_vocab_items.flatMap((j) =>
           j.curated_vocab_items ? [j.curated_vocab_items] : [],
         ),

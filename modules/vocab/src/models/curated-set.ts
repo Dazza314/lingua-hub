@@ -2,10 +2,16 @@ import { Language, makeParse } from '@lingua-hub/core'
 import { z } from 'zod'
 import { curatedSetIdSchema } from './curated-set-id'
 
-export const curatedSetSchema = z.object({
+export const curatedSetBaseSchema = z.object({
   id: curatedSetIdSchema,
   language: Language.languageSchema,
   title: z.string(),
+  category: z.string(),
+})
+
+export const curatedSetSchema = curatedSetBaseSchema.extend({
+  vocabCount: z.number().int().nonnegative(),
+  grammarCount: z.number().int().nonnegative(),
 })
 
 export type CuratedSet = z.infer<typeof curatedSetSchema>

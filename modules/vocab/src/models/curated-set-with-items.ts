@@ -1,13 +1,10 @@
-import { Language, makeParse } from '@lingua-hub/core'
+import { makeParse } from '@lingua-hub/core'
 import { z } from 'zod'
 import { curatedGrammarPointSchema } from './curated-grammar-point'
-import { curatedSetIdSchema } from './curated-set-id'
+import { curatedSetBaseSchema } from './curated-set'
 import { curatedVocabItemSchema } from './curated-vocab-item'
 
-export const curatedSetWithItemsSchema = z.object({
-  id: curatedSetIdSchema,
-  language: Language.languageSchema,
-  title: z.string(),
+export const curatedSetWithItemsSchema = curatedSetBaseSchema.extend({
   vocabItems: z.array(curatedVocabItemSchema),
   grammarPoints: z.array(curatedGrammarPointSchema),
 })
