@@ -74,11 +74,44 @@ export function ExerciseView(props: Props) {
 
   if (generateState.status === 'error') {
     if (generateState.kind === 'empty-vocab') {
+      if (props.scope) {
+        return (
+          <div className="flex flex-1 items-center justify-center px-6">
+            <p className="text-muted-foreground text-center text-sm">
+              This set has no vocabulary yet.
+            </p>
+          </div>
+        )
+      }
+      const hasVocabSource =
+        policy.vocab.setIds.length > 0 || policy.vocab.importedVocab
       return (
-        <div className="flex flex-1 items-center justify-center px-6">
-          <p className="text-muted-foreground text-center text-sm">
-            No vocabulary synced yet. Open AnkiDroid and sync your deck.
-          </p>
+        <div className="flex flex-1 flex-col gap-6 px-4 py-6">
+          <PracticeHeader
+            right={
+              <PolicyEditor
+                policy={policy}
+                onPolicyChange={handlePolicyChange}
+                sets={props.sets}
+              />
+            }
+          />
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
+            <p className="text-muted-foreground text-center text-sm">
+              Pick a set in the filter to start practicing.
+            </p>
+            <Button
+              size="lg"
+              onClick={() => {
+                void generate(scopeParam).then(() =>
+                  translationRef.current?.focus(),
+                )
+              }}
+              disabled={!hasVocabSource}
+            >
+              Start practicing
+            </Button>
+          </div>
         </div>
       )
     }
