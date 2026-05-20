@@ -25,12 +25,14 @@ type Props =
   | {
       initialPolicy: ExercisePolicy.ExercisePolicy
       sets: Set[]
+      hasImportedVocab: boolean
       scope?: undefined
     }
   | {
       initialPolicy: ExercisePolicy.ExercisePolicy
       scope: Scope
       sets?: undefined
+      hasImportedVocab?: undefined
     }
 
 export function ExerciseView(props: Props) {
@@ -93,6 +95,7 @@ export function ExerciseView(props: Props) {
                 policy={policy}
                 onPolicyChange={handlePolicyChange}
                 sets={props.sets}
+                hasImportedVocab={props.hasImportedVocab}
               />
             }
           />
@@ -164,6 +167,7 @@ export function ExerciseView(props: Props) {
               policy={policy}
               onPolicyChange={handlePolicyChange}
               sets={props.sets}
+              hasImportedVocab={props.hasImportedVocab}
             />
           )
         }

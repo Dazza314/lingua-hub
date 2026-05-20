@@ -73,6 +73,7 @@ export default async function Page({
     <ExerciseView
       initialPolicy={policy}
       sets={sets.map((set) => ({ id: set.id, title: set.title }))}
+      hasImportedVocab={false}
     />
   )
 }

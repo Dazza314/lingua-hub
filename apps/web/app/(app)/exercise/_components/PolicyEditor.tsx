@@ -18,9 +18,15 @@ type Props = {
   policy: ExercisePolicy.ExercisePolicy
   onPolicyChange: (policy: ExercisePolicy.ExercisePolicy) => void
   sets: UserSet[]
+  hasImportedVocab: boolean
 }
 
-export function PolicyEditor({ policy, onPolicyChange, sets }: Props) {
+export function PolicyEditor({
+  policy,
+  onPolicyChange,
+  sets,
+  hasImportedVocab,
+}: Props) {
   const vocabSetIds = new Set<CuratedSetId.CuratedSetId>(policy.vocab.setIds)
   const grammarSetIds = new Set<CuratedSetId.CuratedSetId>(
     policy.grammar.setIds,
@@ -82,13 +88,15 @@ export function PolicyEditor({ policy, onPolicyChange, sets }: Props) {
               selectedIds={vocabSetIds}
               onToggle={toggleVocabSet}
             />
-            <div className="border-t border-border pt-2">
-              <CheckboxRow
-                label="Also include imported vocab"
-                checked={policy.vocab.importedVocab}
-                onCheckedChange={toggleImportedVocab}
-              />
-            </div>
+            {hasImportedVocab && (
+              <div className="border-t border-border pt-2">
+                <CheckboxRow
+                  label="Also include imported vocab"
+                  checked={policy.vocab.importedVocab}
+                  onCheckedChange={toggleImportedVocab}
+                />
+              </div>
+            )}
           </SourceGroup>
 
           <SourceGroup label="Grammar">
