@@ -3,7 +3,6 @@ import { parseExerciseScope } from '@/lib/exercise-scope'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
-  ExercisePolicy,
   getExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
@@ -35,16 +34,24 @@ export default async function Page({
   const scope = parseExerciseScope((await searchParams).scope)
 
   if (scope?.type === 'set') {
-    const setResult = await getSetById({
-      findSetById: repo.createFindSetById(supabase),
-    })({ id: scope.setId })
+    const [setResult, policy] = await Promise.all([
+      getSetById({ findSetById: repo.createFindSetById(supabase) })({
+        id: scope.setId,
+      }),
+      getExercisePolicy({
+        findByUserIdAndLanguage:
+          supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+            supabase,
+          ),
+      })({ userId, language: TARGET_LANGUAGE }),
+    ])
     if (Result.isFailure(setResult)) {
       redirect('/exercise')
     }
     const set = setResult.value
     return (
       <ExerciseView
-        initialPolicy={ExercisePolicy.fromSet(set)}
+        initialPolicy={policy}
         scope={{ setId: set.id, setTitle: set.title }}
       />
     )

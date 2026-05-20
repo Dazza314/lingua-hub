@@ -50,13 +50,29 @@ export function PolicyEditor({ policy, onPolicyChange, sets }: Props) {
     })
   }
 
+  const activeFilterCount =
+    policy.vocab.setIds.length +
+    (policy.vocab.importedVocab ? 1 : 0) +
+    policy.grammar.setIds.length
+
   return (
     <Popover>
       <PopoverTrigger
-        className={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }))}
+        className={cn(
+          buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+          'relative',
+        )}
         aria-label="Exercise sources"
       >
         <HugeiconsIcon icon={FilterIcon} strokeWidth={1.5} />
+        {activeFilterCount > 0 && (
+          <span
+            aria-hidden
+            className="absolute -right-1 -top-1 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-primary px-0.5 text-[10px] font-medium leading-none text-primary-foreground"
+          >
+            {activeFilterCount}
+          </span>
+        )}
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex flex-col gap-4">
