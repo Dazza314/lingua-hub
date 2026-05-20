@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["ESNext", "dom", "dom.iterable"],
+    "lib": ["ESNext", "dom", "dom.iterable", "webworker"],
     "jsx": "preserve",
     "incremental": true,
     "tsBuildInfoFile": ".next/tsconfig.tsbuildinfo",

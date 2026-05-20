@@ -3,6 +3,7 @@ packages:
   - 'modules/*'
   - 'supabase'
 allowBuilds:
+  esbuild: true
   sharp: false
   supabase: true
   unrs-resolver: false
@@ -14,7 +15,9 @@ catalog:
   '@langfuse/tracing': '^5.3.0'
   '@opentelemetry/sdk-trace-node': '^2.7.1'
   '@base-ui/react': '^1.4.1'
-  '@ducanh2912/next-pwa': '^10.2.9'
+  '@serwist/turbopack': '^9.5.11'
+  serwist: '^9.5.11'
+  esbuild: '^0.28.0'
   '@capacitor/android': '^8.0.0'
   '@capacitor/app': '^8.1.0'
   '@capacitor/browser': '^8.0.3'

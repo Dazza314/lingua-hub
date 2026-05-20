@@ -1,11 +1,5 @@
-import withPWAInit from '@ducanh2912/next-pwa'
+import { withSerwist } from '@serwist/turbopack'
 import type { NextConfig } from 'next'
-
-const withPWA = withPWAInit({
-  dest: 'public',
-  register: true,
-  disable: process.env.NODE_ENV === 'development',
-})
 
 const nextConfig: NextConfig = {
   images: {
@@ -15,4 +9,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPWA(nextConfig)
+export default withSerwist(nextConfig)

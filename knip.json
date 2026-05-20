@@ -9,8 +9,10 @@
       "ignore": [
         "components/ui/**",
         "app/actions.ts",
+        "app/sw.ts",
         "components/SignOutButton.tsx"
-      ]
+      ],
+      "ignoreDependencies": ["serwist"]
     },
     "supabase": {
       "ignore": ["src/database.types.ts"]
