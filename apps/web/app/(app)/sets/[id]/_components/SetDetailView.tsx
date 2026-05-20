@@ -3,7 +3,7 @@
 import { buttonVariants } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
 import { cn } from '@/lib/utils'
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, PlayIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ExercisePolicy } from '@lingua-hub/exercise'
 import type { CuratedSet } from '@lingua-hub/vocab'
@@ -62,6 +62,7 @@ export function SetDetailView({ set, policy, children }: Props) {
           aria-disabled={isEmpty}
           tabIndex={isEmpty ? -1 : undefined}
         >
+          <HugeiconsIcon icon={PlayIcon} size={14} strokeWidth={2} />
           Start studying
         </Link>
       </div>
