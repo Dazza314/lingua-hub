@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "dependencies": {
     "@base-ui/react": "catalog:",
+    "@langfuse/otel": "catalog:",
+    "@langfuse/tracing": "catalog:",
+    "@opentelemetry/sdk-trace-node": "catalog:",
     "@capacitor/app": "catalog:",
     "@capacitor/browser": "catalog:",
     "@capacitor/core": "catalog:",

@@ -25,6 +25,7 @@ export function createStreamObject(
       })),
       maxOutputTokens: params.maxTokens,
       abortSignal: AbortSignal.timeout(STREAM_TIMEOUT_MS),
+      experimental_telemetry: { isEnabled: true },
     })
 
     return (async function* () {

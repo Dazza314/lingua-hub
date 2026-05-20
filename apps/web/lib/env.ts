@@ -5,6 +5,9 @@ export const env = createEnv({
   server: {
     GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1),
     MOCK_LLM: z.coerce.boolean().default(false),
+    LANGFUSE_SECRET_KEY: z.string().min(1).optional(),
+    LANGFUSE_PUBLIC_KEY: z.string().min(1).optional(),
+    LANGFUSE_BASE_URL: z.url().optional(),
   },
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.url(),
@@ -13,6 +16,9 @@ export const env = createEnv({
   runtimeEnv: {
     GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     MOCK_LLM: process.env.MOCK_LLM,
+    LANGFUSE_SECRET_KEY: process.env.LANGFUSE_SECRET_KEY,
+    LANGFUSE_PUBLIC_KEY: process.env.LANGFUSE_PUBLIC_KEY,
+    LANGFUSE_BASE_URL: process.env.LANGFUSE_BASE_URL,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   },

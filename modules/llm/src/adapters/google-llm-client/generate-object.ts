@@ -16,6 +16,7 @@ export function createGenerateObject(
         content: m.content,
       })),
       maxOutputTokens: params.maxTokens,
+      experimental_telemetry: { isEnabled: true },
     })
     return result.output
   }

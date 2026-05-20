@@ -22,6 +22,7 @@ export function createStreamObject(
         content: m.content,
       })),
       maxOutputTokens: params.maxTokens,
+      experimental_telemetry: { isEnabled: true },
     })
 
     return (async function* () {
