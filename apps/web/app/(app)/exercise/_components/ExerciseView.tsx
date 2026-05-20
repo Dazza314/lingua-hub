@@ -6,34 +6,48 @@ import { motionTokens, transitions } from '@/lib/animations'
 import { Exercise, ExercisePolicy } from '@lingua-hub/exercise'
 import { CuratedSetId } from '@lingua-hub/vocab'
 import { AnimatePresence, motion } from 'framer-motion'
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { EvaluationCard } from './EvaluationCard'
 import { ExerciseCard } from './ExerciseCard'
 import { PolicyEditor } from './PolicyEditor'
 import { PracticeHeader } from './PracticeHeader'
+import { ScopedSessionChip } from './ScopedSessionChip'
 import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
 import { useGenerateExercise } from './use-generate-exercise'
 
 type Set = { id: CuratedSetId.CuratedSetId; title: string }
 
-type Props = {
-  initialPolicy: ExercisePolicy.ExercisePolicy
-  sets: Set[]
-}
+type Scope = { setId: CuratedSetId.CuratedSetId; setTitle: string }
 
-export function ExerciseView({ initialPolicy, sets }: Props) {
+type Props =
+  | {
+      initialPolicy: ExercisePolicy.ExercisePolicy
+      sets: Set[]
+      scope?: undefined
+    }
+  | {
+      initialPolicy: ExercisePolicy.ExercisePolicy
+      scope: Scope
+      sets?: undefined
+    }
+
+export function ExerciseView(props: Props) {
   const { state: generateState, generate } = useGenerateExercise()
   const { state: evaluationState, evaluate } = useEvaluateExercise()
   const [userTranslation, setUserTranslation] = useState<string | null>(null)
-  const [policy, setPolicy] =
-    useState<ExercisePolicy.ExercisePolicy>(initialPolicy)
+  const [policy, setPolicy] = useState<ExercisePolicy.ExercisePolicy>(
+    props.initialPolicy,
+  )
   const translationRef = useRef<HTMLTextAreaElement>(null)
   const savePromiseRef = useRef<Promise<unknown> | null>(null)
 
+  const scopeParam = props.scope ? `set:${props.scope.setId}` : undefined
+
   useEffect(() => {
-    void generate().then(() => translationRef.current?.focus())
-  }, [generate])
+    void generate(scopeParam).then(() => translationRef.current?.focus())
+  }, [generate, scopeParam])
 
   function handleSubmit(translation: string) {
     if (generateState.status !== 'complete') {
@@ -44,6 +58,9 @@ export function ExerciseView({ initialPolicy, sets }: Props) {
   }
 
   function handlePolicyChange(next: ExercisePolicy.ExercisePolicy) {
+    if (props.scope) {
+      return
+    }
     setPolicy(next)
     savePromiseRef.current = saveExercisePolicy(next)
   }
@@ -51,7 +68,7 @@ export function ExerciseView({ initialPolicy, sets }: Props) {
   async function handleNext() {
     setUserTranslation(null)
     await savePromiseRef.current
-    await generate()
+    await generate(scopeParam)
     translationRef.current?.focus()
   }
 
@@ -62,6 +79,21 @@ export function ExerciseView({ initialPolicy, sets }: Props) {
           <p className="text-muted-foreground text-center text-sm">
             No vocabulary synced yet. Open AnkiDroid and sync your deck.
           </p>
+        </div>
+      )
+    }
+    if (generateState.kind === 'scoped-set-not-found') {
+      return (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
+          <p className="text-muted-foreground text-center text-sm">
+            This set is no longer available.
+          </p>
+          <Link
+            href="/exercise"
+            className="text-primary text-sm underline-offset-4 hover:underline"
+          >
+            Exit scoped session
+          </Link>
         </div>
       )
     }
@@ -92,11 +124,15 @@ export function ExerciseView({ initialPolicy, sets }: Props) {
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
       <PracticeHeader
         right={
-          <PolicyEditor
-            policy={policy}
-            onPolicyChange={handlePolicyChange}
-            sets={sets}
-          />
+          props.scope ? (
+            <ScopedSessionChip title={props.scope.setTitle} />
+          ) : (
+            <PolicyEditor
+              policy={policy}
+              onPolicyChange={handlePolicyChange}
+              sets={props.sets}
+            />
+          )
         }
       />
       <ExerciseCard exercise={exercise} status={generateState.status} />

@@ -1,5 +1,6 @@
 import { getAuthenticatedUserId } from '@/lib/auth'
 import { env } from '@/lib/env'
+import { parseExerciseScope } from '@/lib/exercise-scope'
 import { generateExercise } from '@/lib/generate-exercise'
 import { mockGenerateExercise } from '@/mocks/generate-exercise'
 import { Result } from '@praha/byethrow'
@@ -8,13 +9,16 @@ const handler = env.MOCK_LLM ? mockGenerateExercise : generateExercise
 
 const encoder = new TextEncoder()
 
-export async function POST() {
+export async function POST(request: Request) {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
     return new Response(null, { status: 401 })
   }
 
-  const result = await handler()
+  const scope = parseExerciseScope(
+    new URL(request.url).searchParams.get('scope'),
+  )
+  const result = await handler(scope ?? undefined)
 
   if (Result.isFailure(result)) {
     return Response.json(

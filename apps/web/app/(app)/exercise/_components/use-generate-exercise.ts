@@ -6,18 +6,23 @@ type GenerateState =
   | { status: 'loading' }
   | { status: 'streaming'; partial: Partial<Exercise.Exercise> }
   | { status: 'complete'; exercise: Exercise.Exercise }
-  | { status: 'error'; kind: 'empty-vocab' | 'other'; message: string }
+  | {
+      status: 'error'
+      kind: 'empty-vocab' | 'scoped-set-not-found' | 'other'
+      message: string
+    }
 
 export function useGenerateExercise() {
   const [state, setState] = useState<GenerateState>({ status: 'loading' })
 
-  const generate = useCallback(async () => {
+  const generate = useCallback(async (scope?: string) => {
     setState({ status: 'loading' })
 
     try {
-      const response = await fetch('/api/exercise/generate', {
-        method: 'POST',
-      })
+      const url = scope
+        ? `/api/exercise/generate?scope=${encodeURIComponent(scope)}`
+        : '/api/exercise/generate'
+      const response = await fetch(url, { method: 'POST' })
 
       if (response.status === 422) {
         const body = (await response.json().catch(() => null)) as {
@@ -28,6 +33,14 @@ export function useGenerateExercise() {
             status: 'error',
             kind: 'empty-vocab',
             message: body.error.message ?? 'No vocabulary items found',
+          })
+          return
+        }
+        if (body?.error?.type === 'CuratedSetNotFoundError') {
+          setState({
+            status: 'error',
+            kind: 'scoped-set-not-found',
+            message: body.error.message ?? 'Set not found',
           })
           return
         }

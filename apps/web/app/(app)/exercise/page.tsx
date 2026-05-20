@@ -1,20 +1,28 @@
 import { getAuthenticatedUserId } from '@/lib/auth'
+import { parseExerciseScope } from '@/lib/exercise-scope'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
+  ExercisePolicy,
   getExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import {
+  getSetById,
   getSetsForLanguage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
+import { redirect } from 'next/navigation'
 import { ExerciseView } from './_components/ExerciseView'
 
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ scope?: string }>
+}) {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
     throw authResult.error
@@ -22,13 +30,29 @@ export default async function Page() {
 
   const supabase = await createClient()
   const userId = authResult.value
+  const repo = supabaseCuratedContentRepositoryFactories
+
+  const scope = parseExerciseScope((await searchParams).scope)
+
+  if (scope?.type === 'set') {
+    const setResult = await getSetById({
+      findSetById: repo.createFindSetById(supabase),
+    })({ id: scope.setId })
+    if (Result.isFailure(setResult)) {
+      redirect('/exercise')
+    }
+    const set = setResult.value
+    return (
+      <ExerciseView
+        initialPolicy={ExercisePolicy.fromSet(set)}
+        scope={{ setId: set.id, setTitle: set.title }}
+      />
+    )
+  }
 
   const [sets, policy] = await Promise.all([
     getSetsForLanguage({
-      findSetsByLanguage:
-        supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
-          supabase,
-        ),
+      findSetsByLanguage: repo.createFindSetsByLanguage(supabase),
     })({ language: TARGET_LANGUAGE }),
     getExercisePolicy({
       findByUserIdAndLanguage:

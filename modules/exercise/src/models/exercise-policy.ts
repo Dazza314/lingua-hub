@@ -29,6 +29,18 @@ export const DEFAULT_EXERCISE_POLICY: ExercisePolicy = {
   grammar: { setIds: [] },
 }
 
+export function fromSet(set: {
+  id: CuratedSetId.CuratedSetId
+}): ExercisePolicy {
+  return {
+    vocab: {
+      setIds: [set.id],
+      importedVocab: false,
+    },
+    grammar: { setIds: [set.id] },
+  }
+}
+
 export const parse = makeParse(exercisePolicySchema)
 
 export const dangerouslyCast = (

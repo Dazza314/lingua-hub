@@ -1,7 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
+import { cn } from '@/lib/utils'
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import type { CuratedSet } from '@lingua-hub/vocab'
@@ -14,6 +15,7 @@ type Props = {
 }
 
 export function SetDetailView({ set, children }: Props) {
+  const isEmpty = set.vocabCount === 0 && set.grammarCount === 0
   return (
     <div className="px-4 py-6">
       <motion.div
@@ -38,7 +40,17 @@ export function SetDetailView({ set, children }: Props) {
             {set.vocabCount} vocab · {set.grammarCount} grammar
           </p>
         </div>
-        <Button size="sm">Start studying</Button>
+        <Link
+          href={`/exercise?scope=set:${set.id}`}
+          className={cn(
+            buttonVariants({ size: 'sm' }),
+            isEmpty && 'pointer-events-none opacity-50',
+          )}
+          aria-disabled={isEmpty}
+          tabIndex={isEmpty ? -1 : undefined}
+        >
+          Start studying
+        </Link>
       </div>
 
       {children}
