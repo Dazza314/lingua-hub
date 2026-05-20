@@ -1,11 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { Page } from '@lingua-hub/core'
-import type {
-  CuratedGrammarPoint,
-  CuratedSet,
-  CuratedVocabItem,
-} from '@lingua-hub/vocab'
+import type { CuratedSet, CuratedVocabItem } from '@lingua-hub/vocab'
 import Link from 'next/link'
 
 type Props = {
@@ -14,7 +10,7 @@ type Props = {
   page: number
   pageSize: number
   vocabPage: Page<CuratedVocabItem.CuratedVocabItem> | null
-  grammarPage: Page<CuratedGrammarPoint.CuratedGrammarPoint> | null
+  children?: React.ReactNode
 }
 
 export function SetDetailView({
@@ -23,14 +19,10 @@ export function SetDetailView({
   page,
   pageSize,
   vocabPage,
-  grammarPage,
+  children,
 }: Props) {
   const baseUrl = `/sets/${set.id}`
-  const totalPages = Math.ceil(
-    (tab === 'vocab'
-      ? (vocabPage?.totalCount ?? 0)
-      : (grammarPage?.totalCount ?? 0)) / pageSize,
-  )
+  const totalPages = Math.ceil((vocabPage?.totalCount ?? 0) / pageSize)
 
   return (
     <div className="px-4 py-6">
@@ -111,31 +103,7 @@ export function SetDetailView({
         </>
       )}
 
-      {tab === 'grammar' && grammarPage && (
-        <>
-          <div className="flex flex-col gap-2">
-            {grammarPage.items.map((point) => (
-              <div
-                key={point.id}
-                className="rounded-lg border border-border p-3"
-              >
-                <p className="mb-0.5 font-medium">{point.title}</p>
-                <p className="text-sm text-muted-foreground">
-                  {point.explanation}
-                </p>
-              </div>
-            ))}
-          </div>
-          {totalPages > 1 && (
-            <Pagination
-              baseUrl={baseUrl}
-              tab={tab}
-              current={page}
-              total={totalPages}
-            />
-          )}
-        </>
-      )}
+      {tab === 'grammar' && children}
     </div>
   )
 }

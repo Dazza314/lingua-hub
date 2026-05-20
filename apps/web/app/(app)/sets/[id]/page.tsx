@@ -2,13 +2,19 @@ import { createClient } from '@/lib/supabase/server'
 import {
   CuratedSetId,
   getSetById,
-  getSetGrammarPage,
   getSetVocabPage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query'
 import { notFound } from 'next/navigation'
+import { GrammarList } from './_components/GrammarList'
 import { SetDetailView } from './_components/SetDetailView'
+import { loadGrammarPage } from './actions'
 
 const PAGE_SIZE = 24
 
@@ -37,27 +43,28 @@ export default async function SetPage({
 
   const set = setResult.value
 
-  const [vocabPage, grammarPage] = await Promise.all([
+  const vocabPage =
     currentTab === 'vocab'
-      ? getSetVocabPage({
+      ? await getSetVocabPage({
           findVocabItemsBySetId: repo.createFindVocabItemsBySetId(supabase),
         })({
           id: set.id,
           page: currentPage,
           pageSize: PAGE_SIZE,
         })
-      : null,
-    currentTab === 'grammar'
-      ? getSetGrammarPage({
-          findGrammarPointsBySetId:
-            repo.createFindGrammarPointsBySetId(supabase),
-        })({
-          id: set.id,
-          page: currentPage,
-          pageSize: PAGE_SIZE,
-        })
-      : null,
-  ])
+      : null
+
+  let grammarHydration: ReturnType<typeof dehydrate> | null = null
+  if (currentTab === 'grammar') {
+    const queryClient = new QueryClient()
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: ['set', set.id, 'grammar'],
+      queryFn: () =>
+        loadGrammarPage({ id: set.id, page: 1, pageSize: PAGE_SIZE }),
+      initialPageParam: 1,
+    })
+    grammarHydration = dehydrate(queryClient)
+  }
 
   return (
     <SetDetailView
@@ -66,7 +73,12 @@ export default async function SetPage({
       page={currentPage}
       pageSize={PAGE_SIZE}
       vocabPage={vocabPage}
-      grammarPage={grammarPage}
-    />
+    >
+      {grammarHydration && (
+        <HydrationBoundary state={grammarHydration}>
+          <GrammarList setId={set.id} pageSize={PAGE_SIZE} />
+        </HydrationBoundary>
+      )}
+    </SetDetailView>
   )
 }
