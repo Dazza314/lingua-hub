@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { EvaluationCard } from './EvaluationCard'
 import { ExerciseCard } from './ExerciseCard'
 import { PolicyEditor } from './PolicyEditor'
+import { PracticeHeader } from './PracticeHeader'
 import { TranslationForm } from './TranslationForm'
 import { useEvaluateExercise } from './use-evaluate-exercise'
 import { useGenerateExercise } from './use-generate-exercise'
@@ -89,13 +90,15 @@ export function ExerciseView({ initialPolicy, sets }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
-      <div className="flex justify-end">
-        <PolicyEditor
-          policy={policy}
-          onPolicyChange={handlePolicyChange}
-          sets={sets}
-        />
-      </div>
+      <PracticeHeader
+        right={
+          <PolicyEditor
+            policy={policy}
+            onPolicyChange={handlePolicyChange}
+            sets={sets}
+          />
+        }
+      />
       <ExerciseCard exercise={exercise} status={generateState.status} />
       <AnimatePresence mode="wait">
         {userTranslation === null ? (

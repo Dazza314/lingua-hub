@@ -34,7 +34,7 @@ export function VocabList({ setId, pageSize }: Props) {
 
   return (
     <div ref={scrollRef} className="h-[70vh] overflow-auto contain:strict">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 justify-between">
         {items.map((item) => (
           <div
             key={item.id}

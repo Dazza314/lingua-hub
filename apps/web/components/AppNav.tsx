@@ -28,7 +28,7 @@ export function AppNav() {
             Lingua Hub
           </span>
           {navItems.map(({ href, label, icon }) => {
-            const active = pathname === href
+            const active = pathname === href || pathname.startsWith(href + '/')
             return (
               <Link
                 key={href}
@@ -56,7 +56,7 @@ export function AppNav() {
       <nav className="fixed bottom-0 inset-x-0 border-t border-border bg-background md:hidden">
         <div className="flex pb-[env(safe-area-inset-bottom)]">
           {navItems.map(({ href, label, icon }) => {
-            const active = pathname === href
+            const active = pathname === href || pathname.startsWith(href + '/')
             return (
               <Link
                 key={href}
