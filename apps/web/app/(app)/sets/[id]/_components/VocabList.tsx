@@ -2,14 +2,14 @@
 
 import { useInfinitePagedList } from '@/hooks/use-infinite-paged-list'
 import { CuratedSetId } from '@lingua-hub/vocab'
-import { loadGrammarPage } from '../actions'
+import { loadVocabPage } from '../actions'
 
 type Props = {
   setId: CuratedSetId.CuratedSetId
   pageSize: number
 }
 
-export function GrammarList({ setId, pageSize }: Props) {
+export function VocabList({ setId, pageSize }: Props) {
   const {
     items,
     scrollRef,
@@ -18,9 +18,8 @@ export function GrammarList({ setId, pageSize }: Props) {
     hasNextPage,
     isFetchingNextPage,
   } = useInfinitePagedList({
-    queryKey: ['set', setId, 'grammar'],
-    load: ({ page, pageSize }) =>
-      loadGrammarPage({ id: setId, page, pageSize }),
+    queryKey: ['set', setId, 'vocab'],
+    load: ({ page, pageSize }) => loadVocabPage({ id: setId, page, pageSize }),
     pageSize,
   })
 
@@ -35,11 +34,17 @@ export function GrammarList({ setId, pageSize }: Props) {
 
   return (
     <div ref={scrollRef} className="h-[70vh] overflow-auto contain:strict">
-      <div className="flex flex-col gap-2">
-        {items.map((point) => (
-          <div key={point.id} className="rounded-lg border border-border p-3">
-            <p className="mb-0.5 font-medium">{point.title}</p>
-            <p className="text-sm text-muted-foreground">{point.explanation}</p>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="rounded-lg border border-border px-3 py-2 text-lg"
+            style={{
+              contentVisibility: 'auto',
+              containIntrinsicSize: 'auto 60px 36px',
+            }}
+          >
+            {item.term}
           </div>
         ))}
       </div>
