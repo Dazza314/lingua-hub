@@ -8,6 +8,14 @@ class UnauthenticatedError extends TypedError {
 
 const parseUserId = makeParse(UserId.userIdSchema)
 
+export async function requireAuthenticatedUserId(): Promise<UserId.UserId> {
+  const authResult = await getAuthenticatedUserId()
+  if (Result.isFailure(authResult)) {
+    throw authResult.error
+  }
+  return authResult.value
+}
+
 export function getAuthenticatedUserId(): Result.ResultAsync<
   UserId.UserId,
   UnauthenticatedError

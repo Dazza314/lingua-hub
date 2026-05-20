@@ -1,6 +1,6 @@
 'use server'
 
-import { getAuthenticatedUserId } from '@/lib/auth'
+import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
@@ -8,7 +8,6 @@ import {
   saveExercisePolicy as saveExercisePolicyCommand,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
-import { Result } from '@praha/byethrow'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -23,16 +22,13 @@ export async function signOut() {
 export async function saveExercisePolicy(
   policy: ExercisePolicy.ExercisePolicy,
 ) {
-  const authResult = await getAuthenticatedUserId()
-  if (Result.isFailure(authResult)) {
-    throw authResult.error
-  }
+  const userId = await requireAuthenticatedUserId()
 
   const supabase = await createClient()
   await saveExercisePolicyCommand({
     upsert: supabaseExercisePolicyRepositoryFactories.createUpsert(supabase),
   })({
-    userId: authResult.value,
+    userId,
     language: TARGET_LANGUAGE,
     policy,
   })

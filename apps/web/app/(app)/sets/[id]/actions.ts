@@ -1,5 +1,6 @@
 'use server'
 
+import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import {
   CuratedSetId,
@@ -13,6 +14,8 @@ export async function loadGrammarPage(params: {
   page: number
   pageSize: number
 }) {
+  await requireAuthenticatedUserId()
+
   const supabase = await createClient()
   return getSetGrammarPage({
     findGrammarPointsBySetId:
@@ -27,6 +30,8 @@ export async function loadVocabPage(params: {
   page: number
   pageSize: number
 }) {
+  await requireAuthenticatedUserId()
+
   const supabase = await createClient()
   return getSetVocabPage({
     findVocabItemsBySetId:

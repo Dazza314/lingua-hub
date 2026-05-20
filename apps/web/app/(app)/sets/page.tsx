@@ -1,4 +1,4 @@
-import { getAuthenticatedUserId } from '@/lib/auth'
+import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
@@ -6,18 +6,13 @@ import {
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import { supabaseCuratedContentRepositoryFactories } from '@lingua-hub/vocab'
-import { Result } from '@praha/byethrow'
 import { SetsView } from './_components/SetsView'
 
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 export default async function SetsPage() {
   const supabase = await createClient()
-
-  const authResult = await getAuthenticatedUserId()
-  if (Result.isFailure(authResult)) {
-    throw authResult.error
-  }
+  const userId = await requireAuthenticatedUserId()
 
   const [sets, policy] = await Promise.all([
     supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
@@ -28,7 +23,7 @@ export default async function SetsPage() {
         supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
           supabase,
         ),
-    })({ userId: authResult.value, language: TARGET_LANGUAGE }),
+    })({ userId, language: TARGET_LANGUAGE }),
   ])
 
   return (

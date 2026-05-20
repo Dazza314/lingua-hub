@@ -1,4 +1,4 @@
-import { getAuthenticatedUserId } from '@/lib/auth'
+import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
@@ -38,10 +38,7 @@ export default async function SetPage({
   const supabase = await createClient()
   const repo = supabaseCuratedContentRepositoryFactories
 
-  const authResult = await getAuthenticatedUserId()
-  if (Result.isFailure(authResult)) {
-    throw authResult.error
-  }
+  const userId = await requireAuthenticatedUserId()
 
   const [setResult, policy] = await Promise.all([
     getSetById({ findSetById: repo.createFindSetById(supabase) })({
@@ -52,7 +49,7 @@ export default async function SetPage({
         supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
           supabase,
         ),
-    })({ userId: authResult.value, language: TARGET_LANGUAGE }),
+    })({ userId, language: TARGET_LANGUAGE }),
   ])
 
   if (Result.isFailure(setResult)) {

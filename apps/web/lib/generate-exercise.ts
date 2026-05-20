@@ -17,7 +17,7 @@ import {
   supabaseImportedVocabRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
-import { getAuthenticatedUserId } from './auth'
+import { requireAuthenticatedUserId } from './auth'
 
 // TODO: derive targetLanguage from the authenticated user's study profile
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
@@ -30,13 +30,9 @@ const { streamObject } = createGoogleLlmClient(
 )
 
 export async function generateExercise(scope?: ExerciseScope) {
-  const authResult = await getAuthenticatedUserId()
-  if (Result.isFailure(authResult)) {
-    throw authResult.error
-  }
+  const userId = await requireAuthenticatedUserId()
 
   const supabase = await createClient()
-  const userId = authResult.value
 
   const policyResult = await resolveExercisePolicy(supabase, userId, scope)
   if (Result.isFailure(policyResult)) {
