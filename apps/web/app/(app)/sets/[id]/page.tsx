@@ -1,4 +1,10 @@
+import { getAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { Language } from '@lingua-hub/core'
+import {
+  getExercisePolicy,
+  supabaseExercisePolicyRepositoryFactories,
+} from '@lingua-hub/exercise'
 import {
   CuratedSetId,
   getSetById,
@@ -15,6 +21,7 @@ import { SetDetailTabs } from './_components/SetDetailTabs'
 import { SetDetailView } from './_components/SetDetailView'
 import { loadGrammarPage, loadVocabPage } from './actions'
 
+const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 const PAGE_SIZE = 60
 
 export default async function SetPage({
@@ -31,9 +38,22 @@ export default async function SetPage({
   const supabase = await createClient()
   const repo = supabaseCuratedContentRepositoryFactories
 
-  const setResult = await getSetById({
-    findSetById: repo.createFindSetById(supabase),
-  })({ id: id as CuratedSetId.CuratedSetId })
+  const authResult = await getAuthenticatedUserId()
+  if (Result.isFailure(authResult)) {
+    throw authResult.error
+  }
+
+  const [setResult, policy] = await Promise.all([
+    getSetById({ findSetById: repo.createFindSetById(supabase) })({
+      id: id as CuratedSetId.CuratedSetId,
+    }),
+    getExercisePolicy({
+      findByUserIdAndLanguage:
+        supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+          supabase,
+        ),
+    })({ userId: authResult.value, language: TARGET_LANGUAGE }),
+  ])
 
   if (Result.isFailure(setResult)) {
     notFound()
@@ -59,7 +79,7 @@ export default async function SetPage({
   }
 
   return (
-    <SetDetailView set={set}>
+    <SetDetailView set={set} policy={policy}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <SetDetailTabs
           setId={set.id}

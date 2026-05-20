@@ -1,16 +1,9 @@
 'use client'
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Book01Icon, LanguageSquareIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { ExercisePolicy } from '@lingua-hub/exercise'
 import type { CuratedSet } from '@lingua-hub/vocab'
 import Link from 'next/link'
+import { PracticeTypeIndicator } from './PracticeTypeIndicator'
 
 type Props = {
   sets: CuratedSet.CuratedSet[]
@@ -44,34 +37,8 @@ export function SetsView({ sets, policy }: Props) {
             </p>
             {(hasVocab || hasGrammar) && (
               <div className="absolute right-4 top-3 flex items-center gap-1">
-                {hasVocab && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="text-primary">
-                        <HugeiconsIcon
-                          icon={Book01Icon}
-                          size={13}
-                          strokeWidth={1.5}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>In vocab practice</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-                {hasGrammar && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="text-primary">
-                        <HugeiconsIcon
-                          icon={LanguageSquareIcon}
-                          size={13}
-                          strokeWidth={1.5}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>In grammar practice</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+                {hasVocab && <PracticeTypeIndicator type="vocab" />}
+                {hasGrammar && <PracticeTypeIndicator type="grammar" />}
               </div>
             )}
           </Link>
