@@ -74,14 +74,14 @@ for t in traces:
 
 ## Resources
 
-| Resource | Useful actions |
-|----------|----------------|
-| `traces` | `list`, `get <id>` |
+| Resource       | Useful actions                           |
+| -------------- | ---------------------------------------- |
+| `traces`       | `list`, `get <id>`                       |
 | `observations` | `list` (supports `--fields`, `--filter`) |
-| `scores` | `list`, `create` |
+| `scores`       | `list`, `create`                         |
 
 ## Project gotchas
 
-- **Trace `name` is always empty.** Traces are created by OpenTelemetry auto-instrumentation which doesn't set a name. Don't filter `traces list` by `--name` — it will return nothing. Span names (`exercise-generation`, `ai.generateText`, etc.) live on *observations*, not traces.
+- **Trace `name` is always empty.** Traces are created by OpenTelemetry auto-instrumentation which doesn't set a name. Don't filter `traces list` by `--name` — it will return nothing. Span names (`exercise-generation`, `ai.generateText`, etc.) live on _observations_, not traces.
 - **Project ID:** `cmpebdr4s0d7nad0e4qqayu4e` — rarely needed directly but useful for deep-linking in the UI.
 - **`gemini-2.5-flash` is a thinking model.** Reasoning tokens count toward cost and latency. If a call seems slow or truncated, check `usage.totalTokens` vs `usage.completionTokens` on the observation — a large gap indicates thinking overhead. Fix with `thinkingBudget: 0` in `providerOptions.google.thinkingConfig` when thinking isn't needed.
