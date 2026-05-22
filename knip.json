@@ -6,12 +6,7 @@
       "ignoreDependencies": ["@lingua-hub/capacitor-ankidroid"]
     },
     "apps/web": {
-      "ignore": [
-        "components/ui/**",
-        "app/actions.ts",
-        "app/sw.ts",
-        "components/SignOutButton.tsx"
-      ],
+      "ignore": ["components/ui/**", "app/sw.ts"],
       "ignoreDependencies": ["serwist"]
     },
     "supabase": {
