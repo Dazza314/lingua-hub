@@ -4,7 +4,7 @@ import { createGenerateObject } from './generate-object'
 import { createStreamObject } from './stream-object'
 
 export const GoogleModel = {
-  Gemini31FlashLitePreview: 'gemini-3.1-flash-lite-preview',
+  Gemini31FlashLite: 'gemini-3.1-flash-lite',
   Gemini25Flash: 'gemini-2.5-flash',
   Gemma4_31B: 'gemma-4-31b-it',
 } as const

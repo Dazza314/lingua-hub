@@ -30,7 +30,7 @@ type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
 const { generateObject } = createGoogleLlmClient(
   env.GOOGLE_GENERATIVE_AI_API_KEY,
-  GoogleModel.Gemini25Flash,
+  GoogleModel.Gemini31FlashLite,
 )
 
 export async function generateExercise(scope?: ExerciseScope) {
