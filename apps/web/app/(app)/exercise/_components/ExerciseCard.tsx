@@ -3,16 +3,11 @@ import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
-  exercise: Partial<Exercise.Exercise>
-  status: Status
+  exercise: Exercise.Exercise | null
+  status: 'loading' | 'complete'
 }
 
-type Status = 'loading' | 'streaming' | 'complete'
-
 export function ExerciseCard({ exercise, status }: Props) {
-  const contextTag = exercise.contextTag ?? ''
-  const sentence = exercise.sentence ?? ''
-
   const innerRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState<number | 'auto'>('auto')
 
@@ -38,16 +33,18 @@ export function ExerciseCard({ exercise, status }: Props) {
     >
       <div ref={innerRef} className="p-6">
         <div className="text-muted-foreground mb-4 text-sm min-h-5">
-          {contextTag}
-          {(status === 'loading' || status === 'streaming') && !sentence ? (
-            <span className="ml-0.5 w-0.5 h-3.5 bg-muted-foreground animate-blink inline-block align-[center]" />
-          ) : null}
+          {status === 'loading' ? (
+            <div className="h-3.5 w-28 bg-muted animate-pulse rounded" />
+          ) : (
+            exercise?.contextTag
+          )}
         </div>
         <div className="text-2xl leading-snug font-medium">
-          {sentence}
-          {(status === 'loading' || status === 'streaming') && !!sentence ? (
-            <span className="ml-0.5 w-0.5 h-6 bg-black animate-blink inline-block align-[center]" />
-          ) : null}
+          {status === 'loading' ? (
+            <div className="h-7 w-3/5 bg-muted animate-pulse rounded" />
+          ) : (
+            exercise?.sentence
+          )}
         </div>
       </div>
     </motion.div>

@@ -10,8 +10,6 @@ import { after } from 'next/server'
 
 const llmHandler = env.MOCK_LLM ? mockGenerateExercise : generateExercise
 
-const encoder = new TextEncoder()
-
 async function handler(request: Request) {
   const authResult = await getAuthenticatedUserId()
   if (Result.isFailure(authResult)) {
@@ -33,29 +31,9 @@ async function handler(request: Request) {
       )
     }
 
-    const iterable = result.value
-
-    const stream = new ReadableStream({
-      async start(controller) {
-        for await (const chunk of iterable) {
-          if (Result.isSuccess(chunk)) {
-            controller.enqueue(
-              encoder.encode(JSON.stringify(chunk.value) + '\n'),
-            )
-          } else {
-            controller.error(chunk.error)
-            return
-          }
-        }
-        controller.close()
-      },
-    })
-
     after(async () => await langfuseSpanProcessor.forceFlush())
 
-    return new Response(stream, {
-      headers: { 'Content-Type': 'application/x-ndjson' },
-    })
+    return Response.json(result.value)
   })
 }
 

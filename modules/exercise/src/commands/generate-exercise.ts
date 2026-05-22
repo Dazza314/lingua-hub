@@ -1,20 +1,30 @@
 import type { Language, UserId } from '@lingua-hub/core'
-import type { DeepPartial, LlmClient, LlmStreamError } from '@lingua-hub/llm'
+import type { LlmClient } from '@lingua-hub/llm'
 import type { CuratedGrammarPoint } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
 import z from 'zod'
-import { EmptyVocabError } from '../errors'
+import { EmptyVocabError, ExerciseGenerationError } from '../errors'
 import * as Exercise from '../models/exercise'
 import * as ExercisePolicy from '../models/exercise-policy'
 import type { evaluateExercisePolicy } from './evaluate-exercise-policy'
 
 const DEFAULT_VOCAB_COUNT = 20
 const DEFAULT_GRAMMAR_COUNT = 3
-const MAX_OUTPUT_TOKENS = 2048
+const DEFAULT_CANDIDATE_COUNT = 3
+const MAX_TOKENS_GENERATE = 2048
+const MAX_TOKENS_JUDGE = 512
 
 const exerciseLlmSchema = Exercise.exerciseSchema.omit({ language: true })
 
-function buildSystemPrompt(targetLanguage: Language.Language): string {
+const candidatesSchema = z.object({
+  candidates: z.array(exerciseLlmSchema),
+})
+
+const judgeSchema = z.object({
+  chosenIndex: z.number().int().min(0),
+})
+
+function buildGeneratorSystemPrompt(targetLanguage: Language.Language): string {
   return `You are a language exercise generator. The learner is studying ${targetLanguage}. Given a list of vocabulary and grammar points in ${targetLanguage}, produce:
 
 1. A SENTENCE in ${targetLanguage} that:
@@ -51,9 +61,32 @@ The tag should feel like a stage direction before a line of dialogue — it sets
 `
 }
 
+function buildJudgeSystemPrompt(targetLanguage: Language.Language): string {
+  return `You are evaluating candidate language exercise sentences in ${targetLanguage}. Given a list of candidates, each with a context tag and sentence, choose the best one based on:
+
+1. Grammatical correctness
+2. Idiomatic naturalness — sounds like something a native speaker would actually say, not a textbook construction
+3. Register consistency — the sentence's formality matches the context tag
+4. Tag quality — disambiguates the sentence without previewing its content
+
+Return the 0-based index of the best candidate.`
+}
+
+function buildJudgeUserPrompt(
+  candidates: z.infer<typeof candidatesSchema>['candidates'],
+): string {
+  const formatted = candidates
+    .map(
+      (candidate, index) =>
+        `${index}. Tag: ${candidate.contextTag}\n   Sentence: "${candidate.sentence}"`,
+    )
+    .join('\n\n')
+  return `Candidates:\n\n${formatted}\n\nChoose the best candidate.`
+}
+
 export type GenerateExerciseDeps = {
   evaluateExercisePolicy: ReturnType<typeof evaluateExercisePolicy>
-  streamObject: LlmClient['streamObject']
+  generateObject: LlmClient['generateObject']
 }
 
 export type GenerateExerciseInput = {
@@ -62,16 +95,17 @@ export type GenerateExerciseInput = {
   policy: ExercisePolicy.ExercisePolicy
   vocabItemCount?: number
   grammarPointCount?: number
+  candidateCount?: number
 }
 
 type GenerateExerciseResult = Result.ResultAsync<
-  AsyncIterable<Result.Result<DeepPartial<Exercise.Exercise>, LlmStreamError>>,
-  EmptyVocabError
+  Exercise.Exercise,
+  EmptyVocabError | ExerciseGenerationError
 >
 
 export function generateExercise({
   evaluateExercisePolicy,
-  streamObject,
+  generateObject,
 }: GenerateExerciseDeps) {
   return async ({
     userId,
@@ -79,6 +113,7 @@ export function generateExercise({
     policy,
     vocabItemCount = DEFAULT_VOCAB_COUNT,
     grammarPointCount = DEFAULT_GRAMMAR_COUNT,
+    candidateCount = DEFAULT_CANDIDATE_COUNT,
   }: GenerateExerciseInput): GenerateExerciseResult => {
     const { vocabTerms, grammarPoints } = await evaluateExercisePolicy({
       policy,
@@ -92,52 +127,56 @@ export function generateExercise({
 
     const sampledVocab = sampleRandom(vocabTerms, vocabItemCount)
     const sampledGrammar = sampleRandom(grammarPoints, grammarPointCount)
-    const stream = await streamObject({
-      schema: exerciseLlmSchema,
-      system: buildSystemPrompt(targetLanguage),
+
+    const { candidates } = await generateObject({
+      schema: candidatesSchema,
+      system: buildGeneratorSystemPrompt(targetLanguage),
       messages: [
         {
           role: 'user',
-          content: buildUserPrompt(sampledVocab, sampledGrammar),
+          content: buildGeneratorUserPrompt(
+            sampledVocab,
+            sampledGrammar,
+            candidateCount,
+          ),
         },
       ],
-      maxTokens: MAX_OUTPUT_TOKENS,
+      maxTokens: MAX_TOKENS_GENERATE,
+      thinkingBudget: 0,
     })
 
-    return Result.succeed(withLanguage(stream, targetLanguage))
-  }
-}
+    const { chosenIndex } = await generateObject({
+      schema: judgeSchema,
+      system: buildJudgeSystemPrompt(targetLanguage),
+      messages: [
+        {
+          role: 'user',
+          content: buildJudgeUserPrompt(candidates),
+        },
+      ],
+      maxTokens: MAX_TOKENS_JUDGE,
+      thinkingBudget: 0,
+    })
 
-async function* withLanguage(
-  stream: AsyncIterable<
-    Result.Result<
-      DeepPartial<z.infer<typeof exerciseLlmSchema>>,
-      LlmStreamError
-    >
-  >,
-  language: Language.Language,
-): AsyncIterable<
-  Result.Result<DeepPartial<Exercise.Exercise>, LlmStreamError>
-> {
-  for await (const chunk of stream) {
-    if (Result.isSuccess(chunk)) {
-      yield Result.succeed({ ...chunk.value, language })
-    } else {
-      yield chunk
+    const chosen = candidates[chosenIndex] ?? candidates[0]
+    if (!chosen) {
+      return Result.fail(new ExerciseGenerationError('No available candidates'))
     }
+    return Result.succeed({ ...chosen, language: targetLanguage })
   }
 }
 
-function buildUserPrompt(
+function buildGeneratorUserPrompt(
   vocabTerms: string[],
   grammarPoints: CuratedGrammarPoint.CuratedGrammarPoint[],
+  candidateCount: number,
 ): string {
   const vocabList = vocabTerms.map((term) => `- ${term}`).join('\n')
   const grammarSection =
     grammarPoints.length > 0
       ? `\n\nGrammar points to consider:\n${grammarPoints.map((g) => `- ${g.title}: ${g.explanation}`).join('\n')}`
       : ''
-  return `Vocabulary the learner knows:\n${vocabList}${grammarSection}\n\nGenerate one exercise.`
+  return `Vocabulary the learner knows:\n${vocabList}${grammarSection}\n\nGenerate ${candidateCount} candidate exercises. Vary the vocabulary subset, grammar usage, and context for each — they should represent meaningfully different sentences, not minor paraphrases of each other.`
 }
 
 function sampleRandom<T>(items: T[], n: number): T[] {

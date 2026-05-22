@@ -24,9 +24,9 @@ const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
-const { streamObject } = createGoogleLlmClient(
+const { generateObject } = createGoogleLlmClient(
   env.GOOGLE_GENERATIVE_AI_API_KEY,
-  GoogleModel.Gemma4_31B,
+  GoogleModel.Gemini25Flash,
 )
 
 export async function generateExercise(scope?: ExerciseScope) {
@@ -41,7 +41,7 @@ export async function generateExercise(scope?: ExerciseScope) {
 
   const repo = supabaseCuratedContentRepositoryFactories
   return generateExerciseCommand({
-    streamObject,
+    generateObject,
     evaluateExercisePolicy: evaluateExercisePolicy({
       findSetWithItemsById: repo.createFindSetWithItemsById(supabase),
       getImportedVocabItems:

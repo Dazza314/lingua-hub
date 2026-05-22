@@ -1,10 +1,8 @@
 import { Exercise } from '@lingua-hub/exercise'
 import { useCallback, useState } from 'react'
-import { streamOrderedFields } from '../../stream-ordered-fields'
 
 type GenerateState =
   | { status: 'loading' }
-  | { status: 'streaming'; partial: Partial<Exercise.Exercise> }
   | { status: 'complete'; exercise: Exercise.Exercise }
   | {
       status: 'error'
@@ -44,22 +42,21 @@ export function useGenerateExercise() {
           })
           return
         }
+        if (body?.error?.message) {
+          setState({
+            status: 'error',
+            kind: 'other',
+            message: body.error.message,
+          })
+          return
+        }
       }
 
-      if (!response.ok || !response.body) {
+      if (!response.ok) {
         throw new Error(`Generate failed: ${response.status}`)
       }
 
-      const reader = response.body.getReader()
-
-      const exercise = await streamOrderedFields<Exercise.Exercise>({
-        reader,
-        setState: (partial) => {
-          setState({ status: 'streaming', partial })
-        },
-        fieldNames: ['contextTag', 'sentence'],
-      })
-
+      const exercise = (await response.json()) as Exercise.Exercise
       setState({ status: 'complete', exercise })
     } catch (err) {
       setState({

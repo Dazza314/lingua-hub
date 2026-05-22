@@ -1,4 +1,3 @@
-import type { GoogleGenerativeAIProvider } from '@ai-sdk/google'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import type { LlmClient } from '../../ports/llm-client'
 import { createGenerateObject } from './generate-object'
@@ -22,15 +21,3 @@ export function createGoogleLlmClient(
     streamObject: createStreamObject(provider, model),
   }
 }
-
-type LlmClientFactories = {
-  [Key in keyof LlmClient as `create${Capitalize<Key>}`]: (
-    provider: GoogleGenerativeAIProvider,
-    model: string,
-  ) => LlmClient[Key]
-}
-
-export const googleLlmClientFactories = {
-  createGenerateObject,
-  createStreamObject,
-} satisfies LlmClientFactories

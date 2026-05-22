@@ -3,7 +3,7 @@
 import { saveExercisePolicy } from '@/app/actions'
 import { Button } from '@/components/ui/button'
 import { motionTokens, transitions } from '@/lib/animations'
-import { Exercise, ExercisePolicy } from '@lingua-hub/exercise'
+import { ExercisePolicy } from '@lingua-hub/exercise'
 import { CuratedSetId } from '@lingua-hub/vocab'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
@@ -148,13 +148,8 @@ export function ExerciseView(props: Props) {
     )
   }
 
-  const exercise: Partial<Exercise.Exercise> =
-    generateState.status === 'complete'
-      ? generateState.exercise
-      : generateState.status === 'streaming'
-        ? generateState.partial
-        : {}
-  const isStreaming = generateState.status !== 'complete'
+  const exercise =
+    generateState.status === 'complete' ? generateState.exercise : null
 
   return (
     <div className="flex flex-1 flex-col gap-6 px-4 py-6">
@@ -179,7 +174,7 @@ export function ExerciseView(props: Props) {
             <TranslationForm
               ref={translationRef}
               onSubmit={handleSubmit}
-              disabled={isStreaming}
+              disabled={generateState.status !== 'complete'}
             />
           </motion.div>
         ) : (

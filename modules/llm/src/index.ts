@@ -2,7 +2,6 @@ export { claudeLlmClientFactories } from './adapters/claude-llm-client/claude-ll
 export {
   createGoogleLlmClient,
   GoogleModel,
-  googleLlmClientFactories,
 } from './adapters/google-llm-client/google-llm-client'
 export { LlmStreamError } from './errors'
 export type {

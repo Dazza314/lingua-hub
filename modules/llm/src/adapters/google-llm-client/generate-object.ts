@@ -17,6 +17,11 @@ export function createGenerateObject(
       })),
       maxOutputTokens: params.maxTokens,
       experimental_telemetry: { isEnabled: true },
+      ...(params.thinkingBudget !== undefined && {
+        providerOptions: {
+          google: { thinkingConfig: { thinkingBudget: params.thinkingBudget } },
+        },
+      }),
     })
     return result.output
   }

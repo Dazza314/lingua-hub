@@ -14,6 +14,7 @@ export type GenerateObjectParams<T> = {
   system?: string
   messages: MessageParam[]
   maxTokens: number
+  thinkingBudget?: number
 }
 
 export type DeepPartial<T> = T extends object
