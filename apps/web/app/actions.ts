@@ -22,9 +22,7 @@ export async function generateExercise(
 ): Promise<
   Result.Result<Exercise.Exercise, { type: string; message: string }>
 > {
-  const result = await generateExerciseImpl(
-    parseExerciseScope(scope) ?? undefined,
-  )
+  const result = await generateExerciseImpl(parseExerciseScope(scope))
   return Result.pipe(
     result,
     Result.mapError((error) => ({

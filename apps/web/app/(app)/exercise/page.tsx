@@ -33,7 +33,7 @@ export default async function Page({
 
   const scope = parseExerciseScope((await searchParams).scope)
 
-  if (scope?.type === 'set') {
+  if (scope.type === 'set') {
     const [setResult, policy] = await Promise.all([
       getSetById({ findSetById: repo.createFindSetById(supabase) })({
         id: scope.setId,
