@@ -1,4 +1,6 @@
+import { generateExercise } from '@/app/actions'
 import { Exercise } from '@lingua-hub/exercise'
+import { Result } from '@praha/byethrow'
 import { useCallback, useState } from 'react'
 
 type GenerateState =
@@ -17,47 +19,20 @@ export function useGenerateExercise() {
     setState({ status: 'loading' })
 
     try {
-      const url = scope
-        ? `/api/exercise/generate?scope=${encodeURIComponent(scope)}`
-        : '/api/exercise/generate'
-      const response = await fetch(url, { method: 'POST' })
+      const result = await generateExercise(scope)
 
-      if (response.status === 422) {
-        const body = (await response.json().catch(() => null)) as {
-          error?: { type?: string; message?: string }
-        } | null
-        if (body?.error?.type === 'EmptyVocabError') {
-          setState({
-            status: 'error',
-            kind: 'empty-vocab',
-            message: body.error.message ?? 'No vocabulary items found',
-          })
-          return
-        }
-        if (body?.error?.type === 'CuratedSetNotFoundError') {
-          setState({
-            status: 'error',
-            kind: 'scoped-set-not-found',
-            message: body.error.message ?? 'Set not found',
-          })
-          return
-        }
-        if (body?.error?.message) {
-          setState({
-            status: 'error',
-            kind: 'other',
-            message: body.error.message,
-          })
-          return
-        }
+      if (Result.isFailure(result)) {
+        const kind =
+          result.error.type === 'EmptyVocabError'
+            ? 'empty-vocab'
+            : result.error.type === 'CuratedSetNotFoundError'
+              ? 'scoped-set-not-found'
+              : 'other'
+        setState({ status: 'error', kind, message: result.error.message })
+        return
       }
 
-      if (!response.ok) {
-        throw new Error(`Generate failed: ${response.status}`)
-      }
-
-      const exercise = (await response.json()) as Exercise.Exercise
-      setState({ status: 'complete', exercise })
+      setState({ status: 'complete', exercise: result.value })
     } catch (err) {
       setState({
         status: 'error',

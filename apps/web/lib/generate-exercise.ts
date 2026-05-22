@@ -1,12 +1,15 @@
+import { langfuseSpanProcessor } from '@/instrumentation'
 import { env } from '@/lib/env'
 import type { ExerciseScope } from '@/lib/exercise-scope'
 import { createClient } from '@/lib/supabase/server'
+import { mockGenerateExercise } from '@/mocks/generate-exercise'
+import { observe, propagateAttributes } from '@langfuse/tracing'
 import { Language, UserId } from '@lingua-hub/core'
 import {
   evaluateExercisePolicy,
   ExercisePolicy,
-  generateExercise as generateExerciseCommand,
   getExercisePolicy,
+  generateExercise as makeGenerateExerciseCommand,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
@@ -17,6 +20,7 @@ import {
   supabaseImportedVocabRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
+import { after } from 'next/server'
 import { requireAuthenticatedUserId } from './auth'
 
 // TODO: derive targetLanguage from the authenticated user's study profile
@@ -30,8 +34,25 @@ const { generateObject } = createGoogleLlmClient(
 )
 
 export async function generateExercise(scope?: ExerciseScope) {
+  if (env.MOCK_LLM) {
+    return mockGenerateExercise(scope)
+  }
+
   const userId = await requireAuthenticatedUserId()
 
+  // Flush spans regardless of outcome so error traces are exported too.
+  after(() => langfuseSpanProcessor.forceFlush())
+
+  return observe(
+    () => propagateAttributes({ userId }, () => generateForUser(scope, userId)),
+    { name: 'exercise-generation' },
+  )()
+}
+
+async function generateForUser(
+  scope: ExerciseScope | undefined,
+  userId: UserId.UserId,
+) {
   const supabase = await createClient()
 
   const policyResult = await resolveExercisePolicy(supabase, userId, scope)
@@ -40,7 +61,7 @@ export async function generateExercise(scope?: ExerciseScope) {
   }
 
   const repo = supabaseCuratedContentRepositoryFactories
-  return generateExerciseCommand({
+  const generateExerciseCommand = makeGenerateExerciseCommand({
     generateObject,
     evaluateExercisePolicy: evaluateExercisePolicy({
       findSetWithItemsById: repo.createFindSetWithItemsById(supabase),
@@ -49,7 +70,8 @@ export async function generateExercise(scope?: ExerciseScope) {
           supabase,
         ),
     }),
-  })({
+  })
+  return generateExerciseCommand({
     userId,
     targetLanguage: TARGET_LANGUAGE,
     policy: policyResult.value,
