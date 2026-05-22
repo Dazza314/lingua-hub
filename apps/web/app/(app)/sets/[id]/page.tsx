@@ -7,7 +7,7 @@ import {
 } from '@lingua-hub/exercise'
 import {
   CuratedSetId,
-  getSetById,
+  loadSetPage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
@@ -19,7 +19,6 @@ import {
 import { notFound } from 'next/navigation'
 import { SetDetailTabs } from './_components/SetDetailTabs'
 import { SetDetailView } from './_components/SetDetailView'
-import { loadGrammarPage, loadVocabPage } from './actions'
 
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
 const PAGE_SIZE = 60
@@ -35,15 +34,22 @@ export default async function SetPage({
 
   const initialTab = tab === 'grammar' ? 'grammar' : 'vocab'
 
+  const idResult = CuratedSetId.parse(id)
+  if (Result.isFailure(idResult)) {
+    notFound()
+  }
+
   const supabase = await createClient()
   const repo = supabaseCuratedContentRepositoryFactories
 
   const userId = await requireAuthenticatedUserId()
 
-  const [setResult, policy] = await Promise.all([
-    getSetById({ findSetById: repo.createFindSetById(supabase) })({
-      id: id as CuratedSetId.CuratedSetId,
-    }),
+  const [pageResult, policy] = await Promise.all([
+    loadSetPage({
+      findSetById: repo.createFindSetById(supabase),
+      findVocabItemsBySetId: repo.createFindVocabItemsBySetId(supabase),
+      findGrammarPointsBySetId: repo.createFindGrammarPointsBySetId(supabase),
+    })({ id: idResult.value, pageSize: PAGE_SIZE }),
     getExercisePolicy({
       findByUserIdAndLanguage:
         supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
@@ -52,28 +58,21 @@ export default async function SetPage({
     })({ userId, language: TARGET_LANGUAGE }),
   ])
 
-  if (Result.isFailure(setResult)) {
+  if (Result.isFailure(pageResult)) {
     notFound()
   }
 
-  const set = setResult.value
+  const { set, vocabPage, grammarPage } = pageResult.value
 
   const queryClient = new QueryClient()
-  if (initialTab === 'vocab') {
-    await queryClient.prefetchInfiniteQuery({
-      queryKey: ['set', set.id, 'vocab'],
-      queryFn: () =>
-        loadVocabPage({ id: set.id, page: 1, pageSize: PAGE_SIZE }),
-      initialPageParam: 1,
-    })
-  } else {
-    await queryClient.prefetchInfiniteQuery({
-      queryKey: ['set', set.id, 'grammar'],
-      queryFn: () =>
-        loadGrammarPage({ id: set.id, page: 1, pageSize: PAGE_SIZE }),
-      initialPageParam: 1,
-    })
-  }
+  queryClient.setQueryData(['set', set.id, 'vocab'], {
+    pages: [vocabPage],
+    pageParams: [1],
+  })
+  queryClient.setQueryData(['set', set.id, 'grammar'], {
+    pages: [grammarPage],
+    pageParams: [1],
+  })
 
   return (
     <SetDetailView set={set} policy={policy}>

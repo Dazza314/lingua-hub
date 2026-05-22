@@ -5,7 +5,10 @@ import {
   getExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
-import { supabaseCuratedContentRepositoryFactories } from '@lingua-hub/vocab'
+import {
+  getSetsForLanguage,
+  supabaseCuratedContentRepositoryFactories,
+} from '@lingua-hub/vocab'
 import { SetsView } from './_components/SetsView'
 
 const TARGET_LANGUAGE = Language.languageSchema.parse('ja')
@@ -15,9 +18,12 @@ export default async function SetsPage() {
   const userId = await requireAuthenticatedUserId()
 
   const [sets, policy] = await Promise.all([
-    supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
-      supabase,
-    )({ language: TARGET_LANGUAGE }),
+    getSetsForLanguage({
+      findSetsByLanguage:
+        supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
+          supabase,
+        ),
+    })({ language: TARGET_LANGUAGE }),
     getExercisePolicy({
       findByUserIdAndLanguage:
         supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(

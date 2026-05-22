@@ -2,11 +2,11 @@ import type { Page } from '@lingua-hub/core'
 import type { CuratedSetId, CuratedVocabItem } from '../models/index'
 import type { CuratedContentRepository } from '../ports/curated-content-repository'
 
-type GetSetVocabPageDeps = {
+type GetVocabPageDeps = {
   findVocabItemsBySetId: CuratedContentRepository['findVocabItemsBySetId']
 }
 
-export function getSetVocabPage(deps: GetSetVocabPageDeps) {
+export function getVocabPage(deps: GetVocabPageDeps) {
   return (params: {
     id: CuratedSetId.CuratedSetId
     page: number

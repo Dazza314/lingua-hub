@@ -5,8 +5,10 @@ export { supabaseCuratedContentRepositoryFactories } from './adapters/supabase/c
 export { supabaseImportedVocabRepositoryFactories } from './adapters/supabase/imported-vocab-repository/supabase-imported-vocab-repository'
 export { getSetsForLanguage } from './commands/get-sets-for-language'
 export { getSetById } from './commands/get-set-by-id'
-export { getSetVocabPage } from './commands/get-set-vocab-page'
-export { getSetGrammarPage } from './commands/get-set-grammar-page'
+export { getVocabPage } from './commands/get-vocab-page'
+export { getGrammarPage } from './commands/get-grammar-page'
+export { loadSetPage } from './commands/load-set-page'
+export type { SetPageData } from './commands/load-set-page'
 export { importAnkiVocab } from './commands/import-anki-vocab'
 export {
   CuratedSetNotFoundError,

@@ -4,8 +4,8 @@ import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import {
   CuratedSetId,
-  getSetGrammarPage,
-  getSetVocabPage,
+  getGrammarPage,
+  getVocabPage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 
@@ -17,7 +17,7 @@ export async function loadGrammarPage(params: {
   await requireAuthenticatedUserId()
 
   const supabase = await createClient()
-  return getSetGrammarPage({
+  return getGrammarPage({
     findGrammarPointsBySetId:
       supabaseCuratedContentRepositoryFactories.createFindGrammarPointsBySetId(
         supabase,
@@ -33,7 +33,7 @@ export async function loadVocabPage(params: {
   await requireAuthenticatedUserId()
 
   const supabase = await createClient()
-  return getSetVocabPage({
+  return getVocabPage({
     findVocabItemsBySetId:
       supabaseCuratedContentRepositoryFactories.createFindVocabItemsBySetId(
         supabase,
