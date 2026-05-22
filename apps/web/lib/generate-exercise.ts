@@ -5,10 +5,10 @@ import { mockGenerateExercise } from '@/mocks/generate-exercise'
 import { observe, propagateAttributes } from '@langfuse/tracing'
 import { Language, UserId } from '@lingua-hub/core'
 import {
-  evaluateExercisePolicy,
+  makeEvaluateExercisePolicy,
   type ExerciseScope,
-  generateExercise as makeGenerateExerciseCommand,
-  resolveExercisePolicy,
+  makeGenerateExercise,
+  makeResolveExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
@@ -51,28 +51,35 @@ async function generateForUser(
   const supabase = await createClient()
   const repo = supabaseCuratedContentRepositoryFactories
 
-  const policyResult = await resolveExercisePolicy({
+  const resolveExercisePolicy = makeResolveExercisePolicy({
     findSetById: repo.createFindSetById(supabase),
     findByUserIdAndLanguage:
       supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
         supabase,
       ),
-  })({ scope, userId, language: TARGET_LANGUAGE })
+  })
+  const evaluateExercisePolicy = makeEvaluateExercisePolicy({
+    findSetWithItemsById: repo.createFindSetWithItemsById(supabase),
+    getImportedVocabItems:
+      supabaseImportedVocabRepositoryFactories.createGetImportedVocabItems(
+        supabase,
+      ),
+  })
+
+  const policyResult = await resolveExercisePolicy({
+    scope,
+    userId,
+    language: TARGET_LANGUAGE,
+  })
   if (Result.isFailure(policyResult)) {
     return policyResult
   }
 
-  const generateExerciseCommand = makeGenerateExerciseCommand({
+  const generateExercise = makeGenerateExercise({
     generateObject,
-    evaluateExercisePolicy: evaluateExercisePolicy({
-      findSetWithItemsById: repo.createFindSetWithItemsById(supabase),
-      getImportedVocabItems:
-        supabaseImportedVocabRepositoryFactories.createGetImportedVocabItems(
-          supabase,
-        ),
-    }),
+    evaluateExercisePolicy,
   })
-  return generateExerciseCommand({
+  return generateExercise({
     userId,
     targetLanguage: TARGET_LANGUAGE,
     policy: policyResult.value,

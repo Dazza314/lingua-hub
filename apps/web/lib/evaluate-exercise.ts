@@ -1,8 +1,5 @@
 import { env } from '@/lib/env'
-import {
-  evaluateExercise as evaluateExerciseCommand,
-  Exercise,
-} from '@lingua-hub/exercise'
+import { makeEvaluateExercise, Exercise } from '@lingua-hub/exercise'
 import { createGoogleLlmClient, GoogleModel } from '@lingua-hub/llm'
 
 const { streamObject } = createGoogleLlmClient(
@@ -10,12 +7,11 @@ const { streamObject } = createGoogleLlmClient(
   GoogleModel.Gemma4_31B,
 )
 
+const evaluateExerciseCommand = makeEvaluateExercise({ streamObject })
+
 export function evaluateExercise(
   exercise: Exercise.Exercise,
   userTranslation: string,
 ) {
-  return evaluateExerciseCommand({ streamObject })({
-    exercise,
-    userTranslation,
-  })
+  return evaluateExerciseCommand({ exercise, userTranslation })
 }

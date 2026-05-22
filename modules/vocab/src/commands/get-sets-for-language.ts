@@ -6,7 +6,7 @@ type GetSetsForLanguageDeps = {
   findSetsByLanguage: CuratedContentRepository['findSetsByLanguage']
 }
 
-export function getSetsForLanguage(deps: GetSetsForLanguageDeps) {
+export function makeGetSetsForLanguage(deps: GetSetsForLanguageDeps) {
   return async (params: {
     language: Language.Language
   }): Promise<CuratedSet.CuratedSet[]> => {

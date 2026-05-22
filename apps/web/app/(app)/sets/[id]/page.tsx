@@ -2,12 +2,12 @@ import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
-  getExercisePolicy,
+  makeGetExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import {
   CuratedSetId,
-  loadSetPage,
+  makeLoadSetPage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
@@ -44,18 +44,21 @@ export default async function SetPage({
 
   const userId = await requireAuthenticatedUserId()
 
+  const loadSetPage = makeLoadSetPage({
+    findSetById: repo.createFindSetById(supabase),
+    findVocabItemsBySetId: repo.createFindVocabItemsBySetId(supabase),
+    findGrammarPointsBySetId: repo.createFindGrammarPointsBySetId(supabase),
+  })
+  const getExercisePolicy = makeGetExercisePolicy({
+    findByUserIdAndLanguage:
+      supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+        supabase,
+      ),
+  })
+
   const [pageResult, policy] = await Promise.all([
-    loadSetPage({
-      findSetById: repo.createFindSetById(supabase),
-      findVocabItemsBySetId: repo.createFindVocabItemsBySetId(supabase),
-      findGrammarPointsBySetId: repo.createFindGrammarPointsBySetId(supabase),
-    })({ id: idResult.value, pageSize: PAGE_SIZE }),
-    getExercisePolicy({
-      findByUserIdAndLanguage:
-        supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
-          supabase,
-        ),
-    })({ userId, language: TARGET_LANGUAGE }),
+    loadSetPage({ id: idResult.value, pageSize: PAGE_SIZE }),
+    getExercisePolicy({ userId, language: TARGET_LANGUAGE }),
   ])
 
   if (Result.isFailure(pageResult)) {

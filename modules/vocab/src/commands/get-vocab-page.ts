@@ -6,7 +6,7 @@ type GetVocabPageDeps = {
   findVocabItemsBySetId: CuratedContentRepository['findVocabItemsBySetId']
 }
 
-export function getVocabPage(deps: GetVocabPageDeps) {
+export function makeGetVocabPage(deps: GetVocabPageDeps) {
   return (params: {
     id: CuratedSetId.CuratedSetId
     page: number

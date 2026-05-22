@@ -8,7 +8,7 @@ import { Language } from '@lingua-hub/core'
 import {
   Exercise,
   ExercisePolicy,
-  saveExercisePolicy as saveExercisePolicyCommand,
+  makeSaveExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import { Result } from '@praha/byethrow'
@@ -44,13 +44,10 @@ export async function saveExercisePolicy(
   const userId = await requireAuthenticatedUserId()
 
   const supabase = await createClient()
-  await saveExercisePolicyCommand({
+  const saveExercisePolicy = makeSaveExercisePolicy({
     upsert: supabaseExercisePolicyRepositoryFactories.createUpsert(supabase),
-  })({
-    userId,
-    language: TARGET_LANGUAGE,
-    policy,
   })
+  await saveExercisePolicy({ userId, language: TARGET_LANGUAGE, policy })
 
   revalidatePath('/exercise')
 }

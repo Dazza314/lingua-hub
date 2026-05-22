@@ -23,7 +23,7 @@ export type EvaluateExerciseInput = {
   userTranslation: string
 }
 
-export function evaluateExercise({ streamObject }: EvaluateExerciseDeps) {
+export function makeEvaluateExercise({ streamObject }: EvaluateExerciseDeps) {
   return ({ exercise, userTranslation }: EvaluateExerciseInput) => {
     return streamObject({
       schema: evaluationSchema,

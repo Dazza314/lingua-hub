@@ -25,7 +25,7 @@ type EvaluateExercisePolicyOutput = {
   grammarPoints: CuratedGrammarPoint.CuratedGrammarPoint[]
 }
 
-export function evaluateExercisePolicy(deps: EvaluateExercisePolicyDeps) {
+export function makeEvaluateExercisePolicy(deps: EvaluateExercisePolicyDeps) {
   return async ({
     policy,
     userId,

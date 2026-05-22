@@ -6,7 +6,7 @@ import { EmptyVocabError } from '../errors'
 import * as ExercisePolicy from '../models/exercise-policy'
 import {
   type GenerateExerciseDeps,
-  generateExercise,
+  makeGenerateExercise,
 } from './generate-exercise'
 
 const USER_ID = UserId.userIdSchema.parse(
@@ -62,14 +62,14 @@ function countBulletLines(content: string): number {
   return (content.match(/^- /gm) ?? []).length
 }
 
-describe('generateExercise', () => {
+describe('makeGenerateExercise', () => {
   it('returns the judge-chosen candidate on the happy path', async () => {
     const { generateObject } = makeGenerateObject([
       { candidates: [CANDIDATE_A, CANDIDATE_B, CANDIDATE_C] },
       { chosenIndex: 1, reasoning: 'Most natural phrasing.' },
     ])
 
-    const result = await generateExercise({
+    const result = await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(['term-1', 'term-2']),
       generateObject,
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, policy: POLICY })
@@ -87,7 +87,7 @@ describe('generateExercise', () => {
       { chosenIndex: 0, reasoning: 'Simpler.' },
     ])
 
-    await generateExercise({
+    await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(['term-1']),
       generateObject,
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, policy: POLICY })
@@ -102,7 +102,7 @@ describe('generateExercise', () => {
     ])
     const vocabTerms = Array.from({ length: 10 }, (_, i) => `term-${i}`)
 
-    await generateExercise({
+    await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(vocabTerms),
       generateObject,
     })({
@@ -121,7 +121,7 @@ describe('generateExercise', () => {
       { chosenIndex: 0, reasoning: '' },
     ])
 
-    await generateExercise({
+    await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(['term-1', 'term-2']),
       generateObject,
     })({
@@ -140,7 +140,7 @@ describe('generateExercise', () => {
       { chosenIndex: 0, reasoning: '' },
     ])
 
-    await generateExercise({
+    await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(['term-1']),
       generateObject,
     })({
@@ -156,7 +156,7 @@ describe('generateExercise', () => {
   it('returns EmptyVocabError without calling the LLM when vocab is empty', async () => {
     const { generateObject, calls } = makeGenerateObject([])
 
-    const result = await generateExercise({
+    const result = await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy([]),
       generateObject,
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, policy: POLICY })
@@ -174,7 +174,7 @@ describe('generateExercise', () => {
       { chosenIndex: 99, reasoning: 'Out of range.' },
     ])
 
-    const result = await generateExercise({
+    const result = await makeGenerateExercise({
       evaluateExercisePolicy: makeEvaluateExercisePolicy(['term-1']),
       generateObject,
     })({ userId: USER_ID, targetLanguage: TARGET_LANGUAGE, policy: POLICY })

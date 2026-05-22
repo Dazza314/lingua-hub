@@ -6,7 +6,7 @@ type GetGrammarPageDeps = {
   findGrammarPointsBySetId: CuratedContentRepository['findGrammarPointsBySetId']
 }
 
-export function getGrammarPage(deps: GetGrammarPageDeps) {
+export function makeGetGrammarPage(deps: GetGrammarPageDeps) {
   return (params: {
     id: CuratedSetId.CuratedSetId
     page: number

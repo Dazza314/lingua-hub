@@ -3,12 +3,12 @@ import { parseExerciseScope } from '@/lib/exercise-scope'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
-  getExercisePolicy,
+  makeGetExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import {
-  getSetById,
-  getSetsForLanguage,
+  makeGetSetById,
+  makeGetSetsForLanguage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { Result } from '@praha/byethrow'
@@ -31,19 +31,25 @@ export default async function Page({
   const userId = authResult.value
   const repo = supabaseCuratedContentRepositoryFactories
 
+  const getSetById = makeGetSetById({
+    findSetById: repo.createFindSetById(supabase),
+  })
+  const getSetsForLanguage = makeGetSetsForLanguage({
+    findSetsByLanguage: repo.createFindSetsByLanguage(supabase),
+  })
+  const getExercisePolicy = makeGetExercisePolicy({
+    findByUserIdAndLanguage:
+      supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+        supabase,
+      ),
+  })
+
   const scope = parseExerciseScope((await searchParams).scope)
 
   if (scope.type === 'set') {
     const [setResult, policy] = await Promise.all([
-      getSetById({ findSetById: repo.createFindSetById(supabase) })({
-        id: scope.setId,
-      }),
-      getExercisePolicy({
-        findByUserIdAndLanguage:
-          supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
-            supabase,
-          ),
-      })({ userId, language: TARGET_LANGUAGE }),
+      getSetById({ id: scope.setId }),
+      getExercisePolicy({ userId, language: TARGET_LANGUAGE }),
     ])
     if (Result.isFailure(setResult)) {
       redirect('/exercise')
@@ -58,15 +64,8 @@ export default async function Page({
   }
 
   const [sets, policy] = await Promise.all([
-    getSetsForLanguage({
-      findSetsByLanguage: repo.createFindSetsByLanguage(supabase),
-    })({ language: TARGET_LANGUAGE }),
-    getExercisePolicy({
-      findByUserIdAndLanguage:
-        supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
-          supabase,
-        ),
-    })({ userId, language: TARGET_LANGUAGE }),
+    getSetsForLanguage({ language: TARGET_LANGUAGE }),
+    getExercisePolicy({ userId, language: TARGET_LANGUAGE }),
   ])
 
   return (

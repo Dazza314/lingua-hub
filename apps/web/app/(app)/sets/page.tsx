@@ -2,11 +2,11 @@ import { requireAuthenticatedUserId } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { Language } from '@lingua-hub/core'
 import {
-  getExercisePolicy,
+  makeGetExercisePolicy,
   supabaseExercisePolicyRepositoryFactories,
 } from '@lingua-hub/exercise'
 import {
-  getSetsForLanguage,
+  makeGetSetsForLanguage,
   supabaseCuratedContentRepositoryFactories,
 } from '@lingua-hub/vocab'
 import { SetsView } from './_components/SetsView'
@@ -17,19 +17,22 @@ export default async function SetsPage() {
   const supabase = await createClient()
   const userId = await requireAuthenticatedUserId()
 
+  const getSetsForLanguage = makeGetSetsForLanguage({
+    findSetsByLanguage:
+      supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
+        supabase,
+      ),
+  })
+  const getExercisePolicy = makeGetExercisePolicy({
+    findByUserIdAndLanguage:
+      supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
+        supabase,
+      ),
+  })
+
   const [sets, policy] = await Promise.all([
-    getSetsForLanguage({
-      findSetsByLanguage:
-        supabaseCuratedContentRepositoryFactories.createFindSetsByLanguage(
-          supabase,
-        ),
-    })({ language: TARGET_LANGUAGE }),
-    getExercisePolicy({
-      findByUserIdAndLanguage:
-        supabaseExercisePolicyRepositoryFactories.createFindByUserIdAndLanguage(
-          supabase,
-        ),
-    })({ userId, language: TARGET_LANGUAGE }),
+    getSetsForLanguage({ language: TARGET_LANGUAGE }),
+    getExercisePolicy({ userId, language: TARGET_LANGUAGE }),
   ])
 
   return (

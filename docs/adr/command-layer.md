@@ -31,7 +31,7 @@ A command earns its keep by doing something a port method does not: transforming
 A command receives its port dependencies as plain function arguments (ports-as-functions):
 
 ```ts
-export function loadSetPage({
+export function makeLoadSetPage({
   findSetById,
   findVocabItemsBySetId,
   findGrammarPointsBySetId,
@@ -47,15 +47,18 @@ export function loadSetPage({
 }
 ```
 
-`apps/web` wires the dependencies from the adapter factories and calls the command:
+`apps/web` wires the dependencies from the adapter factories into a named const, then calls the command:
 
 ```ts
-const page = await loadSetPage({
+const loadSetPage = makeLoadSetPage({
   findSetById: repo.createFindSetById(supabase),
   findVocabItemsBySetId: repo.createFindVocabItemsBySetId(supabase),
   findGrammarPointsBySetId: repo.createFindGrammarPointsBySetId(supabase),
-})({ id })
+})
+const page = await loadSetPage({ id })
 ```
+
+See [command-factory-convention.md](./command-factory-convention.md) for the naming and wiring conventions.
 
 The web file never imports a port type or calls a factory method to get a single function it then uses on its own.
 

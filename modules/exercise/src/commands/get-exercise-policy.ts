@@ -5,7 +5,7 @@ export type GetExercisePolicyDeps = {
   findByUserIdAndLanguage: ExercisePolicyRepository['findByUserIdAndLanguage']
 }
 
-export function getExercisePolicy({
+export function makeGetExercisePolicy({
   findByUserIdAndLanguage,
 }: GetExercisePolicyDeps) {
   return ({

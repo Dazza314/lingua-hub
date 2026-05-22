@@ -13,7 +13,7 @@ import {
 import { Result } from '@praha/byethrow'
 import { describe, expect, it } from 'vitest'
 import * as ExercisePolicy from '../models/exercise-policy'
-import { evaluateExercisePolicy } from './evaluate-exercise-policy'
+import { makeEvaluateExercisePolicy } from './evaluate-exercise-policy'
 
 const USER_ID = UserId.userIdSchema.parse(
   '00000000-0000-4000-8000-000000000000',
@@ -103,9 +103,9 @@ function policy(
   })
 }
 
-describe('evaluateExercisePolicy', () => {
+describe('makeEvaluateExercisePolicy', () => {
   it('returns empty arrays when the policy has no sets', async () => {
-    const result = await evaluateExercisePolicy(NO_RESULTS_DEPS)({
+    const result = await makeEvaluateExercisePolicy(NO_RESULTS_DEPS)({
       policy: policy({ setIds: [] }),
       userId: USER_ID,
       language: LANGUAGE,
@@ -118,7 +118,7 @@ describe('evaluateExercisePolicy', () => {
   describe('vocab', () => {
     it('returns terms from the policy sets', async () => {
       const setId = makeSetId()
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId, ['cat', 'dog']),
@@ -133,7 +133,7 @@ describe('evaluateExercisePolicy', () => {
     })
 
     it('includes imported vocab when enabled', async () => {
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         getImportedVocabItems: makeGetImportedVocabItems([
           makeImportedVocabItem('apple'),
@@ -153,7 +153,7 @@ describe('evaluateExercisePolicy', () => {
     it('returns grammar points from the policy sets', async () => {
       const setId = makeSetId()
       const grammarPoint = makeGrammarPoint({ title: 'て-form' })
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId, [], [grammarPoint]),
@@ -172,7 +172,7 @@ describe('evaluateExercisePolicy', () => {
     it('skips a missing set and still resolves the rest', async () => {
       const presentId = makeSetId()
       const missingId = makeSetId()
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(presentId, ['hello']),
@@ -187,7 +187,7 @@ describe('evaluateExercisePolicy', () => {
     })
 
     it('returns an empty result when every set is unresolvable', async () => {
-      const result = await evaluateExercisePolicy(NO_RESULTS_DEPS)({
+      const result = await makeEvaluateExercisePolicy(NO_RESULTS_DEPS)({
         policy: policy({ setIds: [makeSetId()] }, [makeSetId()]),
         userId: USER_ID,
         language: LANGUAGE,
@@ -201,7 +201,7 @@ describe('evaluateExercisePolicy', () => {
   describe('deduplication', () => {
     it('deduplicates vocab terms across sets and imported vocab', async () => {
       const setId = makeSetId()
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         getImportedVocabItems: makeGetImportedVocabItems([
           makeImportedVocabItem('shared'),
@@ -222,7 +222,7 @@ describe('evaluateExercisePolicy', () => {
       const setId1 = makeSetId()
       const setId2 = makeSetId()
       const grammarPoint = makeGrammarPoint({ title: 'Shared Grammar' })
-      const result = await evaluateExercisePolicy({
+      const result = await makeEvaluateExercisePolicy({
         ...NO_RESULTS_DEPS,
         findSetWithItemsById: makeFindSetWithItemsById([
           makeCuratedSetWithItems(setId1, [], [grammarPoint]),

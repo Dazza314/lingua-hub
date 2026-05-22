@@ -17,7 +17,7 @@ type ImportVocabInput = {
   deckId: DeckId
 }
 
-export function importAnkiVocab({
+export function makeImportAnkiVocab({
   getVocabItems,
   upsertImportedVocabItems,
 }: ImportVocabDeps) {

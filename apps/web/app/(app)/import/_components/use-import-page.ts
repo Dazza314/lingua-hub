@@ -7,7 +7,7 @@ import {
   AvailableLayoutId,
   createAnkiDroidAdapter,
   Deck,
-  importAnkiVocab,
+  makeImportAnkiVocab,
   supabaseImportedVocabRepositoryFactories,
   VocabSourceLayout,
 } from '@lingua-hub/vocab'
@@ -234,13 +234,18 @@ export function useImportPage() {
       return
     }
 
-    const result = await importAnkiVocab({
+    const importAnkiVocab = makeImportAnkiVocab({
       getVocabItems: adapter.getVocabItems,
       upsertImportedVocabItems:
         supabaseImportedVocabRepositoryFactories.createUpsertImportedVocabItems(
           supabase,
         ),
-    })({ userId: userIdResult.value, layout, deckId: state.deck.id })
+    })
+    const result = await importAnkiVocab({
+      userId: userIdResult.value,
+      layout,
+      deckId: state.deck.id,
+    })
 
     if (Result.isFailure(result)) {
       dispatch({ type: 'sync-error', message: result.error.message })

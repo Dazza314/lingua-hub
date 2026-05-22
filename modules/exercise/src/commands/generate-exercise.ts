@@ -6,7 +6,7 @@ import z from 'zod'
 import { EmptyVocabError, ExerciseGenerationError } from '../errors'
 import * as Exercise from '../models/exercise'
 import * as ExercisePolicy from '../models/exercise-policy'
-import type { evaluateExercisePolicy } from './evaluate-exercise-policy'
+import type { makeEvaluateExercisePolicy } from './evaluate-exercise-policy'
 
 const DEFAULT_VOCAB_COUNT = 20
 const DEFAULT_GRAMMAR_COUNT = 3
@@ -85,7 +85,7 @@ function buildJudgeUserPrompt(
 }
 
 export type GenerateExerciseDeps = {
-  evaluateExercisePolicy: ReturnType<typeof evaluateExercisePolicy>
+  evaluateExercisePolicy: ReturnType<typeof makeEvaluateExercisePolicy>
   generateObject: LlmClient['generateObject']
 }
 
@@ -103,7 +103,7 @@ type GenerateExerciseResult = Result.ResultAsync<
   EmptyVocabError | ExerciseGenerationError
 >
 
-export function generateExercise({
+export function makeGenerateExercise({
   evaluateExercisePolicy,
   generateObject,
 }: GenerateExerciseDeps) {

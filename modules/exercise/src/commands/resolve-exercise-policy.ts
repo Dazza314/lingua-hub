@@ -19,7 +19,7 @@ type ResolveExercisePolicyInput = {
   language: Language.Language
 }
 
-export function resolveExercisePolicy({
+export function makeResolveExercisePolicy({
   findSetById,
   findByUserIdAndLanguage,
 }: ResolveExercisePolicyDeps) {

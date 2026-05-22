@@ -7,7 +7,7 @@ type GetSetByIdDeps = {
   findSetById: CuratedContentRepository['findSetById']
 }
 
-export function getSetById(deps: GetSetByIdDeps) {
+export function makeGetSetById(deps: GetSetByIdDeps) {
   return (params: {
     id: CuratedSetId.CuratedSetId
   }): Result.ResultAsync<CuratedSet.CuratedSet, CuratedSetNotFoundError> => {

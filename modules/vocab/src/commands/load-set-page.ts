@@ -21,7 +21,7 @@ export type SetPageData = {
   grammarPage: Page<CuratedGrammarPoint.CuratedGrammarPoint>
 }
 
-export function loadSetPage({
+export function makeLoadSetPage({
   findSetById,
   findVocabItemsBySetId,
   findGrammarPointsBySetId,

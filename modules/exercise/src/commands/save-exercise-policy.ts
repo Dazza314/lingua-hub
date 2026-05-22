@@ -6,7 +6,7 @@ export type SaveExercisePolicyDeps = {
   upsert: ExercisePolicyRepository['upsert']
 }
 
-export function saveExercisePolicy({ upsert }: SaveExercisePolicyDeps) {
+export function makeSaveExercisePolicy({ upsert }: SaveExercisePolicyDeps) {
   return ({
     userId,
     language,

@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest'
 import * as ExercisePolicy from '../models/exercise-policy'
 import * as ExerciseScope from '../models/exercise-scope'
 import type { ExercisePolicyRepository } from '../ports/exercise-policy-repository'
-import { resolveExercisePolicy } from './resolve-exercise-policy'
+import { makeResolveExercisePolicy } from './resolve-exercise-policy'
 
 const USER_ID = UserId.userIdSchema.parse(
   '00000000-0000-4000-8000-000000000000',
@@ -59,9 +59,9 @@ const STORED_POLICY_DEPS = {
   findByUserIdAndLanguage: makeFindByUserIdAndLanguage(STORED_POLICY),
 }
 
-describe('resolveExercisePolicy', () => {
+describe('makeResolveExercisePolicy', () => {
   it('derives a policy from the set when scope targets a set', async () => {
-    const result = await resolveExercisePolicy({
+    const result = await makeResolveExercisePolicy({
       ...STORED_POLICY_DEPS,
       findSetById: makeFindSetById([makeSet(SET_ID)]),
     })({
@@ -76,7 +76,7 @@ describe('resolveExercisePolicy', () => {
   })
 
   it('propagates the failure when the scoped set is not found', async () => {
-    const result = await resolveExercisePolicy(STORED_POLICY_DEPS)({
+    const result = await makeResolveExercisePolicy(STORED_POLICY_DEPS)({
       scope: ExerciseScope.forSet(SET_ID),
       userId: USER_ID,
       language: LANGUAGE,
@@ -86,7 +86,7 @@ describe('resolveExercisePolicy', () => {
   })
 
   it("returns the user's saved policy for the 'saved' scope", async () => {
-    const result = await resolveExercisePolicy(STORED_POLICY_DEPS)({
+    const result = await makeResolveExercisePolicy(STORED_POLICY_DEPS)({
       scope: ExerciseScope.saved,
       userId: USER_ID,
       language: LANGUAGE,
